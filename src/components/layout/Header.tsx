@@ -11,9 +11,8 @@ function Header() {
       <AppBar
         position="static"
         color="default"
+        component="header"
         sx={{
-          bgcolor: "background.default",
-          color: "text.primary",
           boxShadow: "none",
           borderBottom: "1px solid",
           borderColor: "divider",
