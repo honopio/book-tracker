@@ -11,7 +11,13 @@ function Header() {
       <AppBar
         position="static"
         color="default"
-        sx={{ bgcolor: "background.default", color: "text.primary" }}
+        sx={{
+          bgcolor: "background.default",
+          color: "text.primary",
+          boxShadow: "none",
+          borderBottom: "1px solid",
+          borderColor: "divider",
+        }}
       >
         <Toolbar>
           <IconButton
