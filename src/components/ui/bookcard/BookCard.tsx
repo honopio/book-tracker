@@ -24,6 +24,7 @@ const BookCard: React.FC<BookCardProps> = ({
   rating,
   pageCount,
   currentPage,
+  textColor,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -133,7 +134,7 @@ const BookCard: React.FC<BookCardProps> = ({
               value={rating ? rating : 0}
               size="medium"
               precision={0.5}
-              sx={{ mb: 0.5, color: "info.main" }}
+              sx={{ mb: 0.5, color: textColor }}
               onChange={(event, newValue) => {
                 setRating(newValue);
               }}

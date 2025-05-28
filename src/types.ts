@@ -9,6 +9,7 @@ export interface BookCardProps {
   pageCount?: number;
   currentPage?: number;
   onStatusChange?: (newStatus: 'reading' | 'want-to-read' | 'finished') => void;
+  textColor?: string; // Optional color for the card text
 }
 
 export interface Book extends Omit<BookCardProps, 'children'> {

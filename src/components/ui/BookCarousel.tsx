@@ -160,6 +160,7 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 rating={book.rating}
                 pageCount={book.pageCount}
                 currentPage={book.currentPage}
+                textColor={textColor}
               />
             </Box>
           ))
