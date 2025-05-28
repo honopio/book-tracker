@@ -21,10 +21,8 @@ const BookCard: React.FC<BookCardProps> = ({
   status,
   progress = 0,
   rating,
-  dateFinished,
   pageCount,
   currentPage,
-  onStatusChange,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -67,29 +65,23 @@ const BookCard: React.FC<BookCardProps> = ({
   const handleStatusChange = (
     newStatus: "reading" | "want-to-read" | "finished"
   ) => {
-    handleMenuClose();
-    onStatusChange?.(newStatus);
+    //HANDLE STATUS CHANGE HERE
     console.log(`Status changed to: ${newStatus}`);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-    });
   };
 
   return (
     <Card
-      sx={{
+      sx={(theme) => ({
         width: 200,
         height: 480,
-        transition: "all 0.2s ease-in-out",
         position: "relative",
         display: "flex",
         flexDirection: "column",
         boxShadow: "none",
-      }}
+        backgroundColor: "transparent",
+        border: `1px solid ${theme.palette.background.default}`,
+      })}
+      outlined="true"
     >
       {/* Book details */}
       <CardContent
@@ -97,6 +89,7 @@ const BookCard: React.FC<BookCardProps> = ({
           flex: 1,
           display: "flex",
           flexDirection: "column",
+          justifyContent: "space-between",
           p: 2,
           "&:last-child": {
             pb: 2,
@@ -147,10 +140,10 @@ const BookCard: React.FC<BookCardProps> = ({
         )}
 
         <Chip
-          size="small"
           label={status.replace(/-/g, " ")}
           onClick={handleMenuOpen}
           variant="outlined"
+          sx={{ alignSelf: "flex-start" }}
         />
         <Menu
           anchorEl={anchorEl}

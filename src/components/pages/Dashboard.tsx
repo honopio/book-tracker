@@ -83,7 +83,6 @@ const Dashboard = () => {
                 progress={50}
                 currentPage={100}
                 pageCount={200}
-                dateFinished="2023-10-01"
                 rating={4.5}
               />
             </Paper>
@@ -107,23 +106,10 @@ const Dashboard = () => {
                   mb: 2,
                 }}
               >
-                <Typography
-                  variant="h2"
-                  component="h2"
-                  sx={{
-                    color: "#fdf9f2",
-                  }}
-                >
+                <Typography variant="h2" component="h2">
                   Want to Read
                 </Typography>
-                <Chip
-                  label="see all"
-                  onClick={seeAll}
-                  sx={{
-                    color: "#fdf9f2",
-                    fontSize: "0.875rem",
-                  }}
-                />
+                <Chip label="see all" onClick={seeAll} />
               </Box>
             </Paper>
           </Grid>
@@ -158,23 +144,10 @@ const Dashboard = () => {
                   mb: 3,
                 }}
               >
-                <Typography
-                  variant="h2"
-                  component="h2"
-                  sx={{
-                    color: "#fdf9f2",
-                  }}
-                >
+                <Typography variant="h2" component="h2">
                   Finished Books
                 </Typography>
-                <Chip
-                  label="see all"
-                  onClick={seeAll}
-                  sx={{
-                    color: "#fdf9f2",
-                    fontSize: "0.875rem",
-                  }}
-                />
+                <Chip label="see all" onClick={seeAll} />
               </Box>
             </Paper>
           </Grid>
