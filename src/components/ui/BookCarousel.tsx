@@ -10,7 +10,6 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
   backgroundColor,
   textColor,
   maxVisibleBooks = 3,
-  height = 400,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -73,7 +72,6 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
     <Paper
       elevation={1}
       sx={{
-        height,
         p: 3,
         backgroundColor,
         borderRadius: 4,
