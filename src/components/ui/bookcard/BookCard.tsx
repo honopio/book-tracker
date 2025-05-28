@@ -76,7 +76,7 @@ const BookCard: React.FC<BookCardProps> = ({
   return (
     <Card
       sx={(theme) => ({
-        width: "clamp(120px, 22vw, 200px)", // min 120px, max 200px, fluid in between
+        width: "clamp(150px, 22vw, 200px)", // min 120px, max 200px, fluid in between
         height: 300,
         position: "relative",
         display: "flex",
@@ -157,7 +157,7 @@ const BookCard: React.FC<BookCardProps> = ({
         >
           <Chip
             label={status.replace(/-/g, " ")}
-            onClick={handleMenuOpen}
+            onClick={status === "finished" ? undefined : handleMenuOpen}
             variant="outlined"
           />
           {status !== "finished" && (
