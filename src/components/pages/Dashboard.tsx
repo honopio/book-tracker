@@ -1,87 +1,36 @@
 import React from "react";
-import { Box, Container, Typography, Grid, useMediaQuery } from "@mui/material";
+import { Box, Container, Typography, useMediaQuery } from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
 import type { Book } from "../../types";
+import { useEffect, useState } from "react";
+import { supabase } from "../../App";
 
-// Mock data - replace with your actual data source
-const mockBooks: Book[] = [
-  {
-    id: "1",
-    title: "Atomic Habits",
-    author: "James Clear",
-    status: "reading",
-    progress: 65,
-    currentPage: 180,
-    pageCount: 276,
-    rating: 0,
-  },
-  {
-    id: "2",
-    title: "The Psychology of Money",
-    author: "Morgan Housel",
-    status: "reading",
-    progress: 30,
-    currentPage: 85,
-    pageCount: 256,
-    rating: 0,
-  },
-  {
-    id: "3",
-    title: "Dune",
-    author: "Frank Herbert",
-    status: "finished",
-    progress: 100,
-    rating: 5,
-  },
-  {
-    id: "4",
-    title: "1984",
-    author: "George Orwell",
-    status: "finished",
-    progress: 100,
-    rating: 4.5,
-  },
-  {
-    id: "5",
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    status: "want-to-read",
-  },
-  {
-    id: "6",
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    status: "want-to-read",
-  },
-  {
-    id: "7",
-    title: "The Catcher in the Rye",
-    author: "J.D. Salinger",
-    status: "want-to-read",
-  },
-];
+// fetch books from db
+function useBooks() {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBooks() {
+      const { data, error } = await supabase.from("book_user").select("*");
+      console.log("Fetched books:", data, error);
+      if (!error && data) setBooks(data as Book[]);
+      setLoading(false);
+    }
+    fetchBooks();
+  }, []);
+
+  return { books, loading };
+}
 
 const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
+  const { books, loading } = useBooks();
 
   // Filter books by status
-  const currentlyReading = mockBooks.filter(
-    (book) => book.status === "reading"
-  );
-  const wantToRead = mockBooks.filter((book) => book.status === "want-to-read");
-  const finishedBooks = mockBooks.filter((book) => book.status === "finished");
-
-  const handleSeeAllCurrentlyReading = () => {
-    console.log("See all currently reading books");
-  };
-
-  const handleSeeAllWantToRead = () => {
-    console.log("See all want to read books");
-  };
-
-  const handleSeeAllFinished = () => {
-    console.log("See all finished books");
-  };
+  const currentlyReading = books.filter((book) => book.status === "reading");
+  const wantToRead = books.filter((book) => book.status === "want-to-read");
+  const finishedBooks = books.filter((book) => book.status === "finished");
 
   return (
     <Box
@@ -129,7 +78,6 @@ const Dashboard: React.FC = () => {
               title="Currently Reading"
               backgroundColor={(theme) => theme.palette.secondary.main}
               textColor={(theme) => theme.palette.secondary.contrastText}
-              onSeeAll={handleSeeAllCurrentlyReading}
               maxVisibleBooks={isSmall ? 1 : 2}
             />
 
@@ -138,7 +86,6 @@ const Dashboard: React.FC = () => {
               title="Want to Read"
               backgroundColor={(theme) => theme.palette.success.main}
               textColor={(theme) => theme.palette.success.contrastText}
-              onSeeAll={handleSeeAllWantToRead}
               maxVisibleBooks={isSmall ? 1 : 2}
             />
           </Box>
@@ -159,7 +106,6 @@ const Dashboard: React.FC = () => {
                 title="Finished Books"
                 backgroundColor={(theme) => theme.palette.primary.main}
                 textColor={(theme) => theme.palette.primary.contrastText}
-                onSeeAll={handleSeeAllFinished}
                 maxVisibleBooks={1}
               />
             </Box>
