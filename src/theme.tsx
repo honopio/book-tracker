@@ -10,6 +10,15 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: "'Inter', Arial, sans-serif",
+    // if h1, make it bold and bigger
+    h1: {
+      fontWeight: 700,
+      fontSize: "3.5rem",
+      letterSpacing: "-0.02em",
+    },
+    h5: {
+      fontSize: "1.5rem",
+    },
   },
 });
 
