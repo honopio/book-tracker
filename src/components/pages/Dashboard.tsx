@@ -7,6 +7,7 @@ import {
   Chip,
   useMediaQuery,
 } from "@mui/material";
+import BookCard from "../ui/bookcard/BookCard";
 
 const Dashboard = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
@@ -45,7 +46,7 @@ const Dashboard = () => {
             <Paper
               elevation={1}
               sx={{
-                height: 220,
+                height: 300,
                 p: 3,
                 backgroundColor: "#d8e5cd",
                 borderRadius: 4,
@@ -63,13 +64,7 @@ const Dashboard = () => {
                   mb: 2,
                 }}
               >
-                <Typography
-                  variant="h5"
-                  component="h3"
-                  sx={{
-                    color: "#110e03",
-                  }}
-                >
+                <Typography variant="h2" component="h2">
                   Currently Reading
                 </Typography>
                 <Chip
@@ -81,11 +76,20 @@ const Dashboard = () => {
                   }}
                 />
               </Box>
+              <BookCard
+                title="Atomic Habits"
+                author="James Clear"
+                status="finished"
+                progress={50}
+                currentPage={100}
+                pageCount={200}
+                rating={4.5}
+              />
             </Paper>
             <Paper
               elevation={1}
               sx={{
-                height: 220,
+                height: 300,
                 p: 3,
                 backgroundColor: "#aa84cc",
                 borderRadius: 4,
@@ -102,23 +106,10 @@ const Dashboard = () => {
                   mb: 2,
                 }}
               >
-                <Typography
-                  variant="h5"
-                  component="h3"
-                  sx={{
-                    color: "#fdf9f2",
-                  }}
-                >
+                <Typography variant="h2" component="h2">
                   Want to Read
                 </Typography>
-                <Chip
-                  label="see all"
-                  onClick={seeAll}
-                  sx={{
-                    color: "#fdf9f2",
-                    fontSize: "0.875rem",
-                  }}
-                />
+                <Chip label="see all" onClick={seeAll} />
               </Box>
             </Paper>
           </Grid>
@@ -153,23 +144,10 @@ const Dashboard = () => {
                   mb: 3,
                 }}
               >
-                <Typography
-                  variant="h5"
-                  component="h3"
-                  sx={{
-                    color: "#fdf9f2",
-                  }}
-                >
+                <Typography variant="h2" component="h2">
                   Finished Books
                 </Typography>
-                <Chip
-                  label="see all"
-                  onClick={seeAll}
-                  sx={{
-                    color: "#fdf9f2",
-                    fontSize: "0.875rem",
-                  }}
-                />
+                <Chip label="see all" onClick={seeAll} />
               </Box>
             </Paper>
           </Grid>
