@@ -10,8 +10,9 @@ import {
   Menu,
   MenuItem,
   Chip,
+  CardActions,
 } from "@mui/material";
-import { MenuBook } from "@mui/icons-material";
+import { MenuBook, Delete } from "@mui/icons-material";
 import { type BookCardProps } from "./BookCard.types";
 
 const BookCard: React.FC<BookCardProps> = ({
@@ -69,6 +70,11 @@ const BookCard: React.FC<BookCardProps> = ({
     console.log(`Status changed to: ${newStatus}`);
   };
 
+  const handleDelete = () => {
+    //HANDLE DELETE HERE
+    console.log(`Book with ID ${id} deleted`);
+  };
+
   return (
     <Card
       sx={(theme) => ({
@@ -81,7 +87,6 @@ const BookCard: React.FC<BookCardProps> = ({
         backgroundColor: "transparent",
         border: `1px solid ${theme.palette.background.default}`,
       })}
-      outlined="true"
     >
       {/* Book details */}
       <CardContent
@@ -139,29 +144,43 @@ const BookCard: React.FC<BookCardProps> = ({
           </Box>
         )}
 
-        <Chip
-          label={status.replace(/-/g, " ")}
-          onClick={handleMenuOpen}
-          variant="outlined"
-          sx={{ alignSelf: "flex-start" }}
-        />
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
         >
-          {getMenuItems().map((item, idx) => (
-            <MenuItem
-              key={item.label}
-              onClick={() => {
-                item.action();
-                handleMenuClose();
-              }}
-            >
-              {item.label}
-            </MenuItem>
-          ))}
-        </Menu>
+          <Chip
+            label={status.replace(/-/g, " ")}
+            onClick={handleMenuOpen}
+            variant="outlined"
+          />
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            {getMenuItems().map((item, idx) => (
+              <MenuItem
+                key={item.label}
+                onClick={() => {
+                  item.action();
+                  handleMenuClose();
+                }}
+              >
+                {item.label}
+              </MenuItem>
+            ))}
+          </Menu>
+          <IconButton
+            color="error"
+            onClick={handleDelete}
+            sx={{ ml: "auto" }}
+            aria-label="delete"
+          >
+            <Delete />
+          </IconButton>
+        </CardActions>
       </CardContent>
     </Card>
   );
