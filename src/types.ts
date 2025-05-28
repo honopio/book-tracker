@@ -29,4 +29,5 @@ export interface BookCarouselProps {
   textColor: string;
   maxVisibleBooks?: number;
   height?: number;
+  onSeeAll?: () => void;
 }

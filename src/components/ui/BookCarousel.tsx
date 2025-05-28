@@ -108,6 +108,9 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 size="small"
                 onClick={scrollLeft}
                 disabled={!canScrollLeft}
+                sx={{
+                  color: textColor,
+                }}
               >
                 <ChevronLeft />
               </IconButton>
@@ -115,6 +118,9 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 size="small"
                 onClick={scrollRight}
                 disabled={!canScrollRight}
+                sx={{
+                  color: textColor,
+                }}
               >
                 <ChevronRight />
               </IconButton>

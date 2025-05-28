@@ -172,7 +172,6 @@ const BookCard: React.FC<BookCardProps> = ({
             </Menu>
           )}
           <IconButton
-            color="error"
             onClick={handleDelete}
             sx={{ ml: "auto" }}
             aria-label="delete"

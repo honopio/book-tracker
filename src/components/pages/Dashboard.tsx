@@ -118,8 +118,8 @@ const Dashboard: React.FC = () => {
             <BookCarousel
               books={currentlyReading}
               title="Currently Reading"
-              backgroundColor="#d8e5cd"
-              textColor="#110e03"
+              backgroundColor={(theme) => theme.palette.secondary.main}
+              textColor={(theme) => theme.palette.secondary.contrastText}
               onSeeAll={handleSeeAllCurrentlyReading}
               maxVisibleBooks={isSmall ? 1 : 2}
             />
@@ -127,8 +127,8 @@ const Dashboard: React.FC = () => {
             <BookCarousel
               books={wantToRead}
               title="Want to Read"
-              backgroundColor="#aa84cc"
-              textColor="#fdf9f2"
+              backgroundColor={(theme) => theme.palette.success.main}
+              textColor={(theme) => theme.palette.success.contrastText}
               onSeeAll={handleSeeAllWantToRead}
               maxVisibleBooks={isSmall ? 1 : 2}
             />
@@ -147,8 +147,8 @@ const Dashboard: React.FC = () => {
               <BookCarousel
                 books={finishedBooks}
                 title="Finished Books"
-                backgroundColor="#6f9c68"
-                textColor="#fdf9f2"
+                backgroundColor={(theme) => theme.palette.primary.main}
+                textColor={(theme) => theme.palette.primary.contrastText}
                 onSeeAll={handleSeeAllFinished}
                 maxVisibleBooks={1}
                 height={isSmall ? 580 : 1180} // Taller for the right column
