@@ -73,7 +73,6 @@ const Dashboard: React.FC = () => {
 
   const handleSeeAllCurrentlyReading = () => {
     console.log("See all currently reading books");
-    // Navigate to detailed view or open modal
   };
 
   const handleSeeAllWantToRead = () => {
@@ -88,31 +87,41 @@ const Dashboard: React.FC = () => {
     <Box
       sx={{
         minHeight: "100vh",
+        width: "100vw",
+        overflow: "hidden",
         px: "5%",
         py: 4,
       }}
     >
-      <Container maxWidth="xl">
+      <Container
+        maxWidth="xl"
+        sx={{
+          width: "100%",
+          maxWidth: "none",
+        }}
+      >
         <Typography variant="h1" component="h1" m={8} align="center">
           My Reading Dashboard
         </Typography>
 
-        <Grid
-          container
-          spacing={3}
+        <Box
           sx={{
             display: "flex",
             flexDirection: isSmall ? "column" : "row",
+            gap: 3,
+            width: "100%",
+            minWidth: 0,
           }}
         >
           {/* Left column: Currently Reading + Want to Read */}
-          <Grid
+          <Box
             sx={{
-              flex: isSmall ? "unset" : 2,
+              flex: isSmall ? "none" : "2",
               minWidth: 0,
               display: "flex",
               flexDirection: "column",
               gap: 2,
+              width: isSmall ? "100%" : "auto",
             }}
           >
             <BookCarousel
@@ -132,14 +141,15 @@ const Dashboard: React.FC = () => {
               onSeeAll={handleSeeAllWantToRead}
               maxVisibleBooks={isSmall ? 1 : 2}
             />
-          </Grid>
+          </Box>
 
           {/* Right column: Finished Books */}
-          <Grid
+          <Box
             sx={{
-              flex: isSmall ? "unset" : 1,
+              flex: isSmall ? "none" : "1",
               minWidth: 0,
               display: "flex",
+              width: isSmall ? "100%" : "auto",
               mt: isSmall ? 2 : 0,
             }}
           >
@@ -151,11 +161,10 @@ const Dashboard: React.FC = () => {
                 textColor={(theme) => theme.palette.primary.contrastText}
                 onSeeAll={handleSeeAllFinished}
                 maxVisibleBooks={1}
-                height={isSmall ? 580 : 1180} // Taller for the right column
               />
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Container>
     </Box>
   );
