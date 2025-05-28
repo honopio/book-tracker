@@ -7,6 +7,7 @@ import {
   Chip,
   useMediaQuery,
 } from "@mui/material";
+import BookCard from "../ui/bookcard/BookCard";
 
 const Dashboard = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
@@ -81,6 +82,12 @@ const Dashboard = () => {
                   }}
                 />
               </Box>
+              <BookCard
+                title="Atomic Habits"
+                author="James Clear"
+                cover="https://covers.openlibrary.org/b/id/9876543-L.jpg"
+                status="want-to-read"
+              />
             </Paper>
             <Paper
               elevation={1}
