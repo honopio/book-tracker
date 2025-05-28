@@ -218,13 +218,11 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 height: 8,
                 borderRadius: "50%",
                 backgroundColor:
-                  index === currentIndex ? textColor : `${textColor}40`, // 25% opacity
+                  index === currentIndex
+                    ? textColor
+                    : "rgba(255, 255, 255, 0.3)",
                 cursor: "pointer",
                 transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  backgroundColor:
-                    index === currentIndex ? textColor : `${textColor}60`, // 37% opacity on hover
-                },
               }}
             />
           ))}
