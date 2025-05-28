@@ -18,7 +18,7 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
   backgroundColor,
   textColor,
   maxVisibleBooks = 3,
-  height = 580,
+  height = 400,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -101,25 +101,13 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          {/* Navigation arrows - only show if there are more books than visible */}
+          {/* Navigation arrows only show up if there are more books than visible */}
           {books.length > visibleBooksCount && (
             <>
               <IconButton
                 size="small"
                 onClick={scrollLeft}
                 disabled={!canScrollLeft}
-                sx={{
-                  color: textColor,
-                  backgroundColor: canScrollLeft
-                    ? "rgba(255, 255, 255, 0.1)"
-                    : "rgba(255, 255, 255, 0.05)",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.2)",
-                  },
-                  "&:disabled": {
-                    color: `${textColor}80`, // 50% opacity
-                  },
-                }}
               >
                 <ChevronLeft />
               </IconButton>
@@ -127,37 +115,13 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 size="small"
                 onClick={scrollRight}
                 disabled={!canScrollRight}
-                sx={{
-                  color: textColor,
-                  backgroundColor: canScrollRight
-                    ? "rgba(255, 255, 255, 0.1)"
-                    : "rgba(255, 255, 255, 0.05)",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.2)",
-                  },
-                  "&:disabled": {
-                    color: `${textColor}80`, // 50% opacity
-                  },
-                }}
               >
                 <ChevronRight />
               </IconButton>
             </>
           )}
 
-          {/* See All button */}
-          <Chip
-            label="see all"
-            variant="outlined"
-            sx={{
-              color: textColor,
-              borderColor: textColor,
-              fontSize: "0.875rem",
-              "&:hover": {
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-              },
-            }}
-          />
+          <Chip label="see all" variant="outlined" />
         </Box>
       </Box>
 
@@ -170,11 +134,6 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
           overflow: "hidden",
           flex: 1,
           scrollBehavior: "smooth",
-          // Hide scrollbar
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
-          scrollbarWidth: "none", // Firefox
         }}
       >
         {books.length > 0 ? (

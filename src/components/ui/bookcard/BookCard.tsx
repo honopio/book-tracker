@@ -76,7 +76,7 @@ const BookCard: React.FC<BookCardProps> = ({
     <Card
       sx={(theme) => ({
         width: 200,
-        height: 480,
+        height: 300,
         position: "relative",
         display: "flex",
         flexDirection: "column",
