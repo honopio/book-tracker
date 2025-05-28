@@ -11,7 +11,7 @@ import {
   MenuItem,
   Chip,
 } from "@mui/material";
-import { PlayArrow, Check, BookmarkBorder } from "@mui/icons-material";
+import { MenuBook } from "@mui/icons-material";
 import { type BookCardProps } from "./BookCard.types";
 
 const BookCard: React.FC<BookCardProps> = ({
@@ -25,7 +25,6 @@ const BookCard: React.FC<BookCardProps> = ({
   pageCount,
   currentPage,
   onStatusChange,
-  showControls = true,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -62,50 +61,9 @@ const BookCard: React.FC<BookCardProps> = ({
         position: "relative",
         display: "flex",
         flexDirection: "column",
+        boxShadow: "none",
       }}
     >
-      {/* Status indicator */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 8,
-          left: 8,
-          zIndex: 1,
-        }}
-      ></Box>
-
-      {/* Controls menu */}
-      {showControls && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            zIndex: 1,
-          }}
-        >
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <MenuItem onClick={() => handleStatusChange("reading")}>
-              <PlayArrow fontSize="small" sx={{ mr: 1 }} />
-              Currently Reading
-            </MenuItem>
-            <MenuItem onClick={() => handleStatusChange("want-to-read")}>
-              <BookmarkBorder fontSize="small" sx={{ mr: 1 }} />
-              Want to Read
-            </MenuItem>
-            <MenuItem onClick={() => handleStatusChange("finished")}>
-              <Check fontSize="small" sx={{ mr: 1 }} />
-              Finished
-            </MenuItem>
-          </Menu>
-        </Box>
-      )}
-
       {/* Book details */}
       <CardContent
         sx={{
@@ -118,73 +76,35 @@ const BookCard: React.FC<BookCardProps> = ({
           },
         }}
       >
-        <Typography
-          variant="subtitle2"
-          component="h3"
-          sx={{
-            fontWeight: 600,
-            lineHeight: 1.2,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            mb: 0.5,
-          }}
-        >
+        <Typography variant="h4" noWrap>
           {title}
         </Typography>
 
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            mb: 1,
-          }}
-        >
+        <Typography variant="caption" color="text.secondary" sx={{ mb: 3 }}>
           {author}
         </Typography>
 
         {/* Progress bar for currently reading */}
-        {status === "reading" && progress > 0 && (
-          <Box sx={{ mb: 1 }}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 0.5,
-              }}
-            >
-              <Typography variant="caption" color="text.secondary">
-                Progress
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {progress}%
-              </Typography>
+        {progress > 0 && (
+          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+            {/* Book icon on the left */}
+            <MenuBook sx={{ mr: 1, color: "info.main" }} />
+            <Box sx={{ flex: 1 }}>
+              <LinearProgress
+                variant="determinate"
+                value={progress}
+                color="info"
+              />
+              {currentPage && pageCount && (
+                <Typography
+                  variant="caption"
+                  color="info.main"
+                  sx={{ mt: 0.5 }}
+                >
+                  Page {currentPage} of {pageCount}
+                </Typography>
+              )}
             </Box>
-            <LinearProgress
-              variant="determinate"
-              value={progress}
-              sx={{
-                height: 4,
-                borderRadius: 2,
-                backgroundColor: "rgba(0,0,0,0.1)",
-                "& .MuiLinearProgress-bar": {},
-              }}
-            />
-            {currentPage && pageCount && (
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={{ mt: 0.5 }}
-              >
-                Page {currentPage} of {pageCount}
-              </Typography>
-            )}
           </Box>
         )}
 
