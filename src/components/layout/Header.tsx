@@ -10,7 +10,6 @@ function Header() {
     <>
       <AppBar
         position="static"
-        color="default"
         component="header"
         sx={{
           boxShadow: "none",

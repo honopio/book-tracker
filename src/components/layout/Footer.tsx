@@ -7,7 +7,6 @@ import Box from "@mui/material/Box";
 const Footer: React.FC = () => (
   <AppBar
     position="static"
-    color="default"
     component="footer"
     sx={{
       boxShadow: "none",

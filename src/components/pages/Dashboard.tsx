@@ -39,7 +39,7 @@ const Dashboard = () => {
               minWidth: 0,
               display: "flex",
               flexDirection: "column",
-              gap: 2,
+              gap: 1,
             }}
           >
             <Paper
