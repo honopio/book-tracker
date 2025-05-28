@@ -22,8 +22,12 @@ function Header() {
           <IconButton
             size="large"
             edge="start"
-            sx={{ mr: 2, display: "flex", alignItems: "center" }}
-            color="text.primary"
+            sx={{
+              mr: 2,
+              display: "flex",
+              alignItems: "center",
+              color: "text.primary",
+            }}
           >
             <LocalLibraryIcon />
             <Typography
