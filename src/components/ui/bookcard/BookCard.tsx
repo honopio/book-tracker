@@ -41,26 +41,23 @@ const BookCard: React.FC<BookCardProps> = ({
   };
 
   const getMenuItems = () => {
-    const items = [];
     if (status === "reading") {
-      items.push({
-        label: "finished",
-        action: () => handleStatusChange("finished"),
-      });
+      return [
+        {
+          label: "finished",
+          action: () => handleStatusChange("finished"),
+        },
+      ];
     }
     if (status === "want-to-read") {
-      items.push({
-        label: "now reading",
-        action: () => handleStatusChange("reading"),
-      });
+      return [
+        {
+          label: "start reading",
+          action: () => handleStatusChange("reading"),
+        },
+      ];
     }
-    if (status !== undefined) {
-      items.push({
-        label: "delete",
-        action: () => handleStatusChange("delete" as any),
-      });
-    }
-    return items;
+    return [];
   };
 
   const handleStatusChange = (
@@ -155,23 +152,25 @@ const BookCard: React.FC<BookCardProps> = ({
             onClick={handleMenuOpen}
             variant="outlined"
           />
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            {getMenuItems().map((item, idx) => (
-              <MenuItem
-                key={item.label}
-                onClick={() => {
-                  item.action();
-                  handleMenuClose();
-                }}
-              >
-                {item.label}
-              </MenuItem>
-            ))}
-          </Menu>
+          {status !== "finished" && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              {getMenuItems().map((item, idx) => (
+                <MenuItem
+                  key={item.label}
+                  onClick={() => {
+                    item.action();
+                    handleMenuClose();
+                  }}
+                >
+                  {item.label}
+                </MenuItem>
+              ))}
+            </Menu>
+          )}
           <IconButton
             color="error"
             onClick={handleDelete}
