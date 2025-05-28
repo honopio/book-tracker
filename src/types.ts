@@ -1,26 +1,18 @@
-export interface BookCardProps {
-  id?: string;
+export interface Book {
+  id: string;
   title: string;
   author: string;
   status: 'reading' | 'want-to-read' | 'finished';
   progress?: number; // 0-100 for currently reading books
   rating?: number; // 1-5 stars for finished books
-  dateFinished?: string;
   pageCount?: number;
   currentPage?: number;
-  onStatusChange?: (newStatus: 'reading' | 'want-to-read' | 'finished') => void;
-  textColor?: string; // Optional color for the card text
 }
 
-export interface Book extends Omit<BookCardProps, 'children'> {
-  id: string;
-  title: string;
-  author: string;
-  status: 'reading' | 'want-to-read' | 'finished';
-  progress?: number;
-  rating?: number;
-  pageCount?: number;
-  currentPage?: number;
+export interface BookCardProps extends Book {
+  // UI-specific props
+  textColor?: string;
+  onClick?: () => void;
 }
 
 export interface BookCarouselProps {
