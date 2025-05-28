@@ -37,6 +37,10 @@ const BookCard: React.FC<BookCardProps> = ({
     setAnchorEl(null);
   };
 
+  const setRating = (newValue: number) => {
+    console.log(`Rating set to: ${newValue}`);
+  };
+
   const handleStatusChange = (
     newStatus: "reading" | "want-to-read" | "finished"
   ) => {
@@ -109,10 +113,12 @@ const BookCard: React.FC<BookCardProps> = ({
           <Box sx={{ mb: 1 }}>
             <Rating
               value={rating ? rating : 0}
-              readOnly
               size="medium"
               precision={0.5}
               sx={{ mb: 0.5, color: "info.main" }}
+              onChange={(event, newValue) => {
+                setRating(newValue);
+              }}
             />
           </Box>
         )}
