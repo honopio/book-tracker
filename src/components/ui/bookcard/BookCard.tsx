@@ -56,7 +56,7 @@ const BookCard: React.FC<BookCardProps> = ({
     <Card
       sx={{
         width: 200,
-        height: 280,
+        height: 480,
         transition: "all 0.2s ease-in-out",
         position: "relative",
         display: "flex",
@@ -86,7 +86,7 @@ const BookCard: React.FC<BookCardProps> = ({
 
         {/* Progress bar for currently reading */}
         {progress > 0 && (
-          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
             {/* Book icon on the left */}
             <MenuBook sx={{ mr: 1, color: "info.main" }} />
             <Box sx={{ flex: 1 }}>
@@ -96,11 +96,7 @@ const BookCard: React.FC<BookCardProps> = ({
                 color="info"
               />
               {currentPage && pageCount && (
-                <Typography
-                  variant="caption"
-                  color="info.main"
-                  sx={{ mt: 0.5 }}
-                >
+                <Typography variant="caption" color="info.main">
                   Page {currentPage} of {pageCount}
                 </Typography>
               )}
@@ -109,14 +105,15 @@ const BookCard: React.FC<BookCardProps> = ({
         )}
 
         {/* Rating for finished books */}
-        {status === "finished" && rating && (
+        {status !== "want-to-read" && (
           <Box sx={{ mb: 1 }}>
-            <Rating value={rating} readOnly size="medium" sx={{ mb: 0.5 }} />
-            {dateFinished && (
-              <Typography variant="caption" color="text.secondary">
-                Finished {formatDate(dateFinished)}
-              </Typography>
-            )}
+            <Rating
+              value={rating ? rating : 0}
+              readOnly
+              size="medium"
+              precision={0.5}
+              sx={{ mb: 0.5, color: "info.main" }}
+            />
           </Box>
         )}
 

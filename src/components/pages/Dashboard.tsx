@@ -46,7 +46,7 @@ const Dashboard = () => {
             <Paper
               elevation={1}
               sx={{
-                height: 220,
+                height: 300,
                 p: 3,
                 backgroundColor: "#d8e5cd",
                 borderRadius: 4,
@@ -79,14 +79,18 @@ const Dashboard = () => {
               <BookCard
                 title="Atomic Habits"
                 author="James Clear"
-                status="want-to-read"
+                status="finished"
                 progress={50}
+                currentPage={100}
+                pageCount={200}
+                dateFinished="2023-10-01"
+                rating={4.5}
               />
             </Paper>
             <Paper
               elevation={1}
               sx={{
-                height: 220,
+                height: 300,
                 p: 3,
                 backgroundColor: "#aa84cc",
                 borderRadius: 4,
