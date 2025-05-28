@@ -13,7 +13,7 @@ import {
   CardActions,
 } from "@mui/material";
 import { MenuBook, Delete } from "@mui/icons-material";
-import { type BookCardProps } from "./BookCard.types";
+import { type BookCardProps } from "../../../types";
 
 const BookCard: React.FC<BookCardProps> = ({
   id,
