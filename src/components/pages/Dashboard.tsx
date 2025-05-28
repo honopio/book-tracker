@@ -20,7 +20,7 @@ const Dashboard = () => {
       }}
     >
       <Container maxWidth="xl">
-        <Typography variant="h3" mb={4} fontFamily="'Inter', sans-serif">
+        <Typography variant="h3" mb={4}>
           My Reading Dashboard
         </Typography>
 
@@ -68,7 +68,6 @@ const Dashboard = () => {
                   component="h3"
                   sx={{
                     color: "#110e03",
-                    fontWeight: 600,
                   }}
                 >
                   Currently Reading
@@ -108,7 +107,6 @@ const Dashboard = () => {
                   component="h3"
                   sx={{
                     color: "#fdf9f2",
-                    fontWeight: 600,
                   }}
                 >
                   Want to Read
@@ -160,7 +158,6 @@ const Dashboard = () => {
                   component="h3"
                   sx={{
                     color: "#fdf9f2",
-                    fontWeight: 600,
                   }}
                 >
                   Finished Books
