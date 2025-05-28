@@ -10,33 +10,38 @@ function Header() {
     <>
       <AppBar
         position="static"
-        color="default"
         component="header"
         sx={{
           boxShadow: "none",
           borderBottom: "1px solid",
           borderColor: "divider",
+          backgroundColor: "background.default",
         }}
       >
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
-            sx={{ mr: 2, display: "flex", alignItems: "center" }}
+            sx={{
+              mr: 2,
+              display: "flex",
+              alignItems: "center",
+              color: "text.primary",
+            }}
           >
             <LocalLibraryIcon />
             <Typography
               variant="h6"
               component="div"
               sx={{ ml: 1.5, flexGrow: 1 }}
+              color="text.primary"
             >
               BookTracker
             </Typography>
           </IconButton>
 
           <div style={{ flexGrow: 1 }} />
-          <Button color="inherit">Login</Button>
+          <Button>Login</Button>
         </Toolbar>
       </AppBar>
     </>

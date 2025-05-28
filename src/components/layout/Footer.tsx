@@ -7,17 +7,17 @@ import Box from "@mui/material/Box";
 const Footer: React.FC = () => (
   <AppBar
     position="static"
-    color="default"
     component="footer"
     sx={{
       boxShadow: "none",
       borderTop: "1px solid",
       borderColor: "divider",
+      backgroundColor: "background.default",
     }}
   >
     <Toolbar>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="body2" color="inherit" align="center">
+        <Typography variant="body2" align="center" color="text.primary">
           BookTracker &copy; {new Date().getFullYear()} &mdash; Track your
           reading journey!
         </Typography>
