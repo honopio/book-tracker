@@ -37,8 +37,31 @@ const BookCard: React.FC<BookCardProps> = ({
     setAnchorEl(null);
   };
 
-  const setRating = (newValue: number) => {
+  const setRating = (newValue: number | null) => {
     console.log(`Rating set to: ${newValue}`);
+  };
+
+  const getMenuItems = () => {
+    const items = [];
+    if (status === "reading") {
+      items.push({
+        label: "finished",
+        action: () => handleStatusChange("finished"),
+      });
+    }
+    if (status === "want-to-read") {
+      items.push({
+        label: "now reading",
+        action: () => handleStatusChange("reading"),
+      });
+    }
+    if (status !== undefined) {
+      items.push({
+        label: "delete",
+        action: () => handleStatusChange("delete" as any),
+      });
+    }
+    return items;
   };
 
   const handleStatusChange = (
@@ -129,6 +152,23 @@ const BookCard: React.FC<BookCardProps> = ({
           onClick={handleMenuOpen}
           variant="outlined"
         />
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          {getMenuItems().map((item, idx) => (
+            <MenuItem
+              key={item.label}
+              onClick={() => {
+                item.action();
+                handleMenuClose();
+              }}
+            >
+              {item.label}
+            </MenuItem>
+          ))}
+        </Menu>
       </CardContent>
     </Card>
   );
