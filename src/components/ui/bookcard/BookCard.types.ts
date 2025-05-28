@@ -3,7 +3,6 @@ interface BookCardProps {
   id?: string;
   title: string;
   author: string;
-  cover: string;
   status: 'reading' | 'want-to-read' | 'finished';
   progress?: number; // 0-100 for currently reading books
   rating?: number; // 1-5 stars for finished books

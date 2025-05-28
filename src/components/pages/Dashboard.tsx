@@ -85,7 +85,6 @@ const Dashboard = () => {
               <BookCard
                 title="Atomic Habits"
                 author="James Clear"
-                cover="https://covers.openlibrary.org/b/id/9876543-L.jpg"
                 status="want-to-read"
               />
             </Paper>

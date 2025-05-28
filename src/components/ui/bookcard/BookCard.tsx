@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Card,
-  CardMedia,
   CardContent,
   Typography,
   Box,
@@ -11,7 +10,6 @@ import {
   Menu,
   MenuItem,
   Chip,
-  Avatar,
 } from "@mui/material";
 import { PlayArrow, Check, BookmarkBorder } from "@mui/icons-material";
 import { type BookCardProps } from "./BookCard.types";
@@ -20,7 +18,6 @@ const BookCard: React.FC<BookCardProps> = ({
   id,
   title,
   author,
-  cover,
   status,
   progress = 0,
   rating,
@@ -33,7 +30,6 @@ const BookCard: React.FC<BookCardProps> = ({
   compact = false,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [imageError, setImageError] = useState(false);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -50,10 +46,6 @@ const BookCard: React.FC<BookCardProps> = ({
     handleMenuClose();
     onStatusChange?.(newStatus);
     console.log(`Status changed to: ${newStatus}`);
-  };
-
-  const handleImageError = () => {
-    setImageError(true);
   };
 
   const formatDate = (dateString: string) => {
@@ -120,59 +112,6 @@ const BookCard: React.FC<BookCardProps> = ({
           </Menu>
         </Box>
       )}
-
-      {/* Book cover */}
-      <Box
-        sx={{
-          position: "relative",
-          height: compact ? 100 : 160,
-          overflow: "hidden",
-        }}
-      >
-        {!imageError ? (
-          <CardMedia
-            component="img"
-            image={cover}
-            alt={`${title} cover`}
-            onError={handleImageError}
-            sx={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
-          />
-        ) : (
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#f5f5f5",
-              flexDirection: "column",
-              gap: 1,
-            }}
-          >
-            <Avatar
-              sx={{
-                width: compact ? 32 : 48,
-                height: compact ? 32 : 48,
-              }}
-            >
-              📚
-            </Avatar>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              textAlign="center"
-              sx={{ px: 1 }}
-            >
-              No Cover
-            </Typography>
-          </Box>
-        )}
-      </Box>
 
       {/* Book details */}
       <CardContent
