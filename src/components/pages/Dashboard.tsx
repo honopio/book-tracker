@@ -64,13 +64,7 @@ const Dashboard = () => {
                   mb: 2,
                 }}
               >
-                <Typography
-                  variant="h2"
-                  component="h3"
-                  sx={{
-                    color: "#110e03",
-                  }}
-                >
+                <Typography variant="h2" component="h2">
                   Currently Reading
                 </Typography>
                 <Chip
@@ -111,7 +105,7 @@ const Dashboard = () => {
               >
                 <Typography
                   variant="h2"
-                  component="h3"
+                  component="h2"
                   sx={{
                     color: "#fdf9f2",
                   }}
@@ -162,7 +156,7 @@ const Dashboard = () => {
               >
                 <Typography
                   variant="h2"
-                  component="h3"
+                  component="h2"
                   sx={{
                     color: "#fdf9f2",
                   }}

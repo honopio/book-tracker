@@ -2,12 +2,12 @@ import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
-    primary: { main: "#fdf9f2" },
-    success: { main: "#7d70a5" },
-    secondary: { main: "#d8e5cd" },
-    info: { main: "#6f9c68" },
-    background: { default: "#fdf9f2", paper: "#fdf9f2" },
-    text: { primary: "#110e03" },
+    primary: { main: "#fdf9f2" }, // light beige
+    success: { main: "#7d70a5" }, // purple
+    secondary: { main: "#d8e5cd" }, // light green
+    info: { main: "#6f9c68" }, // dark green
+    background: { default: "#fdf9f2", paper: "#fdf9f2" }, // light beige
+    text: { primary: "#2d260c", secondary: "#83897e" }, // black, gray
   },
   typography: {
     fontFamily: "'Inter', Arial, sans-serif",
