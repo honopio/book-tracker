@@ -9,7 +9,6 @@ interface BookCardProps {
   dateFinished?: string;
   pageCount?: number;
   currentPage?: number;
-  onClick?: () => void;
   onStatusChange?: (newStatus: 'reading' | 'want-to-read' | 'finished') => void;
   showControls?: boolean; // Show quick action buttons
   compact?: boolean; // Compact view for carousels

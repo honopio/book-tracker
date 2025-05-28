@@ -24,10 +24,8 @@ const BookCard: React.FC<BookCardProps> = ({
   dateFinished,
   pageCount,
   currentPage,
-  onClick,
   onStatusChange,
   showControls = true,
-  compact = false,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -58,17 +56,12 @@ const BookCard: React.FC<BookCardProps> = ({
   return (
     <Card
       sx={{
-        width: compact ? 140 : 200,
-        height: compact ? 180 : 280,
-        cursor: onClick ? "pointer" : "default",
+        width: 200,
+        height: 280,
         transition: "all 0.2s ease-in-out",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        "&:hover": {
-          transform: onClick ? "translateY(-4px)" : "none",
-          boxShadow: onClick ? "0 8px 25px rgba(0,0,0,0.15)" : "none",
-        },
       }}
     >
       {/* Status indicator */}
@@ -119,14 +112,14 @@ const BookCard: React.FC<BookCardProps> = ({
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          p: compact ? 1 : 2,
+          p: 2,
           "&:last-child": {
-            pb: compact ? 1 : 2,
+            pb: 2,
           },
         }}
       >
         <Typography
-          variant={compact ? "caption" : "subtitle2"}
+          variant="subtitle2"
           component="h3"
           sx={{
             fontWeight: 600,
@@ -134,7 +127,7 @@ const BookCard: React.FC<BookCardProps> = ({
             overflow: "hidden",
             textOverflow: "ellipsis",
             display: "-webkit-box",
-            WebkitLineClamp: compact ? 2 : 2,
+            WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
             mb: 0.5,
           }}
@@ -198,12 +191,7 @@ const BookCard: React.FC<BookCardProps> = ({
         {/* Rating for finished books */}
         {status === "finished" && rating && (
           <Box sx={{ mb: 1 }}>
-            <Rating
-              value={rating}
-              readOnly
-              size={compact ? "small" : "medium"}
-              sx={{ mb: 0.5 }}
-            />
+            <Rating value={rating} readOnly size="medium" sx={{ mb: 0.5 }} />
             {dateFinished && (
               <Typography variant="caption" color="text.secondary">
                 Finished {formatDate(dateFinished)}
