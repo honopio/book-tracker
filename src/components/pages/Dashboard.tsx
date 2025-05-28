@@ -65,7 +65,7 @@ const Dashboard = () => {
                 }}
               >
                 <Typography
-                  variant="h5"
+                  variant="h2"
                   component="h3"
                   sx={{
                     color: "#110e03",
@@ -86,6 +86,7 @@ const Dashboard = () => {
                 title="Atomic Habits"
                 author="James Clear"
                 status="want-to-read"
+                progress={50}
               />
             </Paper>
             <Paper
@@ -109,7 +110,7 @@ const Dashboard = () => {
                 }}
               >
                 <Typography
-                  variant="h5"
+                  variant="h2"
                   component="h3"
                   sx={{
                     color: "#fdf9f2",
@@ -160,7 +161,7 @@ const Dashboard = () => {
                 }}
               >
                 <Typography
-                  variant="h5"
+                  variant="h2"
                   component="h3"
                   sx={{
                     color: "#fdf9f2",

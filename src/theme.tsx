@@ -17,6 +17,13 @@ const theme = createTheme({
       fontSize: "3.5rem",
       letterSpacing: "-0.02em",
     },
+    h2: {
+      fontSize: "1.5rem",
+    },
+    h4: {
+      fontSize: "1rem",
+      fontWeight: 600,
+    },
     h5: {
       fontSize: "1.5rem",
     },
