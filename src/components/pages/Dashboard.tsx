@@ -20,7 +20,7 @@ const Dashboard = () => {
       }}
     >
       <Container maxWidth="xl">
-        <Typography variant="h3" mb={4}>
+        <Typography variant="h1" component="h1" m={8} align="center">
           My Reading Dashboard
         </Typography>
 
