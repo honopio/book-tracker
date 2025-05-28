@@ -1,31 +1,42 @@
-import { Box, Container, Typography, Grid, Paper, Chip } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Paper,
+  Chip,
+  useMediaQuery,
+} from "@mui/material";
 
 const Dashboard = () => {
+  const isSmall = useMediaQuery("(max-width:900px)");
+
   return (
     <Box
       sx={{
         minHeight: "100vh",
         backgroundColor: "#fdf9f2",
-        py: 3,
+        px: "5%",
+        py: 4,
       }}
     >
       <Container maxWidth="xl">
-        <Typography variant="h3" mb={4}>
+        <Typography variant="h3" mb={4} fontFamily="'Inter', sans-serif">
           My Reading Dashboard
         </Typography>
 
         <Grid
           container
-          spacing={2}
+          spacing={3}
           sx={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: isSmall ? "column" : "row",
           }}
         >
           {/* Left column: two stacked areas */}
           <Grid
             sx={{
-              flex: 2,
+              flex: isSmall ? "unset" : 2,
               minWidth: 0,
               display: "flex",
               flexDirection: "column",
@@ -38,7 +49,6 @@ const Dashboard = () => {
                 height: 220,
                 p: 3,
                 backgroundColor: "#d8e5cd",
-                border: "1px solid var(--accent)",
                 borderRadius: 4,
                 display: "flex",
                 flexDirection: "column",
@@ -65,10 +75,10 @@ const Dashboard = () => {
                   Currently Reading
                 </Typography>
                 <Chip
-                  label="nb of books"
+                  label="see all"
+                  onClick={seeAll}
+                  variant="outlined"
                   sx={{
-                    backgroundColor: "#6f9c68",
-                    color: "#fdf9f2",
                     fontSize: "0.875rem",
                   }}
                 />
@@ -105,9 +115,9 @@ const Dashboard = () => {
                   Want to Read
                 </Typography>
                 <Chip
-                  label="nb of books"
+                  label="see all"
+                  onClick={seeAll}
                   sx={{
-                    backgroundColor: "#6f4c93",
                     color: "#fdf9f2",
                     fontSize: "0.875rem",
                   }}
@@ -119,16 +129,17 @@ const Dashboard = () => {
           {/* Right column: finished books */}
           <Grid
             sx={{
-              flex: 1,
+              flex: isSmall ? "unset" : 1,
               minWidth: 0,
               display: "flex",
+              mt: isSmall ? 2 : 0,
             }}
           >
             <Paper
               elevation={1}
               sx={{
                 width: "100%",
-                height: 463, // match the combined height of left column
+                height: isSmall ? 220 : 463,
                 p: 3,
                 backgroundColor: "#6f9c68",
                 borderRadius: 4,
@@ -156,9 +167,9 @@ const Dashboard = () => {
                   Finished Books
                 </Typography>
                 <Chip
-                  label="nb of books"
+                  label="see all"
+                  onClick={seeAll}
                   sx={{
-                    backgroundColor: "#5a7d54",
                     color: "#fdf9f2",
                     fontSize: "0.875rem",
                   }}
@@ -170,6 +181,10 @@ const Dashboard = () => {
       </Container>
     </Box>
   );
+};
+
+const seeAll = () => {
+  console.log("See all books clicked");
 };
 
 export default Dashboard;
