@@ -103,24 +103,31 @@ const BookCard: React.FC<BookCardProps> = ({
           {title}
         </Typography>
 
-        <Typography variant="caption" color="text.secondary" sx={{ mb: 3 }}>
+        <Typography variant="caption" sx={{ mb: 3 }}>
           {author}
         </Typography>
 
-        {/* Progress bar for currently reading */}
-        {progress > 0 && (
+        {/* Progress bar for currently reading and finished */}
+        {(progress > 0 || status === "finished") && (
           <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
             {/* Book icon on the left */}
-            <MenuBook sx={{ mr: 1, color: "info.main" }} />
+            <MenuBook sx={{ mr: 1, color: textColor }} />
+
+            {/* Progress bar */}
             <Box sx={{ flex: 1 }}>
               <LinearProgress
                 variant="determinate"
-                value={progress}
-                color="info"
+                value={status === "finished" ? 100 : progress}
+                sx={{
+                  backgroundColor: "#eee",
+                  "& .MuiLinearProgress-bar": { backgroundColor: textColor },
+                }}
               />
               {currentPage && pageCount && (
-                <Typography variant="caption" color="info.main">
-                  Page {currentPage} of {pageCount}
+                <Typography variant="caption">
+                  {status === "finished"
+                    ? "Finished!"
+                    : `Page ${currentPage} of ${pageCount}`}
                 </Typography>
               )}
             </Box>
