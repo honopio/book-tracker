@@ -76,9 +76,8 @@ const BookCard: React.FC<BookCardProps> = ({
   return (
     <Card
       sx={(theme) => ({
-        width: "clamp(150px, 22vw, 200px)", // min 120px, max 200px, fluid in between
-        height: 300,
-        position: "relative",
+        width: 200,
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         boxShadow: "none",
