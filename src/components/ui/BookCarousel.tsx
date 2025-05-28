@@ -1,13 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  Box,
-  Paper,
-  Typography,
-  Chip,
-  IconButton,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Paper, Typography, Chip, IconButton } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import BookCard from "./bookcard/BookCard";
 import type { BookCarouselProps } from "../../types";
@@ -20,24 +12,20 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
   maxVisibleBooks = 3,
   height = 400,
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
-
-  // Responsive visible books count
-  const getVisibleBooksCount = () => {
-    if (isMobile) return 1;
-    if (isTablet) return Math.min(2, maxVisibleBooks);
-    return maxVisibleBooks;
-  };
-
-  const visibleBooksCount = getVisibleBooksCount();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Calculate how many books can actually fit in the container
+  const cardWidth = 220; // 200px card + 20px gap
+  const actualVisibleBooks =
+    Math.floor(containerWidth / cardWidth) || maxVisibleBooks;
+  const needsScrolling = books.length > actualVisibleBooks;
 
   // Calculate if we can scroll
   const canScrollLeft = currentIndex > 0;
-  const canScrollRight = currentIndex < books.length - visibleBooksCount;
+  const canScrollRight =
+    needsScrolling && currentIndex < books.length - actualVisibleBooks;
 
   const scrollLeft = () => {
     if (canScrollLeft) {
@@ -51,6 +39,19 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
     }
   };
 
+  // Update container width when it changes
+  useEffect(() => {
+    const updateWidth = () => {
+      if (scrollContainerRef.current) {
+        setContainerWidth(scrollContainerRef.current.offsetWidth);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
   // Auto-scroll the container when currentIndex changes
   useEffect(() => {
     if (scrollContainerRef.current) {
@@ -63,10 +64,10 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
     }
   }, [currentIndex]);
 
-  // Reset index when books change or screen size changes
+  // Reset index when books change
   useEffect(() => {
     setCurrentIndex(0);
-  }, [books.length, visibleBooksCount]);
+  }, [books.length]);
 
   return (
     <Paper
@@ -101,8 +102,8 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          {/* Navigation arrows only show up if there are more books than visible */}
-          {books.length > visibleBooksCount && (
+          {/* Navigation arrows only show when scrolling is needed */}
+          {needsScrolling && (
             <>
               <IconButton
                 size="small"
@@ -194,8 +195,8 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         )}
       </Box>
 
-      {/* Pagination dots - optional visual indicator */}
-      {books.length > visibleBooksCount && (
+      {/* Pagination dots */}
+      {needsScrolling && (
         <Box
           sx={{
             display: "flex",
@@ -207,7 +208,7 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         >
           {Array.from({
             length: Math.ceil(
-              Math.max(0, books.length - visibleBooksCount) + 1
+              Math.max(0, books.length - actualVisibleBooks) + 1
             ),
           }).map((_, index) => (
             <Box
