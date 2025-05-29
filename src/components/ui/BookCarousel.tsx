@@ -196,41 +196,6 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
           </Box>
         )}
       </Box>
-
-      {/* Pagination dots */}
-      {needsScrolling && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            gap: 1,
-            mt: 2,
-            flexShrink: 0,
-          }}
-        >
-          {Array.from({
-            length: Math.ceil(
-              Math.max(0, books.length - actualVisibleBooks) + 1
-            ),
-          }).map((_, index) => (
-            <Box
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              sx={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                backgroundColor:
-                  index === currentIndex
-                    ? textColor
-                    : "rgba(255, 255, 255, 0.3)",
-                cursor: "pointer",
-                transition: "all 0.2s ease-in-out",
-              }}
-            />
-          ))}
-        </Box>
-      )}
     </Paper>
   );
 };
