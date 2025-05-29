@@ -15,11 +15,83 @@ import {
   Fade,
   Switch,
 } from "@mui/material";
+import { supabase } from "../../client";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
   const [rating, setRating] = useState<number | null>(0);
   const [trackProgress, setTrackProgress] = useState(false);
+
+  async function createBook(title: string, author: string) {
+    let bookId: number;
+    // Check if the book exists in the books table
+    const { data: bookData } = await supabase
+      .from("books")
+      .select("*")
+      .eq("title", title)
+      .eq("author", author)
+      .single();
+
+    if (bookData) {
+      return bookData.id; // Book already exists, return its ID
+    }
+    console.log("Book not found in the database. Adding it now.");
+    // Insert the book into the books table
+    const { error } = await supabase
+      .from("books")
+      .insert([{ title, author }])
+      .select()
+      .single();
+    if (error) {
+      return console.error("Error inserting book:", error);
+    }
+    // fetch the newly created book ID
+    const { data: newBookData } = await supabase
+      .from("books")
+      .select("*")
+      .eq("title", title)
+      .eq("author", author)
+      .single();
+    return newBookData.id;
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    console.log("Form data submitted:", formData);
+    const title = formData.get("book-title") as string;
+    const author = formData.get("book-author") as string;
+    const currentPage = formData.get("book-current-page");
+    const pageCount = formData.get("book-page-count");
+    const rating = formData.get("book-rating");
+
+    const bookId = await createBook(title, author);
+    console.log("Book ID:", bookId);
+
+    // Insert the book_user entry
+    supabase
+      .from("book_user")
+      .insert([
+        {
+          book_id: bookId,
+          user_id: 1, // HARDCODED UNTIL AUTH IS IMPLEMENTED
+          status: status,
+          ...(rating && { rating }),
+          ...(trackProgress && {
+            current_page: currentPage,
+          }),
+          ...(trackProgress && { page_count: pageCount }),
+        },
+      ])
+      .then(({ error }) => {
+        if (error) {
+          console.error("Error inserting book_user:", error);
+        } else {
+          console.log("Book added successfully!");
+          // Reset form or redirect user
+        }
+      });
+  }
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
@@ -32,10 +104,10 @@ function BookForm() {
           Add a new book to your collection
         </Typography>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <Stack spacing={3}>
             <TextField
-              id="book-title"
+              name="book-title"
               label="Title"
               variant="outlined"
               required
@@ -43,7 +115,7 @@ function BookForm() {
             />
 
             <TextField
-              id="book-author"
+              name="book-author"
               label="Author"
               variant="outlined"
               required
@@ -109,7 +181,7 @@ function BookForm() {
                   >
                     <Typography variant="h3">Track your progress</Typography>
                     <Switch
-                      id="book-track-progress"
+                      name="book-track-progress"
                       color="primary"
                       size="small"
                       checked={trackProgress}
@@ -131,7 +203,7 @@ function BookForm() {
                       I've read
                     </Typography>
                     <TextField
-                      id="book-current-page"
+                      name="book-current-page"
                       type="number"
                       size="small"
                       sx={{ width: 80 }}
@@ -144,7 +216,7 @@ function BookForm() {
                       pages out of
                     </Typography>
                     <TextField
-                      id="book-page-count"
+                      name="book-page-count"
                       type="number"
                       size="small"
                       sx={{ width: 80 }}
@@ -200,6 +272,7 @@ function BookForm() {
                     onChange={(event, newValue) => {
                       setRating(newValue);
                     }}
+                    name="book-rating"
                   />
                   {status === "want-to-read" && (
                     <Typography variant="body2" color="text.secondary">
