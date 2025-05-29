@@ -205,6 +205,7 @@ function BookForm() {
                       sx={{ width: 80 }}
                       slotProps={{ htmlInput: { min: 0 } }}
                       disabled={!trackProgress}
+                      required={trackProgress}
                     />
                     <Typography
                       color={trackProgress ? "text.primary" : "text.secondary"}
@@ -218,6 +219,7 @@ function BookForm() {
                       sx={{ width: 80 }}
                       slotProps={{ htmlInput: { min: 0 } }}
                       disabled={!trackProgress}
+                      required={trackProgress}
                     />
                     <Typography
                       color={trackProgress ? "text.primary" : "text.secondary"}
