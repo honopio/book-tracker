@@ -89,8 +89,8 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         }}
       >
         <Typography
-          variant="h5"
-          component="h3"
+          variant="h2"
+          component="h2"
           sx={{ color: textColor, fontWeight: 600 }}
         >
           {title}

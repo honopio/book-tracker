@@ -150,6 +150,9 @@ function BookForm() {
                   size="medium"
                   precision={0.5}
                   disabled={status === "want-to-read"}
+                  sx={{
+                    color: "primary.main",
+                  }}
                 />
                 {status === "want-to-read" && (
                   <Typography variant="body2" color="text.secondary">
