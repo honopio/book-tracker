@@ -92,7 +92,6 @@ const Dashboard: React.FC = () => {
               title="Currently Reading"
               backgroundColor={theme.palette.secondary.main}
               textColor={theme.palette.secondary.contrastText}
-              maxVisibleBooks={isSmall ? 1 : 2}
             />
 
             <BookCarousel
@@ -100,7 +99,6 @@ const Dashboard: React.FC = () => {
               title="Want to Read"
               backgroundColor={theme.palette.success.main}
               textColor={theme.palette.success.contrastText}
-              maxVisibleBooks={isSmall ? 1 : 2}
             />
           </Box>
 
@@ -120,7 +118,6 @@ const Dashboard: React.FC = () => {
                 title="Finished Books"
                 backgroundColor={theme.palette.primary.main}
                 textColor={theme.palette.primary.contrastText}
-                maxVisibleBooks={1}
               />
             </Box>
           </Box>
