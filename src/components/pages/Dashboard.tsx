@@ -12,9 +12,24 @@ function useBooks() {
 
   useEffect(() => {
     async function fetchBooks() {
-      const { data, error } = await supabase.from("book_user").select("*");
+      // Fetch * from book_user table and join with titles and authors from books table
+      const { data, error } = await supabase.from("book_user").select(`
+          *,
+          books (
+            title,
+            author
+          )
+        `);
       console.log("Fetched books:", data, error);
-      if (!error && data) setBooks(data as Book[]);
+      if (!error && data) {
+        // Flatten the result to merge book_user and books fields
+        const merged = data.map((row: any) => ({
+          ...row,
+          title: row.books?.title,
+          author: row.books?.author,
+        }));
+        setBooks(merged as Book[]);
+      }
     }
     fetchBooks();
   }, []);
