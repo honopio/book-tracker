@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Paper, Typography, Chip, IconButton } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import BookCard from "./bookcard/BookCard";
+import BookCard from "./BookCard";
 import type { BookCarouselProps } from "../../types";
 
 const BookCarousel: React.FC<BookCarouselProps> = ({
