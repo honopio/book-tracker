@@ -12,6 +12,7 @@ import {
   Rating,
   Button,
   Stack,
+  Fade,
 } from "@mui/material";
 
 function BookForm() {
@@ -75,43 +76,71 @@ function BookForm() {
 
             {/* optional page count */}
             {status === "reading" && (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  flexWrap: "wrap",
-                }}
-              >
-                <Typography>I read</Typography>
-                <TextField
-                  id="book-current-page"
-                  type="number"
-                  size="small"
-                  sx={{ width: 80 }}
-                  defaultValue={0}
-                />
-                <Typography>pages out of</Typography>
-                <TextField
-                  id="book-page-count"
-                  type="number"
-                  size="small"
-                  sx={{ width: 80 }}
-                />
-                <Typography>pages</Typography>
-              </Box>
+              <Fade in={status === "reading"} timeout={300}>
+                <Paper
+                  elevation={1}
+                  sx={{
+                    p: 2,
+                    mb: 2,
+                    borderRadius: 1,
+                    width: "100%",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <Typography>I've read</Typography>
+                    <TextField
+                      id="book-current-page"
+                      type="number"
+                      size="small"
+                      sx={{ width: 80 }}
+                      defaultValue={0}
+                    />
+                    <Typography>pages out of</Typography>
+                    <TextField
+                      id="book-page-count"
+                      type="number"
+                      size="small"
+                      sx={{ width: 80 }}
+                    />
+                    <Typography>pages</Typography>
+                  </Box>
+                </Paper>
+              </Fade>
             )}
 
+            {/* optional rating section */}
             <Box>
-              <Typography component="legend" sx={{ mb: 1 }}>
-                My rating
-              </Typography>
-              <Rating
-                defaultValue={0}
-                size="medium"
-                precision={0.5}
-                disabled={status === "want-to-read"}
-              />
+              <Paper
+                elevation={1}
+                sx={{
+                  p: 2,
+                  mb: 2,
+                  bgcolor: status === "want-to-read" ? "#eae8e4" : "primary",
+                  borderRadius: 1,
+                }}
+              >
+                <Typography component="legend" sx={{ mb: 1 }}>
+                  My rating
+                </Typography>
+                <Rating
+                  defaultValue={0}
+                  size="medium"
+                  precision={0.5}
+                  disabled={status === "want-to-read"}
+                />
+                {status === "want-to-read" && (
+                  <Typography variant="body2" color="text.secondary">
+                    Rate after reading
+                  </Typography>
+                )}
+              </Paper>
             </Box>
 
             <Button
