@@ -3,7 +3,7 @@ import { Box, Container, Typography, useMediaQuery } from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
 import type { Book } from "../../types";
 import { useEffect, useState } from "react";
-import { supabase } from "../../App";
+import { supabase } from "../../client";
 import theme from "../../theme";
 
 // fetch books from db
