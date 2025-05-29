@@ -9,24 +9,22 @@ import theme from "../../theme";
 // fetch books from db
 function useBooks() {
   const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchBooks() {
       const { data, error } = await supabase.from("book_user").select("*");
       console.log("Fetched books:", data, error);
       if (!error && data) setBooks(data as Book[]);
-      setLoading(false);
     }
     fetchBooks();
   }, []);
 
-  return { books, loading };
+  return books;
 }
 
 const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
-  const { books, loading } = useBooks();
+  const books = useBooks();
 
   // Filter books by status
   const currentlyReading = books.filter((book) => book.status === "reading");
