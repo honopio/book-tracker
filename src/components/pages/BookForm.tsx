@@ -17,6 +17,7 @@ import {
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
+  const [rating, setRating] = useState<number | null>(0);
 
   return (
     <Box sx={{ maxWidth: 500, mx: "auto", p: 3 }}>
@@ -153,10 +154,25 @@ function BookForm() {
                   sx={{
                     color: "primary.main",
                   }}
+                  value={rating}
+                  onChange={(event, newValue) => {
+                    setRating(newValue);
+                  }}
                 />
                 {status === "want-to-read" && (
                   <Typography variant="body2" color="text.secondary">
                     Rate after reading
+                  </Typography>
+                )}
+                {/* the user can cancel their rating */}
+                {status !== "want-to-read" && rating !== null && rating > 0 && (
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    onClick={() => setRating(0)}
+                    sx={{ cursor: "pointer", textDecoration: "underline" }}
+                  >
+                    I don't want to rate it now
                   </Typography>
                 )}
               </Paper>
