@@ -88,7 +88,7 @@ function BookForm() {
                     bgcolor: "secondary.main",
                   }}
                 >
-                  <Typography variant="h4" component="h5" sx={{ mb: 1 }}>
+                  <Typography variant="h3" sx={{ mb: 2 }}>
                     Track your progress
                   </Typography>
                   <Box
@@ -106,6 +106,7 @@ function BookForm() {
                       size="small"
                       sx={{ width: 80 }}
                       defaultValue={0}
+                      slotProps={{ htmlInput: { min: 0 } }}
                     />
                     <Typography>pages out of</Typography>
                     <TextField
@@ -113,6 +114,7 @@ function BookForm() {
                       type="number"
                       size="small"
                       sx={{ width: 80 }}
+                      slotProps={{ htmlInput: { min: 0 } }}
                     />
                     <Typography>pages</Typography>
                   </Box>
@@ -135,9 +137,9 @@ function BookForm() {
                 }}
               >
                 <Typography
-                  variant="h4"
+                  variant="h3"
                   component="legend"
-                  sx={{ mb: 1 }}
+                  sx={{ mb: 2 }}
                   color={
                     status === "want-to-read"
                       ? "text.secondary"
@@ -146,24 +148,26 @@ function BookForm() {
                 >
                   My rating
                 </Typography>
-                <Rating
-                  defaultValue={0}
-                  size="medium"
-                  precision={0.5}
-                  disabled={status === "want-to-read"}
-                  sx={{
-                    color: "primary.main",
-                  }}
-                  value={rating}
-                  onChange={(event, newValue) => {
-                    setRating(newValue);
-                  }}
-                />
-                {status === "want-to-read" && (
-                  <Typography variant="body2" color="text.secondary">
-                    Rate after reading
-                  </Typography>
-                )}
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Rating
+                    defaultValue={0}
+                    size="large"
+                    precision={0.5}
+                    disabled={status === "want-to-read"}
+                    sx={{
+                      color: "primary.main",
+                    }}
+                    value={rating}
+                    onChange={(event, newValue) => {
+                      setRating(newValue);
+                    }}
+                  />
+                  {status === "want-to-read" && (
+                    <Typography variant="body2" color="text.secondary">
+                      Rate after reading
+                    </Typography>
+                  )}
+                </Box>
                 {/* the user can cancel their rating */}
                 {status !== "want-to-read" && rating !== null && rating > 0 && (
                   <Typography
