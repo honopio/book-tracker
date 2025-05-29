@@ -4,6 +4,7 @@ import BookCarousel from "../ui/BookCarousel";
 import type { Book } from "../../types";
 import { useEffect, useState } from "react";
 import { supabase } from "../../App";
+import theme from "../../theme";
 
 // fetch books from db
 function useBooks() {
@@ -76,16 +77,16 @@ const Dashboard: React.FC = () => {
             <BookCarousel
               books={currentlyReading}
               title="Currently Reading"
-              backgroundColor={(theme) => theme.palette.secondary.main}
-              textColor={(theme) => theme.palette.secondary.contrastText}
+              backgroundColor={theme.palette.secondary.main}
+              textColor={theme.palette.secondary.contrastText}
               maxVisibleBooks={isSmall ? 1 : 2}
             />
 
             <BookCarousel
               books={wantToRead}
               title="Want to Read"
-              backgroundColor={(theme) => theme.palette.success.main}
-              textColor={(theme) => theme.palette.success.contrastText}
+              backgroundColor={theme.palette.success.main}
+              textColor={theme.palette.success.contrastText}
               maxVisibleBooks={isSmall ? 1 : 2}
             />
           </Box>
@@ -104,8 +105,8 @@ const Dashboard: React.FC = () => {
               <BookCarousel
                 books={finishedBooks}
                 title="Finished Books"
-                backgroundColor={(theme) => theme.palette.primary.main}
-                textColor={(theme) => theme.palette.primary.contrastText}
+                backgroundColor={theme.palette.primary.main}
+                textColor={theme.palette.primary.contrastText}
                 maxVisibleBooks={1}
               />
             </Box>
