@@ -6,6 +6,9 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Rating,
+  Typography,
+  Button,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -15,8 +18,21 @@ function BookForm() {
   return (
     <form>
       <h1>Add a new book to your collection</h1>
-      <TextField id="book-title" label="Title" variant="outlined" required />
-      <TextField id="book-author" label="Author" variant="outlined" required />
+
+      <TextField
+        id="book-title"
+        label="Title"
+        variant="outlined"
+        required
+        placeholder="Enter the book title"
+      />
+      <TextField
+        id="book-author"
+        label="Author"
+        variant="outlined"
+        required
+        placeholder="Enter the book author"
+      />
       <FormControl variant="outlined" margin="normal">
         <FormLabel component="legend">Book Status</FormLabel>
         <RadioGroup
@@ -42,6 +58,8 @@ function BookForm() {
           />
         </RadioGroup>
       </FormControl>
+
+      {/* optional page count */}
       {status === "reading" && (
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span>I read</span>
@@ -64,6 +82,19 @@ function BookForm() {
           <span>pages</span>
         </div>
       )}
+
+      {/* optional rating */}
+      <Typography component="legend">My rating</Typography>
+      <Rating
+        defaultValue={0}
+        size="medium"
+        precision={0.5}
+        disabled={status === "want-to-read"}
+      />
+
+      <Button variant="outlined" type="submit">
+        Add Book
+      </Button>
     </form>
   );
 }
