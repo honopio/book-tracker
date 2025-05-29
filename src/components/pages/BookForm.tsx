@@ -20,7 +20,7 @@ function BookForm() {
   const [rating, setRating] = useState<number | null>(0);
 
   return (
-    <Box sx={{ maxWidth: 500, mx: "auto", p: 3 }}>
+    <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
       <Paper elevation={1} sx={{ p: 4, borderRadius: 2 }}>
         <Typography
           variant="h2"
@@ -48,33 +48,43 @@ function BookForm() {
               fullWidth
             />
 
-            <FormControl component="fieldset">
-              <FormLabel component="legend" sx={{ mb: 1 }}>
-                Book Status
-              </FormLabel>
-              <RadioGroup
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                name="book-status"
-              >
-                <FormControlLabel
-                  value="want-to-read"
-                  control={<Radio />}
-                  label="I want to read it"
-                />
-                <FormControlLabel
-                  value="reading"
-                  control={<Radio />}
-                  label="I am currently reading it"
-                />
-                <FormControlLabel
-                  value="finished"
-                  control={<Radio />}
-                  label="I finished reading it"
-                />
-              </RadioGroup>
-            </FormControl>
+            <Paper
+              elevation={1}
+              sx={{
+                p: 2,
+                mb: 2,
+                borderRadius: 1,
+              }}
+            >
+              <FormControl component="fieldset">
+                <FormLabel component="legend" sx={{ mb: 1 }}>
+                  Book Status
+                </FormLabel>
+                <RadioGroup
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  name="book-status"
+                >
+                  <FormControlLabel
+                    value="want-to-read"
+                    control={<Radio />}
+                    label="I want to read it"
+                  />
+                  <FormControlLabel
+                    value="reading"
+                    control={<Radio />}
+                    label="I am currently reading it"
+                  />
+                  <FormControlLabel
+                    value="finished"
+                    control={<Radio />}
+                    label="I finished reading it"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Paper>
 
+            {/* optional current page */}
             {/* optional page count */}
             {status === "reading" && (
               <Fade in={status === "reading"} timeout={300}>
