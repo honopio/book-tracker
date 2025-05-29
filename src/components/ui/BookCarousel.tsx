@@ -9,63 +9,59 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
   title,
   backgroundColor,
   textColor,
-  maxVisibleBooks = 3,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [containerWidth, setContainerWidth] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false); // to enable/disable scroll arrows buttons
+  const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Calculate how many books can actually fit in the container
-  const cardWidth = 220; // 200px card + 20px gap
-  const actualVisibleBooks =
-    Math.floor(containerWidth / cardWidth) || maxVisibleBooks;
-  const needsScrolling = books.length > actualVisibleBooks;
+  // Check if scrolling is needed and update scroll state
+  const updateScrollState = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
 
-  // Calculate if we can scroll
-  const canScrollLeft = currentIndex > 0;
-  const canScrollRight =
-    needsScrolling && currentIndex < books.length - actualVisibleBooks;
+    const { scrollLeft, scrollWidth, clientWidth } = container;
 
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1); // -1 for rounding
+  };
+
+  // Scroll right or left by one card width
   const scrollLeft = () => {
-    if (canScrollLeft) {
-      setCurrentIndex(currentIndex - 1);
-    }
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const cardWidth = 220; // CARD WIDTH including gap
+    container.scrollBy({
+      left: -cardWidth,
+      behavior: "smooth",
+    });
   };
 
   const scrollRight = () => {
-    if (canScrollRight) {
-      setCurrentIndex(currentIndex + 1);
-    }
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const cardWidth = 220;
+    container.scrollBy({
+      left: cardWidth,
+      behavior: "smooth",
+    });
   };
 
-  // Update container width when it changes
+  // Update scroll state on mount and resize
   useEffect(() => {
-    const updateWidth = () => {
-      if (scrollContainerRef.current) {
-        setContainerWidth(scrollContainerRef.current.offsetWidth);
-      }
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    updateScrollState();
+    container.addEventListener("scroll", updateScrollState); // Listen for scroll events
+    const resizeObserver = new ResizeObserver(updateScrollState); // Observe container size changes
+    resizeObserver.observe(container);
+
+    return () => {
+      container.removeEventListener("scroll", updateScrollState);
+      resizeObserver.disconnect();
     };
-
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-
-  // Auto-scroll the container when currentIndex changes
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      const cardWidth = 220; // 200px card + 20px gap
-      const scrollPosition = currentIndex * cardWidth;
-      scrollContainerRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
-    }
-  }, [currentIndex]);
-
-  // Reset index when books change
-  useEffect(() => {
-    setCurrentIndex(0);
   }, [books.length]);
 
   return (
@@ -79,6 +75,7 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         flexDirection: "column",
         boxShadow: "none",
         overflow: "hidden",
+        // height: "100%", // right column takes full height but left column's cards shrink
       }}
     >
       {/* Header */}
@@ -101,7 +98,7 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           {/* Navigation arrows only show when scrolling is needed */}
-          {needsScrolling && (
+          {(canScrollLeft || canScrollRight) && (
             <>
               <IconButton
                 size="small"
@@ -109,6 +106,7 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 disabled={!canScrollLeft}
                 sx={{
                   color: textColor,
+                  opacity: canScrollLeft ? 1 : 0.5,
                 }}
               >
                 <ChevronLeft />
@@ -119,6 +117,7 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 disabled={!canScrollRight}
                 sx={{
                   color: textColor,
+                  opacity: canScrollRight ? 1 : 0.5,
                 }}
               >
                 <ChevronRight />
@@ -136,9 +135,14 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         sx={{
           display: "flex",
           gap: 2.5,
-          overflow: "hidden",
+          overflow: "auto",
           flex: 1,
           scrollBehavior: "smooth",
+          // Hide scrollbar but keep functionality
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
         }}
       >
         {books.length > 0 ? (
