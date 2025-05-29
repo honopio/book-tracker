@@ -14,6 +14,7 @@ import {
   Stack,
   Fade,
   Switch,
+  Alert,
 } from "@mui/material";
 import { supabase } from "../../client";
 
@@ -21,6 +22,7 @@ function BookForm() {
   const [status, setStatus] = useState("want-to-read");
   const [rating, setRating] = useState<number | null>(0);
   const [trackProgress, setTrackProgress] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   async function createBook(title: string, author: string) {
     // Check if the book exists in the books table
@@ -81,10 +83,13 @@ function BookForm() {
         },
       ])
       .then(({ error }) => {
-        if (error) {
+        if (error && error.code === "23505") {
+          setSubmitError("This book is already in your collection.");
+        } else if (error) {
+          setSubmitError("An error occurred. Please try again.");
           console.error("Error inserting book_user:", error);
         } else {
-          console.log("Book added successfully!");
+          setSubmitError(null);
         }
       });
   }
@@ -265,6 +270,7 @@ function BookForm() {
                     disabled={status === "want-to-read"}
                     sx={{
                       color: "primary.main",
+                      mb: 1,
                     }}
                     value={rating}
                     onChange={(event, newValue) => {
@@ -301,6 +307,15 @@ function BookForm() {
             >
               Add Book
             </Button>
+            {submitError && (
+              <Alert
+                variant="outlined"
+                severity="info"
+                sx={{ textAlign: "center" }}
+              >
+                {submitError}
+              </Alert>
+            )}
           </Stack>
         </form>
       </Paper>
