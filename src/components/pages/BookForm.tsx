@@ -22,8 +22,8 @@ function BookForm() {
     <Box sx={{ maxWidth: 500, mx: "auto", p: 3 }}>
       <Paper elevation={1} sx={{ p: 4, borderRadius: 2 }}>
         <Typography
-          variant="h4"
-          component="h1"
+          variant="h2"
+          component="h2"
           sx={{ mb: 3, textAlign: "center" }}
         >
           Add a new book to your collection
@@ -84,8 +84,12 @@ function BookForm() {
                     mb: 2,
                     borderRadius: 1,
                     width: "100%",
+                    bgcolor: "secondary.main",
                   }}
                 >
+                  <Typography variant="h4" component="h5" sx={{ mb: 1 }}>
+                    Track your progress
+                  </Typography>
                   <Box
                     sx={{
                       display: "flex",
@@ -122,11 +126,23 @@ function BookForm() {
                 sx={{
                   p: 2,
                   mb: 2,
-                  bgcolor: status === "want-to-read" ? "#eae8e4" : "primary",
+                  bgcolor:
+                    status === "want-to-read"
+                      ? "background.paper"
+                      : "secondary.main",
                   borderRadius: 1,
                 }}
               >
-                <Typography component="legend" sx={{ mb: 1 }}>
+                <Typography
+                  variant="h4"
+                  component="legend"
+                  sx={{ mb: 1 }}
+                  color={
+                    status === "want-to-read"
+                      ? "text.secondary"
+                      : "text.primary"
+                  }
+                >
                   My rating
                 </Typography>
                 <Rating
