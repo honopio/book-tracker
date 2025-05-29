@@ -13,7 +13,7 @@ import {
   CardActions,
 } from "@mui/material";
 import { MenuBook, Delete } from "@mui/icons-material";
-import { type BookCardProps } from "../../../types";
+import { type BookCardProps } from "../../types";
 
 const BookCard: React.FC<BookCardProps> = ({
   id,
@@ -122,13 +122,11 @@ const BookCard: React.FC<BookCardProps> = ({
                   "& .MuiLinearProgress-bar": { backgroundColor: textColor },
                 }}
               />
-              {currentPage && pageCount && (
-                <Typography variant="caption">
-                  {status === "finished"
-                    ? "Finished!"
-                    : `Page ${currentPage} of ${pageCount}`}
-                </Typography>
-              )}
+              <Typography variant="caption">
+                {status === "finished"
+                  ? "Finished!"
+                  : `Page ${currentPage} of ${pageCount}`}
+              </Typography>
             </Box>
           </Box>
         )}
