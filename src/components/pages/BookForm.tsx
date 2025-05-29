@@ -23,7 +23,6 @@ function BookForm() {
   const [trackProgress, setTrackProgress] = useState(false);
 
   async function createBook(title: string, author: string) {
-    let bookId: number;
     // Check if the book exists in the books table
     const { data: bookData } = await supabase
       .from("books")
@@ -33,9 +32,8 @@ function BookForm() {
       .single();
 
     if (bookData) {
-      return bookData.id; // Book already exists, return its ID
+      return bookData.id; // Book already exists, return its id
     }
-    console.log("Book not found in the database. Adding it now.");
     // Insert the book into the books table
     const { error } = await supabase
       .from("books")
@@ -45,7 +43,7 @@ function BookForm() {
     if (error) {
       return console.error("Error inserting book:", error);
     }
-    // fetch the newly created book ID
+    // fetch the newly created book id
     const { data: newBookData } = await supabase
       .from("books")
       .select("*")
@@ -58,7 +56,6 @@ function BookForm() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log("Form data submitted:", formData);
     const title = formData.get("book-title") as string;
     const author = formData.get("book-author") as string;
     const currentPage = formData.get("book-current-page");
@@ -66,7 +63,6 @@ function BookForm() {
     const rating = formData.get("book-rating");
 
     const bookId = await createBook(title, author);
-    console.log("Book ID:", bookId);
 
     // Insert the book_user entry
     supabase
@@ -77,10 +73,11 @@ function BookForm() {
           user_id: 1, // HARDCODED UNTIL AUTH IS IMPLEMENTED
           status: status,
           ...(rating && { rating }),
-          ...(trackProgress && {
-            current_page: currentPage,
-          }),
-          ...(trackProgress && { page_count: pageCount }),
+          ...(trackProgress &&
+            currentPage && {
+              current_page: currentPage,
+            }),
+          ...(trackProgress && pageCount && { page_count: pageCount }),
         },
       ])
       .then(({ error }) => {
@@ -88,7 +85,6 @@ function BookForm() {
           console.error("Error inserting book_user:", error);
         } else {
           console.log("Book added successfully!");
-          // Reset form or redirect user
         }
       });
   }
