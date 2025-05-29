@@ -13,11 +13,13 @@ import {
   Button,
   Stack,
   Fade,
+  Switch,
 } from "@mui/material";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
   const [rating, setRating] = useState<number | null>(0);
+  const [trackProgress, setTrackProgress] = useState(false);
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
@@ -98,9 +100,23 @@ function BookForm() {
                     bgcolor: "secondary.main",
                   }}
                 >
-                  <Typography variant="h3" sx={{ mb: 2 }}>
-                    Track your progress
-                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 2,
+                      mb: 2,
+                    }}
+                  >
+                    <Typography variant="h3">Track your progress</Typography>
+                    <Switch
+                      id="book-track-progress"
+                      color="primary"
+                      size="small"
+                      checked={trackProgress}
+                      onChange={(e) => setTrackProgress(e.target.checked)}
+                    />
+                  </Box>
+
                   <Box
                     sx={{
                       display: "flex",
@@ -109,24 +125,37 @@ function BookForm() {
                       flexWrap: "wrap",
                     }}
                   >
-                    <Typography>I've read</Typography>
+                    <Typography
+                      color={trackProgress ? "text.primary" : "text.secondary"}
+                    >
+                      I've read
+                    </Typography>
                     <TextField
                       id="book-current-page"
                       type="number"
                       size="small"
                       sx={{ width: 80 }}
-                      defaultValue={0}
                       slotProps={{ htmlInput: { min: 0 } }}
+                      disabled={!trackProgress}
                     />
-                    <Typography>pages out of</Typography>
+                    <Typography
+                      color={trackProgress ? "text.primary" : "text.secondary"}
+                    >
+                      pages out of
+                    </Typography>
                     <TextField
                       id="book-page-count"
                       type="number"
                       size="small"
                       sx={{ width: 80 }}
                       slotProps={{ htmlInput: { min: 0 } }}
+                      disabled={!trackProgress}
                     />
-                    <Typography>pages</Typography>
+                    <Typography
+                      color={trackProgress ? "text.primary" : "text.secondary"}
+                    >
+                      pages
+                    </Typography>
                   </Box>
                 </Paper>
               </Fade>
