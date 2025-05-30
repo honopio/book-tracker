@@ -18,9 +18,10 @@ import {
   DialogActions,
   FormHelperText,
 } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import { ChevronLeft, Delete } from "@mui/icons-material";
 import { supabase } from "../../client";
 import type { Book } from "../../types";
+import { Link } from "react-router-dom";
 
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -134,6 +135,16 @@ const SingleBook: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
       <Paper elevation={1} sx={{ p: 4 }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: 5 }}>
+          <Button
+            component={Link}
+            to="/dashboard"
+            startIcon={<ChevronLeft />}
+            color="primary"
+          >
+            Go back to dashboard
+          </Button>
+        </Box>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -142,7 +153,7 @@ const SingleBook: React.FC = () => {
           <Typography variant="h1" gutterBottom>
             {book.title}
           </Typography>
-          <IconButton onClick={() => setDeleteDialog(true)} color="error">
+          <IconButton onClick={() => setDeleteDialog(true)}>
             <Delete />
           </IconButton>
         </Stack>
@@ -177,7 +188,6 @@ const SingleBook: React.FC = () => {
           </Box>
         )}
         {!editMode && <Chip label={status.replace(/-/g, " ")} sx={{ mb: 2 }} />}
-
         {/* Progress */}
         <Paper
           elevation={1}
@@ -232,7 +242,6 @@ const SingleBook: React.FC = () => {
             </Box>
           )}
         </Paper>
-
         {/* Rating */}
         <Paper
           elevation={1}
@@ -255,7 +264,6 @@ const SingleBook: React.FC = () => {
             }}
           />
         </Paper>
-
         {/* Comment */}
         <Paper
           elevation={1}
@@ -291,7 +299,6 @@ const SingleBook: React.FC = () => {
             </Box>
           )}
         </Paper>
-
         {/* Edit/Save/Cancel Buttons */}
         <Stack
           direction="row"
