@@ -26,12 +26,14 @@ const SingleBook: React.FC = () => {
   const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState<number | undefined>(undefined);
+  const [current, setCurrent] = useState<number | undefined>(undefined);
+  const [total, setTotal] = useState<number | undefined>(undefined);
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState<string>("");
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const [status, setStatus] = useState<string>("");
 
   // Fetch book entry
   useEffect(() => {
@@ -52,23 +54,36 @@ const SingleBook: React.FC = () => {
         title: data.books?.title,
         author: data.books?.author,
       });
-      setProgress(data.current_page);
+      setCurrent(data.current_page);
+      setTotal(data.page_count);
       setRating(data.rating);
       setComment(data.comment || "");
       setLoading(false);
+      setStatus(data.status);
     }
     fetchBook();
   }, [id]);
 
+  const validatePages = () => {
+    if (current !== undefined && total !== undefined && current > total) {
+      setError("Current page cannot be greater than total pages");
+      return false;
+    }
+    return true;
+  };
+
   // Update book entry
   async function handleSave() {
     if (!book) return;
+    console.log("new status:", status);
     const { error } = await supabase
       .from("book_user")
       .update({
-        current_page: progress,
+        current_page: current,
+        page_count: total,
         rating,
         comment,
+        status: status,
       })
       .eq("id", book.id);
     if (error) {
@@ -115,9 +130,22 @@ const SingleBook: React.FC = () => {
         <Typography variant="h3" color="text.secondary" mb={3}>
           {book.author}
         </Typography>
-
-        <Chip label={book.status.replace(/-/g, " ")} sx={{ mb: 2 }} />
-
+        {editMode && (
+          <Box sx={{ mb: 2 }}>
+            <Stack direction="row" spacing={1}>
+              {["want-to-read", "reading", "finished"].map((statusOption) => (
+                <Chip
+                  key={statusOption}
+                  label={statusOption.replace(/-/g, " ")}
+                  variant={status === statusOption ? "filled" : "outlined"}
+                  color={status === statusOption ? "primary" : "default"}
+                  onClick={() => setStatus(statusOption)}
+                />
+              ))}
+            </Stack>
+          </Box>
+        )}
+        {!editMode && <Chip label={status.replace(/-/g, " ")} sx={{ mb: 2 }} />}
         {/* Progress */}
         <Paper
           elevation={1}
@@ -131,29 +159,38 @@ const SingleBook: React.FC = () => {
           </Typography>
           <LinearProgress
             variant="determinate"
-            value={
-              book.page_count
-                ? Math.min(100, ((progress ?? 0) / book.page_count) * 100)
-                : 0
-            }
+            value={total && current ? Math.floor((current / total) * 100) : 0}
             sx={{ mb: 1 }}
           />
           <Typography variant="body1" mb={2}>
-            {progress ?? 0} / {book.page_count ?? "?"} pages
+            {current ?? 0} / {total ?? "?"} pages
           </Typography>
 
-          {editMode ? (
-            <TextField
-              label="Current Page"
-              type="number"
-              value={progress ?? ""}
-              onChange={(e) => setProgress(Number(e.target.value))}
-              slotProps={{
-                htmlInput: { min: 0, max: book.page_count },
-              }}
-              sx={{ width: 120 }}
-            />
-          ) : null}
+          {editMode && (
+            <Box display="flex" gap={2} mb={2}>
+              <TextField
+                label="Current page"
+                type="number"
+                value={current ?? ""}
+                onChange={(e) => setCurrent(Number(e.target.value))}
+                slotProps={{
+                  htmlInput: { min: 0, max: book.page_count },
+                }}
+                sx={{ width: 120 }}
+              />
+
+              <TextField
+                label="Total pages"
+                type="number"
+                value={total ?? ""}
+                onChange={(e) => setTotal(Number(e.target.value))}
+                slotProps={{
+                  htmlInput: { min: 0 },
+                }}
+                sx={{ width: 120 }}
+              />
+            </Box>
+          )}
         </Paper>
 
         {/* Rating */}
