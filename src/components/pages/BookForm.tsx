@@ -22,6 +22,7 @@ function BookForm() {
   const [status, setStatus] = useState("want-to-read");
   const [rating, setRating] = useState<number | null>(0);
   const [trackProgress, setTrackProgress] = useState(false);
+  const [trackRating, setTrackRating] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   async function createBook(title: string, author: string) {
@@ -244,24 +245,38 @@ function BookForm() {
                   mb: 2,
                 }}
               >
-                <Typography
-                  variant="h3"
-                  component="legend"
-                  sx={{ mb: 2 }}
-                  color={
-                    status === "want-to-read"
-                      ? "text.secondary"
-                      : "text.primary"
-                  }
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 2,
+                    mb: 2,
+                  }}
                 >
-                  My rating
-                </Typography>
+                  <Switch
+                    name="book-track-rating"
+                    color="primary"
+                    size="small"
+                    checked={trackRating}
+                    onChange={(e) => setTrackRating(e.target.checked)}
+                    disabled={status === "want-to-read"}
+                  />
+                  <Typography
+                    variant="h3"
+                    color={
+                      status === "want-to-read"
+                        ? "text.secondary"
+                        : "text.primary"
+                    }
+                  >
+                    My rating
+                  </Typography>
+                </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <Rating
                     defaultValue={0}
                     size="large"
                     precision={0.5}
-                    disabled={status === "want-to-read"}
+                    disabled={status === "want-to-read" || !trackRating}
                     sx={{
                       color: "primary.main",
                       mb: 1,
@@ -278,17 +293,6 @@ function BookForm() {
                     </Typography>
                   )}
                 </Box>
-                {/* the user can cancel their rating */}
-                {status !== "want-to-read" && rating !== null && rating > 0 && (
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    onClick={() => setRating(0)}
-                    sx={{ cursor: "pointer", textDecoration: "underline" }}
-                  >
-                    I don't want to rate it now
-                  </Typography>
-                )}
               </Paper>
             </Box>
 
