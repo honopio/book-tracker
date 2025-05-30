@@ -20,7 +20,6 @@ import AddIcon from "@mui/icons-material/Add";
 // fetch books from db
 function useBooks() {
   const [books, setBooks] = useState<Book[]>([]);
-
   useEffect(() => {
     async function fetchBooks() {
       // Fetch * from book_user table and join with titles and authors from books table
@@ -33,15 +32,21 @@ function useBooks() {
         `);
       console.log("Fetched books:", data, error);
       if (!error && data) {
-        // Flatten the result to merge book_user and books fields
+        // Flatten and map DB fields to Book props
         const merged = data.map((row: any) => ({
-          ...row,
           title: row.books?.title,
           author: row.books?.author,
+          id: row.id,
+          status: row.status,
+          progress: row.progress,
+          rating: row.rating,
+          createdAt: row.created_at,
+          currentPage: row.current_page,
+          pageCount: row.page_count,
         }));
         merged.sort(
           (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
 
         setBooks(merged as Book[]);

@@ -163,8 +163,8 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 status={book.status}
                 progress={book.progress}
                 rating={book.rating}
-                pageCount={book.page_count}
-                currentPage={book.current_page}
+                pageCount={book.pageCount}
+                currentPage={book.currentPage}
                 textColor={textColor}
               />
             </Box>

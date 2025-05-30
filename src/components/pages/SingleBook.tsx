@@ -50,6 +50,8 @@ const SingleBook: React.FC = () => {
       ...data,
       title: data.books?.title,
       author: data.books?.author,
+      currentPage: data.current_page,
+      pageCount: data.page_count,
     });
     setCurrent(data.current_page);
     setTotal(data.page_count);
@@ -121,7 +123,9 @@ const SingleBook: React.FC = () => {
     if (error) {
       setError("Failed to delete book.");
     } else {
-      navigate("/dashboard", { state: { message: "Book deleted." } });
+      navigate("/dashboard", {
+        state: { message: "Book deleted successfully" },
+      });
     }
   }
 
@@ -164,7 +168,7 @@ const SingleBook: React.FC = () => {
                     ) {
                       setCurrent(total);
                     } else if (statusOption === "reading") {
-                      setCurrent(book.current_page ?? 0);
+                      setCurrent(book.currentPage ?? 0);
                     }
                   }}
                 />
