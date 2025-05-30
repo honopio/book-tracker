@@ -13,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
         </Route>
         <Route path="add-book" element={<BookForm />} />
       </Routes>
