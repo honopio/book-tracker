@@ -1,4 +1,6 @@
+import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
+import BookForm from "./components/pages/BookForm.tsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import theme from "./theme.tsx";
@@ -7,7 +9,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Layout></Layout>;
+      <Routes>
+        <Route path="/" element={<Layout />} />
+        <Route path="add-book" element={<BookForm />} />
+      </Routes>
     </ThemeProvider>
   );
 }
