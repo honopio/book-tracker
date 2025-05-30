@@ -74,6 +74,18 @@ const SingleBook: React.FC = () => {
     return true;
   };
 
+  // Auto-update status based on current/total page in edit mode
+  useEffect(() => {
+    if (!editMode) return;
+    if (current === 0) {
+      setStatus("want-to-read");
+    } else if (total !== undefined && current === total) {
+      setStatus("finished");
+    } else if (current && current > 0) {
+      setStatus("reading");
+    }
+  }, [current, total, editMode]);
+
   // Update book entry
   async function handleSave() {
     if (!book || !validatePages()) return;
