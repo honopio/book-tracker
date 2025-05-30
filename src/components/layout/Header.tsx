@@ -1,12 +1,12 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { Link } from "react-router-dom";
+import { Person } from "@mui/icons-material";
 
-function Header() {
+function Header({ onDrawerOpen }) {
   return (
     <>
       <AppBar
@@ -47,7 +47,15 @@ function Header() {
           </Link>
 
           <div style={{ flexGrow: 1 }} />
-          <Button>Login</Button>
+
+          <IconButton
+            onClick={onDrawerOpen}
+            sx={{
+              color: "text.primary",
+            }}
+          >
+            <Person />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </>
