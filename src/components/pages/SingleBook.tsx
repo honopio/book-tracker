@@ -5,7 +5,6 @@ import {
   Paper,
   Typography,
   LinearProgress,
-  Rating,
   TextField,
   Button,
   IconButton,
@@ -18,7 +17,7 @@ import {
   DialogActions,
   FormHelperText,
 } from "@mui/material";
-import { ChevronLeft, Delete } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import { supabase } from "../../client";
 import type { Book } from "../../types";
 import { BookRatingSection } from "../ui/BookRatingSection";
@@ -28,14 +27,14 @@ const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
+  const [status, setStatus] = useState<string>("");
+  const [rating, setRating] = useState<number | null>(null);
   const [current, setCurrent] = useState<number | undefined>(undefined);
   const [total, setTotal] = useState<number | undefined>(undefined);
-  const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState<string>("");
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [status, setStatus] = useState<string>("");
 
   // Fetch book details from db
   const fetchBook = async () => {
