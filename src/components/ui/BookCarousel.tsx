@@ -3,6 +3,8 @@ import { Box, Paper, Typography, Chip, IconButton } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import BookCard from "./BookCard";
 import type { BookCarouselProps } from "../../types";
+import { Link } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 
 const BookCarousel: React.FC<BookCarouselProps> = ({
   books,
@@ -172,27 +174,28 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
               flex: 1,
               flexDirection: "column",
               gap: 2,
             }}
           >
-            <Typography variant="h6" sx={{ color: textColor, opacity: 0.7 }}>
-              📚
-            </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               sx={{ color: textColor, opacity: 0.7, textAlign: "center" }}
             >
-              No books in this category yet
+              No books in this category yet. <br />
+              Let's get started!
             </Typography>
-            <Typography
-              variant="caption"
-              sx={{ color: textColor, opacity: 0.5, textAlign: "center" }}
-            >
-              Add some books to get started!
-            </Typography>
+            <Link to="/add-book">
+              <IconButton
+                sx={{
+                  color: textColor,
+                }}
+                size="large"
+              >
+                <AddIcon />
+              </IconButton>
+            </Link>
           </Box>
         )}
       </Box>
