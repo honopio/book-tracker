@@ -11,21 +11,91 @@ import {
   IconButton,
   Stack,
   Chip,
+  Alert,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { supabase } from "../../client";
 import type { Book } from "../../types";
 
 const SingleBook: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
+  const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState<number | undefined>(undefined);
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState<string>("");
   const [editMode, setEditMode] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [deleteDialog, setDeleteDialog] = useState(false);
+
+  // Fetch book entry
+  useEffect(() => {
+    async function fetchBook() {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("book_user")
+        .select(`*, books (title, author)`)
+        .eq("id", id)
+        .single();
+      if (error || !data) {
+        setError("Book not found.");
+        setLoading(false);
+        return;
+      }
+      setBook({
+        ...data,
+        title: data.books?.title,
+        author: data.books?.author,
+      });
+      setProgress(data.current_page);
+      setRating(data.rating);
+      setComment(data.comment || "");
+      setLoading(false);
+    }
+    fetchBook();
+  }, [id]);
+
+  // Update book entry
+  async function handleSave() {
+    if (!book) return;
+    const { error } = await supabase
+      .from("book_user")
+      .update({
+        current_page: progress,
+        rating,
+        comment,
+      })
+      .eq("id", book.id);
+    if (error) {
+      setError("Failed to update book.");
+    } else {
+      setEditMode(false);
+      setError(null);
+    }
+  }
+
+  // Delete book entry
+  async function handleDelete() {
+    if (!book) return;
+    const { error } = await supabase
+      .from("book_user")
+      .delete()
+      .eq("id", book.id);
+    if (error) {
+      setError("Failed to delete book.");
+    } else {
+      navigate("/dashboard", { state: { message: "Book deleted." } });
+    }
+  }
+
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Alert severity="error">{error}</Alert>;
+  if (!book) return null;
 
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", p: 3 }}>
