@@ -35,32 +35,34 @@ const SingleBook: React.FC = () => {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [status, setStatus] = useState<string>("");
 
-  // Fetch book entry
-  useEffect(() => {
-    async function fetchBook() {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("book_user")
-        .select(`*, books (title, author)`)
-        .eq("id", id)
-        .single();
-      if (error || !data) {
-        setError("Book not found.");
-        setLoading(false);
-        return;
-      }
-      setBook({
-        ...data,
-        title: data.books?.title,
-        author: data.books?.author,
-      });
-      setCurrent(data.current_page);
-      setTotal(data.page_count);
-      setRating(data.rating);
-      setComment(data.comment || "");
+  // Extract fetchBook as a separate function
+  const fetchBook = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("book_user")
+      .select(`*, books (title, author)`)
+      .eq("id", id)
+      .single();
+    if (error || !data) {
+      setError("Book not found.");
       setLoading(false);
-      setStatus(data.status);
+      return;
     }
+    setBook({
+      ...data,
+      title: data.books?.title,
+      author: data.books?.author,
+    });
+    setCurrent(data.current_page);
+    setTotal(data.page_count);
+    setRating(data.rating);
+    setComment(data.comment || "");
+    setStatus(data.status);
+    setLoading(false);
+  };
+
+  // Initial fetch
+  useEffect(() => {
     fetchBook();
   }, [id]);
 
@@ -74,8 +76,8 @@ const SingleBook: React.FC = () => {
 
   // Update book entry
   async function handleSave() {
-    if (!book) return;
-    console.log("new status:", status);
+    if (!book || !validatePages()) return;
+
     const { error } = await supabase
       .from("book_user")
       .update({
@@ -86,9 +88,12 @@ const SingleBook: React.FC = () => {
         status: status,
       })
       .eq("id", book.id);
+
     if (error) {
       setError("Failed to update book.");
     } else {
+      // Fetch updated book to reflect database trigger changes
+      await fetchBook();
       setEditMode(false);
       setError(null);
     }
