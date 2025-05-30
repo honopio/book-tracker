@@ -21,7 +21,7 @@ import {
 import { ChevronLeft, Delete } from "@mui/icons-material";
 import { supabase } from "../../client";
 import type { Book } from "../../types";
-import { Link } from "react-router-dom";
+import { BookRatingSection } from "../ui/BookRatingSection";
 import BackButton from "../ui/BackButton";
 
 const SingleBook: React.FC = () => {
@@ -232,28 +232,14 @@ const SingleBook: React.FC = () => {
             </Box>
           )}
         </Paper>
-        {/* Rating */}
-        <Paper
-          elevation={1}
-          sx={{
-            p: 2,
-            my: 3,
-          }}
-        >
-          <Typography variant="h3" mb={3}>
-            My rating
-          </Typography>
-          <Rating
-            size="large"
-            value={rating}
-            onChange={(_, newValue) => setRating(newValue)}
-            readOnly={!editMode}
-            precision={0.5}
-            sx={{
-              color: "primary.main",
-            }}
-          />
-        </Paper>
+
+        <BookRatingSection
+          rating={rating}
+          onRatingChange={setRating}
+          disabled={status === "want-to-read"}
+          showToggle={false}
+        />
+
         {/* Comment */}
         <Paper
           elevation={1}
