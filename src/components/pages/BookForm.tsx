@@ -96,7 +96,7 @@ function BookForm() {
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
-      <Paper elevation={1} sx={{ p: 4, borderRadius: 2 }}>
+      <Paper elevation={1} sx={{ p: 4 }}>
         <Typography
           variant="h2"
           component="h2"
@@ -128,7 +128,6 @@ function BookForm() {
               sx={{
                 p: 2,
                 mb: 2,
-                borderRadius: 1,
               }}
             >
               <FormControl component="fieldset">
@@ -168,9 +167,7 @@ function BookForm() {
                   sx={{
                     p: 2,
                     mb: 2,
-                    borderRadius: 1,
                     width: "100%",
-                    bgcolor: "secondary.main",
                   }}
                 >
                   <Box
@@ -243,11 +240,6 @@ function BookForm() {
                 sx={{
                   p: 2,
                   mb: 2,
-                  bgcolor:
-                    status === "want-to-read"
-                      ? "background.paper"
-                      : "secondary.main",
-                  borderRadius: 1,
                 }}
               >
                 <Typography
@@ -297,6 +289,29 @@ function BookForm() {
                 )}
               </Paper>
             </Box>
+
+            {/* text field for personal comment */}
+            <Paper
+              elevation={1}
+              sx={{
+                p: 2,
+                mb: 2,
+              }}
+            >
+              <Typography variant="h3" component="legend" sx={{ mb: 2 }}>
+                Comment
+              </Typography>
+              <TextField
+                name="book-comment"
+                label="Comment"
+                variant="outlined"
+                multiline
+                rows={4}
+                fullWidth
+                placeholder="Add a personal comment about this book..."
+                sx={{ mb: 2 }}
+              />
+            </Paper>
 
             <Button
               variant="contained"
