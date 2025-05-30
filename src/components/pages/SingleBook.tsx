@@ -191,7 +191,7 @@ const SingleBook: React.FC = () => {
                 value={current ?? ""}
                 onChange={(e) => setCurrent(Number(e.target.value))}
                 slotProps={{
-                  htmlInput: { min: 0, max: book.page_count },
+                  htmlInput: { min: 0, max: total ?? undefined },
                 }}
                 sx={{ width: 120 }}
               />
@@ -202,7 +202,7 @@ const SingleBook: React.FC = () => {
                 value={total ?? ""}
                 onChange={(e) => setTotal(Number(e.target.value))}
                 slotProps={{
-                  htmlInput: { min: 0 },
+                  htmlInput: { min: current ?? 0 },
                 }}
                 sx={{ width: 120 }}
               />
