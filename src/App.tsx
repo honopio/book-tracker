@@ -14,8 +14,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="add-book" element={<BookForm />} />
         </Route>
-        <Route path="add-book" element={<BookForm />} />
       </Routes>
     </ThemeProvider>
   );
