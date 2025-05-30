@@ -63,8 +63,10 @@ const SingleBook: React.FC = () => {
     fetchBook();
   }, [id]);
 
+  const pageError =
+    current !== undefined && total !== undefined && current > total;
   const validatePages = () => {
-    if (current !== undefined && total !== undefined && current > total) {
+    if (pageError) {
       setError("Current page cannot be greater than total pages");
       return false;
     }
@@ -203,11 +205,7 @@ const SingleBook: React.FC = () => {
                     htmlInput: { min: 0, max: total ?? undefined },
                   }}
                   sx={{ width: 120 }}
-                  error={
-                    current !== undefined &&
-                    total !== undefined &&
-                    current > total
-                  }
+                  error={pageError}
                 />
                 <TextField
                   label="Total pages"
@@ -218,20 +216,14 @@ const SingleBook: React.FC = () => {
                     htmlInput: { min: current ?? 0 },
                   }}
                   sx={{ width: 120 }}
-                  error={
-                    current !== undefined &&
-                    total !== undefined &&
-                    current > total
-                  }
+                  error={pageError}
                 />
               </Box>
-              {current !== undefined &&
-                total !== undefined &&
-                current > total && (
-                  <FormHelperText error>
-                    Current page cannot be greater than total pages
-                  </FormHelperText>
-                )}
+              {pageError && (
+                <FormHelperText error>
+                  Current page cannot be greater than total pages
+                </FormHelperText>
+              )}
             </Box>
           )}
         </Paper>
@@ -304,7 +296,11 @@ const SingleBook: React.FC = () => {
         >
           {editMode ? (
             <>
-              <Button variant="contained" onClick={handleSave}>
+              <Button
+                variant="contained"
+                onClick={handleSave}
+                disabled={pageError}
+              >
                 Save
               </Button>
               <Button variant="outlined" onClick={() => setEditMode(false)}>
