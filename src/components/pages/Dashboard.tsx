@@ -1,10 +1,19 @@
 import React from "react";
-import { Box, Container, Typography, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  useMediaQuery,
+  Fab,
+  Tooltip,
+} from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
 import type { Book } from "../../types";
 import { useEffect, useState } from "react";
 import { supabase } from "../../client";
 import theme from "../../theme";
+import { NavLink } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 
 // fetch books from db
 function useBooks() {
@@ -123,6 +132,22 @@ const Dashboard: React.FC = () => {
           </Box>
         </Box>
       </Container>
+      <NavLink to="/add-book">
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 24,
+            right: 24,
+            zIndex: 1000,
+          }}
+        >
+          <Tooltip title="Add a book" arrow>
+            <Fab color="primary" aria-label="add book">
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+        </Box>
+      </NavLink>
     </Box>
   );
 };
