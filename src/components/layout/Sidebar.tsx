@@ -30,7 +30,12 @@ const menuItems = [
   { text: "Logout", icon: <Logout />, action: () => {} },
 ];
 
-function Sidebar({ open, onClose }) {
+interface SidebarProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+function Sidebar({ open, onClose }: SidebarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
