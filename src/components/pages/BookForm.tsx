@@ -257,7 +257,12 @@ function BookForm() {
                     color="primary"
                     size="small"
                     checked={trackRating}
-                    onChange={(e) => setTrackRating(e.target.checked)}
+                    onChange={(e) => {
+                      setTrackRating(e.target.checked);
+                      if (!e.target.checked) {
+                        setRating(null);
+                      }
+                    }}
                     disabled={status === "want-to-read"}
                   />
                   <Typography
