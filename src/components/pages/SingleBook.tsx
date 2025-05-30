@@ -237,6 +237,7 @@ const SingleBook: React.FC = () => {
           rating={rating}
           onRatingChange={setRating}
           disabled={status === "want-to-read"}
+          readOnly={!editMode}
           showToggle={false}
         />
 
