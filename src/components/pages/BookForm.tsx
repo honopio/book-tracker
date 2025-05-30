@@ -9,7 +9,6 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  Rating,
   Button,
   Stack,
   Fade,
@@ -19,6 +18,7 @@ import {
 import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../ui/BackButton";
+import { BookRatingSection } from "../ui/BookRatingSection";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
@@ -66,7 +66,6 @@ function BookForm() {
     const author = formData.get("book-author") as string;
     const currentPage = formData.get("book-current-page");
     const pageCount = formData.get("book-page-count");
-    const rating = formData.get("book-rating");
     const comment = formData.get("book-comment") as string;
 
     const bookId = await createBook(title, author);
@@ -79,7 +78,7 @@ function BookForm() {
           book_id: bookId,
           user_id: 1, // HARDCODED UNTIL AUTH IS IMPLEMENTED
           status: status,
-          rating: rating ? parseFloat(rating as string) : null,
+          rating: rating,
           ...(trackProgress &&
             currentPage && {
               current_page: currentPage,
@@ -243,70 +242,15 @@ function BookForm() {
               </Fade>
             )}
 
-            {/* optional rating section */}
-            <Box>
-              <Paper
-                elevation={1}
-                sx={{
-                  p: 2,
-                  mb: 2,
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 2,
-                    mb: 2,
-                  }}
-                >
-                  <Switch
-                    name="book-track-rating"
-                    color="primary"
-                    size="small"
-                    checked={trackRating}
-                    onChange={(e) => {
-                      setTrackRating(e.target.checked);
-                      if (!e.target.checked) {
-                        setRating(null);
-                      }
-                    }}
-                    disabled={status === "want-to-read"}
-                  />
-                  <Typography
-                    variant="h3"
-                    color={
-                      status === "want-to-read"
-                        ? "text.secondary"
-                        : "text.primary"
-                    }
-                  >
-                    My rating
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <Rating
-                    defaultValue={0}
-                    size="large"
-                    precision={0.5}
-                    disabled={status === "want-to-read" || !trackRating}
-                    sx={{
-                      color: "primary.main",
-                      mb: 1,
-                    }}
-                    value={rating}
-                    onChange={(event, newValue) => {
-                      setRating(newValue);
-                    }}
-                    name="book-rating"
-                  />
-                  {status === "want-to-read" && (
-                    <Typography variant="body2" color="text.secondary">
-                      Rate after reading
-                    </Typography>
-                  )}
-                </Box>
-              </Paper>
-            </Box>
+            <BookRatingSection
+              rating={rating}
+              onRatingChange={setRating}
+              trackRating={trackRating}
+              onTrackRatingChange={setTrackRating}
+              disabled={status === "want-to-read"}
+              showToggle={true}
+              disableMessage="Rate after reading"
+            />
 
             {/* text field for personal comment */}
             <Paper
