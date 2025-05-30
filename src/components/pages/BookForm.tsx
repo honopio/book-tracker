@@ -63,6 +63,7 @@ function BookForm() {
     const currentPage = formData.get("book-current-page");
     const pageCount = formData.get("book-page-count");
     const rating = formData.get("book-rating");
+    const comment = formData.get("book-comment") as string;
 
     const bookId = await createBook(title, author);
 
@@ -80,6 +81,7 @@ function BookForm() {
               current_page: currentPage,
             }),
           ...(trackProgress && pageCount && { page_count: pageCount }),
+          comment: comment || null,
         },
       ])
       .then(({ error }) => {
