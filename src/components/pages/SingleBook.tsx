@@ -80,9 +80,7 @@ const SingleBook: React.FC = () => {
   // Auto-update status based on current/total page in edit mode
   useEffect(() => {
     if (!editMode) return;
-    if (current === 0) {
-      setStatus("want-to-read");
-    } else if (total !== undefined && current === total) {
+    if (total !== undefined && current === total) {
       setStatus("finished");
     } else if (current && current > 0) {
       setStatus("reading");
