@@ -118,9 +118,15 @@ const SingleBook: React.FC = () => {
         <Chip label={book.status.replace(/-/g, " ")} sx={{ mb: 2 }} />
 
         {/* Progress */}
-        <Box sx={{ my: 2 }}>
-          <Typography gutterBottom>
-            Progress: Page {progress ?? 0} of {book.page_count ?? "?"}
+        <Paper
+          elevation={1}
+          sx={{
+            p: 2,
+            my: 3,
+          }}
+        >
+          <Typography variant="h3" mb={3}>
+            Progress
           </Typography>
           <LinearProgress
             variant="determinate"
@@ -131,6 +137,10 @@ const SingleBook: React.FC = () => {
             }
             sx={{ mb: 1 }}
           />
+          <Typography variant="body1" mb={2}>
+            {progress ?? 0} / {book.page_count ?? "?"} pages
+          </Typography>
+
           {editMode ? (
             <TextField
               label="Current Page"
@@ -143,22 +153,42 @@ const SingleBook: React.FC = () => {
               sx={{ width: 120 }}
             />
           ) : null}
-        </Box>
+        </Paper>
 
         {/* Rating */}
-        <Box sx={{ my: 2 }}>
-          <Typography gutterBottom>My Rating:</Typography>
+        <Paper
+          elevation={1}
+          sx={{
+            p: 2,
+            my: 3,
+          }}
+        >
+          <Typography variant="h3" mb={3}>
+            My rating
+          </Typography>
           <Rating
+            size="large"
             value={rating}
             onChange={(_, newValue) => setRating(newValue)}
             readOnly={!editMode}
             precision={0.5}
+            sx={{
+              color: "primary.main",
+            }}
           />
-        </Box>
+        </Paper>
 
         {/* Comment */}
-        <Box sx={{ my: 2 }}>
-          <Typography gutterBottom>Comment:</Typography>
+        <Paper
+          elevation={1}
+          sx={{
+            p: 2,
+            my: 3,
+          }}
+        >
+          <Typography variant="h3" mb={3}>
+            My thoughts
+          </Typography>
           {editMode ? (
             <TextField
               multiline
@@ -168,9 +198,25 @@ const SingleBook: React.FC = () => {
               fullWidth
             />
           ) : (
-            <Typography>{comment || <i>No comment</i>}</Typography>
+            <Box
+              minHeight={70}
+              display="flex"
+              alignItems="center"
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1,
+                p: 2,
+              }}
+            >
+              <Typography>
+                {comment && comment.trim() ? comment : <i>No comment</i>}
+              </Typography>
+            </Box>
           )}
-        </Box>
+        </Paper>
+
+        {/* Error message */}
 
         {/* Edit/Save/Cancel Buttons */}
         <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
