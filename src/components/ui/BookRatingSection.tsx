@@ -9,7 +9,6 @@ interface BookRatingSectionProps {
   disabled?: boolean;
   readOnly?: boolean;
   showToggle?: boolean;
-  disableMessage?: string;
 }
 
 export const BookRatingSection: React.FC<BookRatingSectionProps> = ({
@@ -20,7 +19,6 @@ export const BookRatingSection: React.FC<BookRatingSectionProps> = ({
   disabled = false,
   readOnly = false,
   showToggle = false,
-  disableMessage,
 }) => {
   return (
     <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
@@ -58,9 +56,9 @@ export const BookRatingSection: React.FC<BookRatingSectionProps> = ({
           disabled={disabled || (showToggle && !trackRating)}
           sx={{ color: "primary.main", mb: showToggle ? 1 : 0 }}
         />
-        {disabled && disableMessage && (
+        {disabled && (
           <Typography variant="body2" color="text.secondary">
-            {disableMessage}
+            You cannot rate a book you haven't read yet.
           </Typography>
         )}
       </Box>

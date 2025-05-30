@@ -249,7 +249,6 @@ function BookForm() {
               onTrackRatingChange={setTrackRating}
               disabled={status === "want-to-read"}
               showToggle={true}
-              disableMessage="Rate after reading"
             />
 
             {/* text field for personal comment */}
