@@ -14,16 +14,91 @@ import {
   Stack,
   Fade,
   Switch,
+  Alert,
 } from "@mui/material";
+import { supabase } from "../../client";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
   const [rating, setRating] = useState<number | null>(0);
   const [trackProgress, setTrackProgress] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  async function createBook(title: string, author: string) {
+    // Check if the book exists in the books table
+    const { data: bookData } = await supabase
+      .from("books")
+      .select("*")
+      .eq("title", title)
+      .eq("author", author)
+      .single();
+
+    if (bookData) {
+      return bookData.id; // Book already exists, return its id
+    }
+    // Insert the book into the books table
+    const { error } = await supabase
+      .from("books")
+      .insert([{ title, author }])
+      .select()
+      .single();
+    if (error) {
+      return console.error("Error inserting book:", error);
+    }
+    // fetch the newly created book id
+    const { data: newBookData } = await supabase
+      .from("books")
+      .select("*")
+      .eq("title", title)
+      .eq("author", author)
+      .single();
+    return newBookData.id;
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const title = formData.get("book-title") as string;
+    const author = formData.get("book-author") as string;
+    const currentPage = formData.get("book-current-page");
+    const pageCount = formData.get("book-page-count");
+    const rating = formData.get("book-rating");
+    const comment = formData.get("book-comment") as string;
+
+    const bookId = await createBook(title, author);
+
+    // Insert the book_user entry
+    supabase
+      .from("book_user")
+      .insert([
+        {
+          book_id: bookId,
+          user_id: 1, // HARDCODED UNTIL AUTH IS IMPLEMENTED
+          status: status,
+          rating: rating ? parseFloat(rating as string) : null,
+          ...(trackProgress &&
+            currentPage && {
+              current_page: currentPage,
+            }),
+          ...(trackProgress && pageCount && { page_count: pageCount }),
+          comment: comment || null,
+        },
+      ])
+      .then(({ error }) => {
+        if (error && error.code === "23505") {
+          setSubmitError("This book is already in your collection.");
+        } else if (error) {
+          setSubmitError("An error occurred. Please try again.");
+          console.error("Error inserting book_user:", error);
+        } else {
+          setSubmitError(null);
+        }
+      });
+  }
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
-      <Paper elevation={1} sx={{ p: 4, borderRadius: 2 }}>
+      <Paper elevation={1} sx={{ p: 4 }}>
         <Typography
           variant="h2"
           component="h2"
@@ -32,10 +107,10 @@ function BookForm() {
           Add a new book to your collection
         </Typography>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <Stack spacing={3}>
             <TextField
-              id="book-title"
+              name="book-title"
               label="Title"
               variant="outlined"
               required
@@ -43,7 +118,7 @@ function BookForm() {
             />
 
             <TextField
-              id="book-author"
+              name="book-author"
               label="Author"
               variant="outlined"
               required
@@ -55,7 +130,6 @@ function BookForm() {
               sx={{
                 p: 2,
                 mb: 2,
-                borderRadius: 1,
               }}
             >
               <FormControl component="fieldset">
@@ -95,9 +169,7 @@ function BookForm() {
                   sx={{
                     p: 2,
                     mb: 2,
-                    borderRadius: 1,
                     width: "100%",
-                    bgcolor: "secondary.main",
                   }}
                 >
                   <Box
@@ -109,7 +181,7 @@ function BookForm() {
                   >
                     <Typography variant="h3">Track your progress</Typography>
                     <Switch
-                      id="book-track-progress"
+                      name="book-track-progress"
                       color="primary"
                       size="small"
                       checked={trackProgress}
@@ -131,12 +203,13 @@ function BookForm() {
                       I've read
                     </Typography>
                     <TextField
-                      id="book-current-page"
+                      name="book-current-page"
                       type="number"
                       size="small"
                       sx={{ width: 80 }}
                       slotProps={{ htmlInput: { min: 0 } }}
                       disabled={!trackProgress}
+                      required={trackProgress}
                     />
                     <Typography
                       color={trackProgress ? "text.primary" : "text.secondary"}
@@ -144,12 +217,13 @@ function BookForm() {
                       pages out of
                     </Typography>
                     <TextField
-                      id="book-page-count"
+                      name="book-page-count"
                       type="number"
                       size="small"
                       sx={{ width: 80 }}
                       slotProps={{ htmlInput: { min: 0 } }}
                       disabled={!trackProgress}
+                      required={trackProgress}
                     />
                     <Typography
                       color={trackProgress ? "text.primary" : "text.secondary"}
@@ -168,11 +242,6 @@ function BookForm() {
                 sx={{
                   p: 2,
                   mb: 2,
-                  bgcolor:
-                    status === "want-to-read"
-                      ? "background.paper"
-                      : "secondary.main",
-                  borderRadius: 1,
                 }}
               >
                 <Typography
@@ -195,11 +264,13 @@ function BookForm() {
                     disabled={status === "want-to-read"}
                     sx={{
                       color: "primary.main",
+                      mb: 1,
                     }}
                     value={rating}
                     onChange={(event, newValue) => {
                       setRating(newValue);
                     }}
+                    name="book-rating"
                   />
                   {status === "want-to-read" && (
                     <Typography variant="body2" color="text.secondary">
@@ -221,6 +292,29 @@ function BookForm() {
               </Paper>
             </Box>
 
+            {/* text field for personal comment */}
+            <Paper
+              elevation={1}
+              sx={{
+                p: 2,
+                mb: 2,
+              }}
+            >
+              <Typography variant="h3" component="legend" sx={{ mb: 2 }}>
+                Comment
+              </Typography>
+              <TextField
+                name="book-comment"
+                label="Comment"
+                variant="outlined"
+                multiline
+                rows={4}
+                fullWidth
+                placeholder="Add a personal comment about this book..."
+                sx={{ mb: 2 }}
+              />
+            </Paper>
+
             <Button
               variant="contained"
               type="submit"
@@ -230,6 +324,15 @@ function BookForm() {
             >
               Add Book
             </Button>
+            {submitError && (
+              <Alert
+                variant="outlined"
+                severity="info"
+                sx={{ textAlign: "center" }}
+              >
+                {submitError}
+              </Alert>
+            )}
           </Stack>
         </form>
       </Paper>
