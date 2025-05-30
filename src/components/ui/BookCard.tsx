@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { MenuBook, Delete } from "@mui/icons-material";
 import { type BookCardProps } from "../../types";
+import { Link } from "react-router-dom";
 
 const BookCard: React.FC<BookCardProps> = ({
   id,
@@ -98,9 +99,14 @@ const BookCard: React.FC<BookCardProps> = ({
           },
         }}
       >
-        <Typography variant="h4" noWrap>
-          {title}
-        </Typography>
+        <Link
+          to={`/book/${id}`}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Typography variant="h4" noWrap>
+            {title}
+          </Typography>
+        </Link>
 
         <Typography variant="caption" sx={{ mb: 3 }}>
           {author}
