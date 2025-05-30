@@ -22,6 +22,7 @@ import { ChevronLeft, Delete } from "@mui/icons-material";
 import { supabase } from "../../client";
 import type { Book } from "../../types";
 import { Link } from "react-router-dom";
+import BackButton from "../ui/BackButton";
 
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -133,16 +134,7 @@ const SingleBook: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
       <Paper elevation={1} sx={{ p: 4 }}>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 5 }}>
-          <Button
-            component={Link}
-            to="/dashboard"
-            startIcon={<ChevronLeft />}
-            color="primary"
-          >
-            Go back to dashboard
-          </Button>
-        </Box>
+        <BackButton />
         <Stack
           direction="row"
           justifyContent="space-between"

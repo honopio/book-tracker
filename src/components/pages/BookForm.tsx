@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../ui/BackButton";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
@@ -105,6 +106,7 @@ function BookForm() {
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
       <Paper elevation={1} sx={{ p: 4 }}>
+        <BackButton />
         <Typography
           variant="h2"
           component="h2"
