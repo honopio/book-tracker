@@ -17,6 +17,7 @@ import {
   Alert,
 } from "@mui/material";
 import { supabase } from "../../client";
+import { useNavigate } from "react-router-dom";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
@@ -24,6 +25,7 @@ function BookForm() {
   const [trackProgress, setTrackProgress] = useState(false);
   const [trackRating, setTrackRating] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   async function createBook(title: string, author: string) {
     // Check if the book exists in the books table
@@ -93,6 +95,9 @@ function BookForm() {
           console.error("Error inserting book_user:", error);
         } else {
           setSubmitError(null);
+          navigate("/dashboard", {
+            state: { message: "Book added successfully" },
+          });
         }
       });
   }

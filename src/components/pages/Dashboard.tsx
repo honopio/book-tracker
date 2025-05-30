@@ -1,10 +1,21 @@
 import React from "react";
-import { Box, Container, Typography, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  useMediaQuery,
+  Fab,
+  Tooltip,
+  Alert,
+  Fade,
+} from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
 import type { Book } from "../../types";
 import { useEffect, useState } from "react";
 import { supabase } from "../../client";
 import theme from "../../theme";
+import { NavLink, useLocation } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 
 // fetch books from db
 function useBooks() {
@@ -28,6 +39,11 @@ function useBooks() {
           title: row.books?.title,
           author: row.books?.author,
         }));
+        merged.sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+
         setBooks(merged as Book[]);
       }
     }
@@ -40,11 +56,21 @@ function useBooks() {
 const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
   const books = useBooks();
+  const location = useLocation();
+  const message = location.state?.message;
 
   // Filter books by status
   const currentlyReading = books.filter((book) => book.status === "reading");
   const wantToRead = books.filter((book) => book.status === "want-to-read");
   const finishedBooks = books.filter((book) => book.status === "finished");
+
+  const [showSuccess, setShowSuccess] = useState(!!message);
+  useEffect(() => {
+    if (showSuccess) {
+      const timer = setTimeout(() => setShowSuccess(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccess]);
 
   return (
     <Box
@@ -66,6 +92,23 @@ const Dashboard: React.FC = () => {
         <Typography variant="h1" component="h1" m={8} align="center">
           My Reading Dashboard
         </Typography>
+        {message && (
+          <Fade in={showSuccess} timeout={500}>
+            <Alert
+              color="info"
+              severity="success"
+              sx={{
+                mb: 4,
+                fontSize: "1.1rem",
+                fontWeight: 500,
+                py: 2,
+                px: 3,
+              }}
+            >
+              {message}
+            </Alert>
+          </Fade>
+        )}
 
         <Box
           sx={{
@@ -123,6 +166,22 @@ const Dashboard: React.FC = () => {
           </Box>
         </Box>
       </Container>
+      <NavLink to="/add-book">
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 24,
+            right: 24,
+            zIndex: 1000,
+          }}
+        >
+          <Tooltip title="Add a book" arrow>
+            <Fab color="primary" aria-label="add book">
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+        </Box>
+      </NavLink>
     </Box>
   );
 };
