@@ -209,9 +209,7 @@ const SingleBook: React.FC = () => {
                 p: 2,
               }}
             >
-              <Typography>
-                {comment && comment.trim() ? comment : <i>No comment</i>}
-              </Typography>
+              <Typography>{comment}</Typography>
             </Box>
           )}
         </Paper>
