@@ -89,8 +89,8 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         }}
       >
         <Typography
-          variant="h5"
-          component="h3"
+          variant="h2"
+          component="h2"
           sx={{ color: textColor, fontWeight: 600 }}
         >
           {title}
@@ -161,8 +161,8 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 status={book.status}
                 progress={book.progress}
                 rating={book.rating}
-                pageCount={book.pageCount}
-                currentPage={book.currentPage}
+                pageCount={book.page_count}
+                currentPage={book.current_page}
                 textColor={textColor}
               />
             </Box>
