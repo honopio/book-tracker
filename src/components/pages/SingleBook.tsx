@@ -26,7 +26,6 @@ const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
-  const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState<number | undefined>(undefined);
   const [total, setTotal] = useState<number | undefined>(undefined);
   const [rating, setRating] = useState<number | null>(null);
@@ -38,7 +37,6 @@ const SingleBook: React.FC = () => {
 
   // Extract fetchBook as a separate function
   const fetchBook = async () => {
-    setLoading(true);
     const { data, error } = await supabase
       .from("book_user")
       .select(`*, books (title, author)`)
@@ -46,7 +44,6 @@ const SingleBook: React.FC = () => {
       .single();
     if (error || !data) {
       setError("Book not found.");
-      setLoading(false);
       return;
     }
     setBook({
@@ -59,7 +56,6 @@ const SingleBook: React.FC = () => {
     setRating(data.rating);
     setComment(data.comment || "");
     setStatus(data.status);
-    setLoading(false);
   };
 
   // Initial fetch
@@ -89,9 +85,7 @@ const SingleBook: React.FC = () => {
 
   // Update book entry
   async function handleSave() {
-    console.log("Saving book");
     if (!book || !validatePages()) return;
-    console.log("after validation");
 
     const { error } = await supabase
       .from("book_user")
@@ -128,7 +122,6 @@ const SingleBook: React.FC = () => {
     }
   }
 
-  if (loading) return <Typography>Loading...</Typography>;
   if (!book) return null;
 
   return (
@@ -158,13 +151,26 @@ const SingleBook: React.FC = () => {
                   label={statusOption.replace(/-/g, " ")}
                   variant={status === statusOption ? "filled" : "outlined"}
                   color={status === statusOption ? "primary" : "default"}
-                  onClick={() => setStatus(statusOption)}
+                  onClick={() => {
+                    setStatus(statusOption);
+                    if (statusOption === "want-to-read") {
+                      setCurrent(0);
+                    } else if (
+                      statusOption === "finished" &&
+                      total !== undefined
+                    ) {
+                      setCurrent(total);
+                    } else if (statusOption === "reading") {
+                      setCurrent(book.current_page ?? 0);
+                    }
+                  }}
                 />
               ))}
             </Stack>
           </Box>
         )}
         {!editMode && <Chip label={status.replace(/-/g, " ")} sx={{ mb: 2 }} />}
+
         {/* Progress */}
         <Paper
           elevation={1}
