@@ -7,6 +7,7 @@ export interface Book {
   rating?: number; // 1-5 stars for finished books
   pageCount?: number;
   currentPage?: number;
+  comment: string;
 }
 
 export interface BookCardProps extends Book {
