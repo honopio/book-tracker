@@ -1,12 +1,12 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import Dashboard from "../pages/Dashboard";
+import { Outlet } from "react-router-dom";
 
 function Layout() {
   return (
     <>
       <Header />
-      <Dashboard />
+      <Outlet />
       <Footer />
     </>
   );
