@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  FormHelperText,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { supabase } from "../../client";
@@ -88,7 +89,9 @@ const SingleBook: React.FC = () => {
 
   // Update book entry
   async function handleSave() {
+    console.log("Saving book");
     if (!book || !validatePages()) return;
+    console.log("after validation");
 
     const { error } = await supabase
       .from("book_user")
@@ -126,7 +129,6 @@ const SingleBook: React.FC = () => {
   }
 
   if (loading) return <Typography>Loading...</Typography>;
-  if (error) return <Alert severity="error">{error}</Alert>;
   if (!book) return null;
 
   return (
@@ -184,28 +186,46 @@ const SingleBook: React.FC = () => {
           </Typography>
 
           {editMode && (
-            <Box display="flex" gap={2} mb={2}>
-              <TextField
-                label="Current page"
-                type="number"
-                value={current ?? ""}
-                onChange={(e) => setCurrent(Number(e.target.value))}
-                slotProps={{
-                  htmlInput: { min: 0, max: total ?? undefined },
-                }}
-                sx={{ width: 120 }}
-              />
-
-              <TextField
-                label="Total pages"
-                type="number"
-                value={total ?? ""}
-                onChange={(e) => setTotal(Number(e.target.value))}
-                slotProps={{
-                  htmlInput: { min: current ?? 0 },
-                }}
-                sx={{ width: 120 }}
-              />
+            <Box display="flex" flexDirection="column" gap={1} mb={2}>
+              <Box display="flex" gap={2}>
+                <TextField
+                  label="Current page"
+                  type="number"
+                  value={current ?? ""}
+                  onChange={(e) => setCurrent(Number(e.target.value))}
+                  slotProps={{
+                    htmlInput: { min: 0, max: total ?? undefined },
+                  }}
+                  sx={{ width: 120 }}
+                  error={
+                    current !== undefined &&
+                    total !== undefined &&
+                    current > total
+                  }
+                />
+                <TextField
+                  label="Total pages"
+                  type="number"
+                  value={total ?? ""}
+                  onChange={(e) => setTotal(Number(e.target.value))}
+                  slotProps={{
+                    htmlInput: { min: current ?? 0 },
+                  }}
+                  sx={{ width: 120 }}
+                  error={
+                    current !== undefined &&
+                    total !== undefined &&
+                    current > total
+                  }
+                />
+              </Box>
+              {current !== undefined &&
+                total !== undefined &&
+                current > total && (
+                  <FormHelperText error>
+                    Current page cannot be greater than total pages
+                  </FormHelperText>
+                )}
             </Box>
           )}
         </Paper>
@@ -291,6 +311,11 @@ const SingleBook: React.FC = () => {
             </Button>
           )}
         </Stack>
+        {error && (
+          <Alert severity="error" sx={{ m: 2 }}>
+            {error}
+          </Alert>
+        )}
       </Paper>
 
       {/* Delete confirmation dialog */}
