@@ -1,25 +1,121 @@
+import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { Link } from "react-router-dom";
-import { Person } from "@mui/icons-material";
-import { Drawer, Box, List, ListItem, ListItemText } from "@mui/material";
-import React, { useState } from "react";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import Divider from "@mui/material/Divider";
+import { Person, Close, Book, Add } from "@mui/icons-material";
+import {
+  Drawer,
+  Box,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  Avatar,
+  ListItemButton,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
+import { TrendingUp, Logout } from "@mui/icons-material";
+
+const DRAWER_WIDTH = 320;
 
 function Header() {
-  const [open, setOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
   };
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    setDrawerOpen(false);
   };
+
+  const menuItems = [
+    { text: "My library", icon: <Book />, action: () => {} },
+    { text: "Reading Stats", icon: <TrendingUp />, action: () => {} },
+    { text: "Add a book", icon: <Add />, action: () => {} },
+    { text: "Logout", icon: <Logout />, action: () => {} },
+  ];
+
+  const drawerContent = (
+    <Box
+      sx={{
+        width: DRAWER_WIDTH,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+      role="presentation"
+    >
+      {/* Close button for mobile */}
+      {isMobile && (
+        <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1 }}>
+          <IconButton onClick={handleDrawerClose}>
+            <Close />
+          </IconButton>
+        </Box>
+      )}
+
+      {/* User Profile Section */}
+      <Box
+        sx={{
+          p: 3,
+          backgroundColor: "primary.main",
+          color: "primary.contrastText",
+          textAlign: "center",
+        }}
+      >
+        <Avatar
+          sx={{
+            width: 64,
+            height: 64,
+            mx: "auto",
+            mb: 2,
+            backgroundColor: "primary.light",
+          }}
+        >
+          <Person sx={{ fontSize: 40 }} />
+        </Avatar>
+        <Typography variant="h6" gutterBottom>
+          email address
+        </Typography>
+      </Box>
+
+      <Divider />
+
+      {/* Menu Items */}
+      <List sx={{ flexGrow: 1, pt: 2 }}>
+        {menuItems.map((item, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton
+              onClick={() => {
+                item.action();
+                handleDrawerClose();
+              }}
+              sx={{
+                py: 1.5,
+                px: 3,
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: "text.secondary" }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
     <>
@@ -61,33 +157,38 @@ function Header() {
           </Link>
 
           <div style={{ flexGrow: 1 }} />
-          <IconButton onClick={handleDrawerOpen}>
-            <Person />
+
+          <IconButton
+            onClick={handleDrawerToggle}
+            sx={{
+              color: "text.primary",
+              transform: drawerOpen ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease",
+            }}
+          >
+            {drawerOpen ? <Close /> : <Person />}
           </IconButton>
         </Toolbar>
       </AppBar>
 
+      {/* Overlay Drawer */}
       <Drawer
         anchor="right"
-        open={open}
+        open={drawerOpen}
         onClose={handleDrawerClose}
         variant="temporary"
+        ModalProps={{
+          keepMounted: true, // Better performance on mobile
+        }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: DRAWER_WIDTH,
+            boxSizing: "border-box",
+            backgroundColor: "background.paper",
+          },
+        }}
       >
-        {/* drawer header */}
-        <div style={{ display: "flex", justifyContent: "flex-start" }}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronRightIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={handleDrawerClose}
-          onKeyDown={handleDrawerClose}
-        >
-          <List></List>
-        </Box>
+        {drawerContent}
       </Drawer>
     </>
   );
