@@ -179,7 +179,6 @@ function BookForm() {
                       mb: 2,
                     }}
                   >
-                    <Typography variant="h3">Track your progress</Typography>
                     <Switch
                       name="book-track-progress"
                       color="primary"
@@ -187,6 +186,7 @@ function BookForm() {
                       checked={trackProgress}
                       onChange={(e) => setTrackProgress(e.target.checked)}
                     />
+                    <Typography variant="h3">Track your progress</Typography>
                   </Box>
 
                   <Box
