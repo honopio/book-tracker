@@ -95,7 +95,9 @@ function BookForm() {
           console.error("Error inserting book_user:", error);
         } else {
           setSubmitError(null);
-          navigate("/dashboard");
+          navigate("/dashboard", {
+            state: { message: "Book added successfully" },
+          });
         }
       });
   }

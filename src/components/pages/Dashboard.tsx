@@ -6,13 +6,14 @@ import {
   useMediaQuery,
   Fab,
   Tooltip,
+  Alert,
 } from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
 import type { Book } from "../../types";
 import { useEffect, useState } from "react";
 import { supabase } from "../../client";
 import theme from "../../theme";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 
 // fetch books from db
@@ -54,6 +55,9 @@ function useBooks() {
 const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
   const books = useBooks();
+  const location = useLocation();
+  console.log("Current location:", location, "state:", location.state);
+  const message = location.state?.message || "";
 
   // Filter books by status
   const currentlyReading = books.filter((book) => book.status === "reading");
@@ -80,6 +84,17 @@ const Dashboard: React.FC = () => {
         <Typography variant="h1" component="h1" m={8} align="center">
           My Reading Dashboard
         </Typography>
+        {message && (
+          <Alert
+            variant="outlined"
+            severity="success"
+            sx={{ mb: 4, textAlign: "center" }}
+          >
+            {message}
+          </Alert>
+        )}
+
+        {/* Main content area */}
 
         <Box
           sx={{
