@@ -6,7 +6,11 @@ import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { Link } from "react-router-dom";
 import { Person } from "@mui/icons-material";
 
-function Header({ onDrawerOpen }) {
+interface HeaderProps {
+  onDrawerOpen: () => void;
+}
+
+function Header({ onDrawerOpen }: HeaderProps) {
   return (
     <>
       <AppBar

@@ -20,17 +20,23 @@ import {
   TrendingUp,
   Logout,
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const DRAWER_WIDTH = 320;
 
 const menuItems = [
-  { text: "My library", icon: <Book />, action: () => {} },
-  { text: "Reading Stats", icon: <TrendingUp />, action: () => {} },
-  { text: "Add a book", icon: <Add />, action: () => {} },
-  { text: "Logout", icon: <Logout />, action: () => {} },
+  { text: "My library", icon: <Book />, to: "/dashboard" },
+  { text: "Reading Stats", icon: <TrendingUp />, to: "/stats" },
+  { text: "Add a book", icon: <Add />, to: "/add-book" },
+  { text: "Logout", icon: <Logout />, to: "/logout" },
 ];
 
-function Sidebar({ open, onClose }) {
+interface SidebarProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+function Sidebar({ open, onClose }: SidebarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -84,10 +90,9 @@ function Sidebar({ open, onClose }) {
         {menuItems.map((item, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton
-              onClick={() => {
-                item.action();
-                onClose();
-              }}
+              component={Link}
+              to={item.to}
+              onClick={onClose}
               sx={{
                 py: 1.5,
                 px: 3,
