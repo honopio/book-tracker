@@ -37,6 +37,11 @@ function useBooks() {
           title: row.books?.title,
           author: row.books?.author,
         }));
+        merged.sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+
         setBooks(merged as Book[]);
       }
     }
