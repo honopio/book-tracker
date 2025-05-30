@@ -7,6 +7,7 @@ import {
   Fab,
   Tooltip,
   Alert,
+  Fade,
 } from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
 import type { Book } from "../../types";
@@ -56,13 +57,20 @@ const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
   const books = useBooks();
   const location = useLocation();
-  console.log("Current location:", location, "state:", location.state);
-  const message = location.state?.message || "";
+  const message = location.state?.message;
 
   // Filter books by status
   const currentlyReading = books.filter((book) => book.status === "reading");
   const wantToRead = books.filter((book) => book.status === "want-to-read");
   const finishedBooks = books.filter((book) => book.status === "finished");
+
+  const [showSuccess, setShowSuccess] = useState(!!message);
+  useEffect(() => {
+    if (showSuccess) {
+      const timer = setTimeout(() => setShowSuccess(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccess]);
 
   return (
     <Box
@@ -85,16 +93,22 @@ const Dashboard: React.FC = () => {
           My Reading Dashboard
         </Typography>
         {message && (
-          <Alert
-            variant="outlined"
-            severity="success"
-            sx={{ mb: 4, textAlign: "center" }}
-          >
-            {message}
-          </Alert>
+          <Fade in={showSuccess} timeout={500}>
+            <Alert
+              color="info"
+              severity="success"
+              sx={{
+                mb: 4,
+                fontSize: "1.1rem",
+                fontWeight: 500,
+                py: 2,
+                px: 3,
+              }}
+            >
+              {message}
+            </Alert>
+          </Fade>
         )}
-
-        {/* Main content area */}
 
         <Box
           sx={{
