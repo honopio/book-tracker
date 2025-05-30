@@ -35,7 +35,7 @@ const SingleBook: React.FC = () => {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [status, setStatus] = useState<string>("");
 
-  // Extract fetchBook as a separate function
+  // Fetch book details from db
   const fetchBook = async () => {
     const { data, error } = await supabase
       .from("book_user")
@@ -63,6 +63,7 @@ const SingleBook: React.FC = () => {
     fetchBook();
   }, [id]);
 
+  // Validate current and total pages
   const pageError =
     current !== undefined && total !== undefined && current > total;
   const validatePages = () => {
@@ -303,7 +304,13 @@ const SingleBook: React.FC = () => {
               >
                 Save
               </Button>
-              <Button variant="outlined" onClick={() => setEditMode(false)}>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  fetchBook();
+                  setEditMode(false);
+                }}
+              >
                 Cancel
               </Button>
             </>
