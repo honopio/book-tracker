@@ -98,8 +98,8 @@ const SingleBook: React.FC = () => {
   if (!book) return null;
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", p: 3 }}>
-      <Paper sx={{ p: 4 }}>
+    <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
+      <Paper elevation={1} sx={{ p: 4 }}>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -115,6 +115,7 @@ const SingleBook: React.FC = () => {
         <Typography variant="h3" color="text.secondary" mb={3}>
           {book.author}
         </Typography>
+
         <Chip label={book.status.replace(/-/g, " ")} sx={{ mb: 2 }} />
 
         {/* Progress */}
@@ -214,10 +215,13 @@ const SingleBook: React.FC = () => {
           )}
         </Paper>
 
-        {/* Error message */}
-
         {/* Edit/Save/Cancel Buttons */}
-        <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ mt: 3 }}
+          justifyContent="center" //
+        >
           {editMode ? (
             <>
               <Button variant="contained" onClick={handleSave}>
@@ -237,7 +241,7 @@ const SingleBook: React.FC = () => {
 
       {/* Delete confirmation dialog */}
       <Dialog open={deleteDialog} onClose={() => setDeleteDialog(false)}>
-        <DialogTitle>Delete Book Entry?</DialogTitle>
+        <DialogTitle>Delete from library</DialogTitle>
         <DialogContent>
           <Typography>
             Are you sure you want to delete this book entry? This cannot be
