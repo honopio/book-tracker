@@ -75,7 +75,7 @@ function BookForm() {
           book_id: bookId,
           user_id: 1, // HARDCODED UNTIL AUTH IS IMPLEMENTED
           status: status,
-          ...(rating && { rating }),
+          rating: rating ? parseFloat(rating as string) : null,
           ...(trackProgress &&
             currentPage && {
               current_page: currentPage,
