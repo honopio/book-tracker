@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import theme from "./theme.tsx";
 import Dashboard from "./components/pages/Dashboard";
+import SingleBook from "./components/pages/SingleBook.tsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
+          <Route path="book/:id" element={<SingleBook />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="add-book" element={<BookForm />} />
         </Route>
