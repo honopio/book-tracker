@@ -87,8 +87,8 @@ const SingleBook: React.FC = () => {
     const { error } = await supabase
       .from("book_user")
       .update({
-        current_page: current,
-        page_count: total,
+        current_page: trackProgress && current !== undefined ? current : null,
+        page_count: trackProgress && total !== undefined ? total : null,
         rating,
         comment,
         status: status,
