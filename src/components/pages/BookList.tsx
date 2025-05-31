@@ -128,7 +128,14 @@ const BookList = () => {
 
         {book.rating !== null && (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Rating value={book.rating} readOnly size="small" />
+            <Rating
+              value={book.rating}
+              readOnly
+              size="small"
+              sx={{
+                color: "primary.main",
+              }}
+            />
           </Box>
         )}
       </CardContent>
