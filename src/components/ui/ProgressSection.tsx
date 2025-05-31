@@ -68,7 +68,8 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
             <Typography variant="body1">
               {current ?? 0} / {total ?? "?"} pages
             </Typography>
-            {total && current && current === total && (
+
+            {total && current != null && current === total && (
               <Chip
                 icon={<Book />}
                 label="Completed!"
