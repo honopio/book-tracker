@@ -4,11 +4,6 @@ import {
   Paper,
   Typography,
   TextField,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
   Button,
   Stack,
   Alert,
@@ -19,6 +14,7 @@ import BackButton from "../ui/BackButton";
 import { RatingSection } from "../ui/RatingSection";
 import { Comment } from "../ui/Comment";
 import { ProgressSection } from "../ui/ProgressSection";
+import { StatusSection } from "../ui/StatusSection";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
@@ -71,9 +67,6 @@ function BookForm() {
     const formData = new FormData(event.currentTarget);
     const title = formData.get("book-title") as string;
     const author = formData.get("book-author") as string;
-    const currentPage = formData.get("book-current-page");
-    const pageCount = formData.get("book-page-count");
-
     const bookId = await createBook(title, author);
 
     // Insert the book_user entry
@@ -85,10 +78,7 @@ function BookForm() {
           user_id: 1, // HARDCODED UNTIL AUTH IS IMPLEMENTED
           status: status,
           rating: rating,
-          ...(trackProgress &&
-            currentPage && {
-              current_page: currentPage,
-            }),
+          ...(trackProgress && currentPage && { current_page: currentPage }),
           ...(trackProgress && pageCount && { page_count: pageCount }),
           comment: comment || null,
         },
@@ -138,43 +128,15 @@ function BookForm() {
               fullWidth
             />
 
-            <Paper
-              elevation={1}
-              sx={{
-                p: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl component="fieldset">
-                <FormLabel component="legend" sx={{ mb: 1 }}>
-                  Book Status
-                </FormLabel>
-                <RadioGroup
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  name="book-status"
-                >
-                  <FormControlLabel
-                    value="want-to-read"
-                    control={<Radio />}
-                    label="I want to read it"
-                  />
-                  <FormControlLabel
-                    value="reading"
-                    control={<Radio />}
-                    label="I am currently reading it"
-                  />
-                  <FormControlLabel
-                    value="finished"
-                    control={<Radio />}
-                    label="I finished reading it"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Paper>
-
-            {/* optional current page */}
-            {/* optional page count */}
+            <StatusSection
+              status={status}
+              onStatusChange={setStatus}
+              current={currentPage}
+              total={pageCount}
+              setCurrent={setCurrentPage}
+              editMode={true}
+              bookCurrentPage={currentPage}
+            />
 
             <ProgressSection
               current={currentPage}
@@ -196,7 +158,6 @@ function BookForm() {
               showToggle={true}
             />
 
-            {/* text field for personal comment */}
             <Comment
               comment={comment}
               setComment={setComment}

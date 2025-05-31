@@ -7,7 +7,6 @@ import {
   Button,
   IconButton,
   Stack,
-  Chip,
   Alert,
   Dialog,
   DialogTitle,
@@ -21,6 +20,7 @@ import { RatingSection } from "../ui/RatingSection";
 import BackButton from "../ui/BackButton";
 import { Comment } from "../ui/Comment";
 import { ProgressSection } from "../ui/ProgressSection";
+import { StatusSection } from "../ui/StatusSection";
 
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -73,7 +73,7 @@ const SingleBook: React.FC = () => {
   // Auto-update status based on current/total page in edit mode
   useEffect(() => {
     if (!editMode) return;
-    if (total !== undefined && current === total) {
+    if (total !== undefined && current === total && current > 0) {
       setStatus("finished");
     } else if (current && current > 0) {
       setStatus("reading");
@@ -142,34 +142,17 @@ const SingleBook: React.FC = () => {
         <Typography variant="h3" color="text.secondary" mb={3}>
           {book.author}
         </Typography>
-        {editMode && (
-          <Box sx={{ mb: 2 }}>
-            <Stack direction="row" spacing={1}>
-              {["want-to-read", "reading", "finished"].map((statusOption) => (
-                <Chip
-                  key={statusOption}
-                  label={statusOption.replace(/-/g, " ")}
-                  variant={status === statusOption ? "filled" : "outlined"}
-                  color={status === statusOption ? "primary" : "default"}
-                  onClick={() => {
-                    setStatus(statusOption);
-                    if (statusOption === "want-to-read") {
-                      setCurrent(0);
-                    } else if (
-                      statusOption === "finished" &&
-                      total !== undefined
-                    ) {
-                      setCurrent(total);
-                    } else if (statusOption === "reading") {
-                      setCurrent(book.currentPage ?? 0);
-                    }
-                  }}
-                />
-              ))}
-            </Stack>
-          </Box>
-        )}
-        {!editMode && <Chip label={status.replace(/-/g, " ")} sx={{ mb: 2 }} />}
+
+        {/* Status Section */}
+        <StatusSection
+          status={status}
+          onStatusChange={setStatus}
+          current={current}
+          total={total}
+          setCurrent={setCurrent}
+          editMode={editMode}
+          bookCurrentPage={book.currentPage}
+        />
 
         {/* Progress */}
         <ProgressSection
@@ -204,7 +187,7 @@ const SingleBook: React.FC = () => {
           direction="row"
           spacing={2}
           sx={{ mt: 3 }}
-          justifyContent="center" //
+          justifyContent="center"
         >
           {editMode ? (
             <>
