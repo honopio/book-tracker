@@ -70,16 +70,6 @@ const SingleBook: React.FC = () => {
   const pageError =
     current !== undefined && total !== undefined && current > total;
 
-  // Auto-update status based on current/total page in edit mode
-  useEffect(() => {
-    if (!editMode) return;
-    if (total !== undefined && current === total && current > 0) {
-      setStatus("finished");
-    } else if (current && current > 0) {
-      setStatus("reading");
-    }
-  }, [current, total, editMode]);
-
   // Update book entry
   async function handleSave() {
     if (!book || pageError) return;
@@ -154,7 +144,6 @@ const SingleBook: React.FC = () => {
           bookCurrentPage={book.currentPage}
         />
 
-        {/* Progress */}
         <ProgressSection
           current={current}
           setCurrent={setCurrent}
@@ -165,6 +154,8 @@ const SingleBook: React.FC = () => {
           toggleSwitch={editMode}
           trackProgress={trackProgress}
           setTrackProgress={setTrackProgress}
+          onStatusChange={setStatus}
+          autoUpdateStatus={editMode}
         />
 
         <RatingSection

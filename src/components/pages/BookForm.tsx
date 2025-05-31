@@ -98,21 +98,6 @@ function BookForm() {
       });
   }
 
-  // Auto-update status based on current/total page
-  useEffect(() => {
-    if (
-      pageCount !== undefined &&
-      currentPage === pageCount &&
-      currentPage > 0
-    ) {
-      setStatus("finished");
-    } else if (currentPage && currentPage > 0) {
-      setStatus("reading");
-    } else if (currentPage === 0) {
-      setStatus("want-to-read");
-    }
-  }, [currentPage, pageCount]);
-
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
       <Paper elevation={1} sx={{ p: 4 }}>
@@ -162,6 +147,8 @@ function BookForm() {
               setTrackProgress={setTrackProgress}
               pageError={pageError}
               toggleSwitch={true}
+              onStatusChange={setStatus}
+              autoUpdateStatus={true}
             />
 
             <RatingSection

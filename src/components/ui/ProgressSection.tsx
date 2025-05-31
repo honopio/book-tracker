@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Paper,
@@ -21,6 +21,8 @@ interface ProgressSectionProps {
   editMode?: boolean;
   pageError?: boolean;
   toggleSwitch?: boolean;
+  onStatusChange?: (status: string) => void;
+  autoUpdateStatus?: boolean;
 }
 
 export const ProgressSection: React.FC<ProgressSectionProps> = ({
@@ -33,7 +35,21 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   editMode = true,
   pageError = false,
   toggleSwitch = false,
+  onStatusChange,
+  autoUpdateStatus = true,
 }) => {
+  useEffect(() => {
+    if (!autoUpdateStatus || !onStatusChange) return;
+
+    if (total !== undefined && current === total && current > 0) {
+      onStatusChange("finished");
+    } else if (current && current > 0) {
+      onStatusChange("reading");
+    } else if (current === 0) {
+      onStatusChange("want-to-read");
+    }
+  }, [current, total, autoUpdateStatus, onStatusChange]);
+
   return (
     <Paper
       elevation={1}
