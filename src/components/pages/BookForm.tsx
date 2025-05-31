@@ -1,23 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
   Typography,
   TextField,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Rating,
   Button,
   Stack,
-  Fade,
-  Switch,
   Alert,
 } from "@mui/material";
 import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../ui/BackButton";
+import { RatingSection } from "../ui/RatingSection";
+import { Comment } from "../ui/Comment";
+import { ProgressSection } from "../ui/ProgressSection";
+import { StatusSection } from "../ui/StatusSection";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
@@ -25,7 +22,14 @@ function BookForm() {
   const [trackProgress, setTrackProgress] = useState(false);
   const [trackRating, setTrackRating] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [comment, setComment] = useState("");
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState<number | undefined>(undefined);
+  const [pageCount, setPageCount] = useState<number | undefined>(undefined);
+  const pageError =
+    currentPage !== undefined &&
+    pageCount !== undefined &&
+    currentPage > pageCount;
 
   async function createBook(title: string, author: string) {
     // Check if the book exists in the books table
@@ -63,11 +67,6 @@ function BookForm() {
     const formData = new FormData(event.currentTarget);
     const title = formData.get("book-title") as string;
     const author = formData.get("book-author") as string;
-    const currentPage = formData.get("book-current-page");
-    const pageCount = formData.get("book-page-count");
-    const rating = formData.get("book-rating");
-    const comment = formData.get("book-comment") as string;
-
     const bookId = await createBook(title, author);
 
     // Insert the book_user entry
@@ -78,11 +77,8 @@ function BookForm() {
           book_id: bookId,
           user_id: 1, // HARDCODED UNTIL AUTH IS IMPLEMENTED
           status: status,
-          rating: rating ? parseFloat(rating as string) : null,
-          ...(trackProgress &&
-            currentPage && {
-              current_page: currentPage,
-            }),
+          rating: rating,
+          ...(trackProgress && currentPage && { current_page: currentPage }),
           ...(trackProgress && pageCount && { page_count: pageCount }),
           comment: comment || null,
         },
@@ -105,6 +101,7 @@ function BookForm() {
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
       <Paper elevation={1} sx={{ p: 4 }}>
+        <BackButton />
         <Typography
           variant="h2"
           component="h2"
@@ -131,203 +128,43 @@ function BookForm() {
               fullWidth
             />
 
-            <Paper
-              elevation={1}
-              sx={{
-                p: 2,
-                mb: 2,
-              }}
-            >
-              <FormControl component="fieldset">
-                <FormLabel component="legend" sx={{ mb: 1 }}>
-                  Book Status
-                </FormLabel>
-                <RadioGroup
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  name="book-status"
-                >
-                  <FormControlLabel
-                    value="want-to-read"
-                    control={<Radio />}
-                    label="I want to read it"
-                  />
-                  <FormControlLabel
-                    value="reading"
-                    control={<Radio />}
-                    label="I am currently reading it"
-                  />
-                  <FormControlLabel
-                    value="finished"
-                    control={<Radio />}
-                    label="I finished reading it"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Paper>
+            <StatusSection
+              status={status}
+              onStatusChange={setStatus}
+              current={currentPage}
+              total={pageCount}
+              setCurrent={setCurrentPage}
+              editMode={true}
+              bookCurrentPage={currentPage}
+            />
 
-            {/* optional current page */}
-            {/* optional page count */}
-            {status === "reading" && (
-              <Fade in={status === "reading"} timeout={300}>
-                <Paper
-                  elevation={1}
-                  sx={{
-                    p: 2,
-                    mb: 2,
-                    width: "100%",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 2,
-                      mb: 2,
-                    }}
-                  >
-                    <Switch
-                      name="book-track-progress"
-                      color="primary"
-                      size="small"
-                      checked={trackProgress}
-                      onChange={(e) => setTrackProgress(e.target.checked)}
-                    />
-                    <Typography variant="h3">Track your progress</Typography>
-                  </Box>
+            <ProgressSection
+              current={currentPage}
+              setCurrent={setCurrentPage}
+              total={pageCount}
+              setTotal={setPageCount}
+              trackProgress={trackProgress}
+              setTrackProgress={setTrackProgress}
+              pageError={pageError}
+              toggleSwitch={true}
+              onStatusChange={setStatus}
+              autoUpdateStatus={true}
+            />
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <Typography
-                      color={trackProgress ? "text.primary" : "text.secondary"}
-                    >
-                      I've read
-                    </Typography>
-                    <TextField
-                      name="book-current-page"
-                      type="number"
-                      size="small"
-                      sx={{ width: 80 }}
-                      slotProps={{ htmlInput: { min: 0 } }}
-                      disabled={!trackProgress}
-                      required={trackProgress}
-                    />
-                    <Typography
-                      color={trackProgress ? "text.primary" : "text.secondary"}
-                    >
-                      pages out of
-                    </Typography>
-                    <TextField
-                      name="book-page-count"
-                      type="number"
-                      size="small"
-                      sx={{ width: 80 }}
-                      slotProps={{ htmlInput: { min: 0 } }}
-                      disabled={!trackProgress}
-                      required={trackProgress}
-                    />
-                    <Typography
-                      color={trackProgress ? "text.primary" : "text.secondary"}
-                    >
-                      pages
-                    </Typography>
-                  </Box>
-                </Paper>
-              </Fade>
-            )}
+            <RatingSection
+              rating={rating}
+              onRatingChange={setRating}
+              trackRating={trackRating}
+              onTrackRatingChange={setTrackRating}
+              disabled={status === "want-to-read"}
+              showToggle={true}
+            />
 
-            {/* optional rating section */}
-            <Box>
-              <Paper
-                elevation={1}
-                sx={{
-                  p: 2,
-                  mb: 2,
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 2,
-                    mb: 2,
-                  }}
-                >
-                  <Switch
-                    name="book-track-rating"
-                    color="primary"
-                    size="small"
-                    checked={trackRating}
-                    onChange={(e) => {
-                      setTrackRating(e.target.checked);
-                      if (!e.target.checked) {
-                        setRating(null);
-                      }
-                    }}
-                    disabled={status === "want-to-read"}
-                  />
-                  <Typography
-                    variant="h3"
-                    color={
-                      status === "want-to-read"
-                        ? "text.secondary"
-                        : "text.primary"
-                    }
-                  >
-                    My rating
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <Rating
-                    defaultValue={0}
-                    size="large"
-                    precision={0.5}
-                    disabled={status === "want-to-read" || !trackRating}
-                    sx={{
-                      color: "primary.main",
-                      mb: 1,
-                    }}
-                    value={rating}
-                    onChange={(event, newValue) => {
-                      setRating(newValue);
-                    }}
-                    name="book-rating"
-                  />
-                  {status === "want-to-read" && (
-                    <Typography variant="body2" color="text.secondary">
-                      Rate after reading
-                    </Typography>
-                  )}
-                </Box>
-              </Paper>
-            </Box>
-
-            {/* text field for personal comment */}
-            <Paper
-              elevation={1}
-              sx={{
-                p: 2,
-                mb: 2,
-              }}
-            >
-              <Typography variant="h3" component="legend" sx={{ mb: 2 }}>
-                Comment
-              </Typography>
-              <TextField
-                name="book-comment"
-                label="Comment"
-                variant="outlined"
-                multiline
-                rows={4}
-                fullWidth
-                placeholder="Add a personal comment about this book..."
-                sx={{ mb: 2 }}
-              />
-            </Paper>
+            <Comment
+              comment={comment}
+              setComment={setComment}
+              editMode={true}
+            />
 
             <Button
               variant="contained"
@@ -335,6 +172,10 @@ function BookForm() {
               size="large"
               fullWidth
               sx={{ mt: 2 }}
+              disabled={
+                !status ||
+                (trackProgress && (pageError || currentPage === undefined))
+              }
             >
               Add Book
             </Button>

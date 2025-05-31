@@ -4,37 +4,37 @@ import {
   Box,
   Paper,
   Typography,
-  LinearProgress,
-  Rating,
-  TextField,
   Button,
   IconButton,
   Stack,
-  Chip,
   Alert,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormHelperText,
 } from "@mui/material";
-import { ChevronLeft, Delete } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import { supabase } from "../../client";
 import type { Book } from "../../types";
-import { Link } from "react-router-dom";
+import { RatingSection } from "../ui/RatingSection";
+import BackButton from "../ui/BackButton";
+import { Comment } from "../ui/Comment";
+import { ProgressSection } from "../ui/ProgressSection";
+import { StatusSection } from "../ui/StatusSection";
 
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
+  const [status, setStatus] = useState<string>("");
+  const [rating, setRating] = useState<number | null>(null);
   const [current, setCurrent] = useState<number | undefined>(undefined);
   const [total, setTotal] = useState<number | undefined>(undefined);
-  const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState<string>("");
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [status, setStatus] = useState<string>("");
+  const [trackProgress, setTrackProgress] = useState(true);
 
   // Fetch book details from db
   const fetchBook = async () => {
@@ -69,35 +69,16 @@ const SingleBook: React.FC = () => {
   // Validate current and total pages
   const pageError =
     current !== undefined && total !== undefined && current > total;
-  const validatePages = () => {
-    if (pageError) {
-      setError("Current page cannot be greater than total pages");
-      return false;
-    }
-    return true;
-  };
-
-  // Auto-update status based on current/total page in edit mode
-  useEffect(() => {
-    if (!editMode) return;
-    if (current === 0) {
-      setStatus("want-to-read");
-    } else if (total !== undefined && current === total) {
-      setStatus("finished");
-    } else if (current && current > 0) {
-      setStatus("reading");
-    }
-  }, [current, total, editMode]);
 
   // Update book entry
   async function handleSave() {
-    if (!book || !validatePages()) return;
+    if (!book || pageError) return;
 
     const { error } = await supabase
       .from("book_user")
       .update({
-        current_page: current,
-        page_count: total,
+        current_page: trackProgress && current !== undefined ? current : null,
+        page_count: trackProgress && total !== undefined ? total : null,
         rating,
         comment,
         status: status,
@@ -135,16 +116,7 @@ const SingleBook: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
       <Paper elevation={1} sx={{ p: 4 }}>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 5 }}>
-          <Button
-            component={Link}
-            to="/dashboard"
-            startIcon={<ChevronLeft />}
-            color="primary"
-          >
-            Go back to dashboard
-          </Button>
-        </Box>
+        <BackButton />
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -160,151 +132,53 @@ const SingleBook: React.FC = () => {
         <Typography variant="h3" color="text.secondary" mb={3}>
           {book.author}
         </Typography>
-        {editMode && (
-          <Box sx={{ mb: 2 }}>
-            <Stack direction="row" spacing={1}>
-              {["want-to-read", "reading", "finished"].map((statusOption) => (
-                <Chip
-                  key={statusOption}
-                  label={statusOption.replace(/-/g, " ")}
-                  variant={status === statusOption ? "filled" : "outlined"}
-                  color={status === statusOption ? "primary" : "default"}
-                  onClick={() => {
-                    setStatus(statusOption);
-                    if (statusOption === "want-to-read") {
-                      setCurrent(0);
-                    } else if (
-                      statusOption === "finished" &&
-                      total !== undefined
-                    ) {
-                      setCurrent(total);
-                    } else if (statusOption === "reading") {
-                      setCurrent(book.currentPage ?? 0);
-                    }
-                  }}
-                />
-              ))}
-            </Stack>
-          </Box>
-        )}
-        {!editMode && <Chip label={status.replace(/-/g, " ")} sx={{ mb: 2 }} />}
-        {/* Progress */}
-        <Paper
-          elevation={1}
-          sx={{
-            p: 2,
-            my: 3,
-          }}
-        >
-          <Typography variant="h3" mb={3}>
-            Progress
-          </Typography>
-          <LinearProgress
-            variant="determinate"
-            value={total && current ? Math.floor((current / total) * 100) : 0}
-            sx={{ mb: 1 }}
-          />
-          <Typography variant="body1" mb={2}>
-            {current ?? 0} / {total ?? "?"} pages
-          </Typography>
 
-          {editMode && (
-            <Box display="flex" flexDirection="column" gap={1} mb={2}>
-              <Box display="flex" gap={2}>
-                <TextField
-                  label="Current page"
-                  type="number"
-                  value={current ?? ""}
-                  onChange={(e) => setCurrent(Number(e.target.value))}
-                  slotProps={{
-                    htmlInput: { min: 0, max: total ?? undefined },
-                  }}
-                  sx={{ width: 120 }}
-                  error={pageError}
-                />
-                <TextField
-                  label="Total pages"
-                  type="number"
-                  value={total ?? ""}
-                  onChange={(e) => setTotal(Number(e.target.value))}
-                  slotProps={{
-                    htmlInput: { min: current ?? 0 },
-                  }}
-                  sx={{ width: 120 }}
-                  error={pageError}
-                />
-              </Box>
-              {pageError && (
-                <FormHelperText error>
-                  Current page cannot be greater than total pages
-                </FormHelperText>
-              )}
-            </Box>
-          )}
-        </Paper>
-        {/* Rating */}
-        <Paper
-          elevation={1}
-          sx={{
-            p: 2,
-            my: 3,
-          }}
-        >
-          <Typography variant="h3" mb={3}>
-            My rating
-          </Typography>
-          <Rating
-            size="large"
-            value={rating}
-            onChange={(_, newValue) => setRating(newValue)}
-            readOnly={!editMode}
-            precision={0.5}
-            sx={{
-              color: "primary.main",
-            }}
-          />
-        </Paper>
+        {/* Status Section */}
+        <StatusSection
+          status={status}
+          onStatusChange={setStatus}
+          current={current}
+          total={total}
+          setCurrent={setCurrent}
+          editMode={editMode}
+          bookCurrentPage={book.currentPage}
+        />
+
+        <ProgressSection
+          current={current}
+          setCurrent={setCurrent}
+          total={total}
+          setTotal={setTotal}
+          editMode={editMode}
+          pageError={pageError}
+          toggleSwitch={editMode}
+          trackProgress={trackProgress}
+          setTrackProgress={setTrackProgress}
+          onStatusChange={setStatus}
+          autoUpdateStatus={editMode}
+        />
+
+        <RatingSection
+          rating={rating}
+          onRatingChange={setRating}
+          disabled={status === "want-to-read"}
+          readOnly={!editMode}
+          showToggle={false}
+        />
+
         {/* Comment */}
-        <Paper
-          elevation={1}
-          sx={{
-            p: 2,
-            my: 3,
-          }}
-        >
-          <Typography variant="h3" mb={3}>
-            My thoughts
-          </Typography>
-          {editMode ? (
-            <TextField
-              multiline
-              minRows={2}
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              fullWidth
-            />
-          ) : (
-            <Box
-              minHeight={70}
-              display="flex"
-              alignItems="center"
-              sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 1,
-                p: 2,
-              }}
-            >
-              <Typography>{comment}</Typography>
-            </Box>
-          )}
-        </Paper>
+        <Comment
+          comment={comment}
+          setComment={setComment}
+          editMode={editMode}
+        />
+
         {/* Edit/Save/Cancel Buttons */}
         <Stack
           direction="row"
           spacing={2}
           sx={{ mt: 3 }}
-          justifyContent="center" //
+          justifyContent="center"
         >
           {editMode ? (
             <>
