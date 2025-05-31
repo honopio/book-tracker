@@ -4,8 +4,6 @@ import {
   Box,
   Paper,
   Typography,
-  LinearProgress,
-  TextField,
   Button,
   IconButton,
   Stack,
@@ -15,7 +13,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormHelperText,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { supabase } from "../../client";
@@ -23,6 +20,7 @@ import type { Book } from "../../types";
 import { RatingSection } from "../ui/RatingSection";
 import BackButton from "../ui/BackButton";
 import { Comment } from "../ui/Comment";
+import { ProgressSection } from "../ui/ProgressSection";
 
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,6 +34,7 @@ const SingleBook: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const [trackProgress, setTrackProgress] = useState(true);
 
   // Fetch book details from db
   const fetchBook = async () => {
@@ -70,13 +69,6 @@ const SingleBook: React.FC = () => {
   // Validate current and total pages
   const pageError =
     current !== undefined && total !== undefined && current > total;
-  const validatePages = () => {
-    if (pageError) {
-      setError("Current page cannot be greater than total pages");
-      return false;
-    }
-    return true;
-  };
 
   // Auto-update status based on current/total page in edit mode
   useEffect(() => {
@@ -90,7 +82,7 @@ const SingleBook: React.FC = () => {
 
   // Update book entry
   async function handleSave() {
-    if (!book || !validatePages()) return;
+    if (!book || pageError) return;
 
     const { error } = await supabase
       .from("book_user")
@@ -178,60 +170,19 @@ const SingleBook: React.FC = () => {
           </Box>
         )}
         {!editMode && <Chip label={status.replace(/-/g, " ")} sx={{ mb: 2 }} />}
-        {/* Progress */}
-        <Paper
-          elevation={1}
-          sx={{
-            p: 2,
-            my: 3,
-          }}
-        >
-          <Typography variant="h3" mb={3}>
-            Progress
-          </Typography>
-          <LinearProgress
-            variant="determinate"
-            value={total && current ? Math.floor((current / total) * 100) : 0}
-            sx={{ mb: 1 }}
-          />
-          <Typography variant="body1" mb={2}>
-            {current ?? 0} / {total ?? "?"} pages
-          </Typography>
 
-          {editMode && (
-            <Box display="flex" flexDirection="column" gap={1} mb={2}>
-              <Box display="flex" gap={2}>
-                <TextField
-                  label="Current page"
-                  type="number"
-                  value={current ?? ""}
-                  onChange={(e) => setCurrent(Number(e.target.value))}
-                  slotProps={{
-                    htmlInput: { min: 0, max: total ?? undefined },
-                  }}
-                  sx={{ width: 120 }}
-                  error={pageError}
-                />
-                <TextField
-                  label="Total pages"
-                  type="number"
-                  value={total ?? ""}
-                  onChange={(e) => setTotal(Number(e.target.value))}
-                  slotProps={{
-                    htmlInput: { min: current ?? 0 },
-                  }}
-                  sx={{ width: 120 }}
-                  error={pageError}
-                />
-              </Box>
-              {pageError && (
-                <FormHelperText error>
-                  Current page cannot be greater than total pages
-                </FormHelperText>
-              )}
-            </Box>
-          )}
-        </Paper>
+        {/* Progress */}
+        <ProgressSection
+          current={current}
+          setCurrent={setCurrent}
+          total={total}
+          setTotal={setTotal}
+          editMode={editMode}
+          pageError={pageError}
+          toggleSwitch={editMode}
+          trackProgress={trackProgress}
+          setTrackProgress={setTrackProgress}
+        />
 
         <RatingSection
           rating={rating}
