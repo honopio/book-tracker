@@ -20,7 +20,7 @@ import {
 import { Delete } from "@mui/icons-material";
 import { supabase } from "../../client";
 import type { Book } from "../../types";
-import { BookRatingSection } from "../ui/BookRatingSection";
+import { RatingSection } from "../ui/RatingSection";
 import BackButton from "../ui/BackButton";
 import { Comment } from "../ui/Comment";
 
@@ -233,7 +233,7 @@ const SingleBook: React.FC = () => {
           )}
         </Paper>
 
-        <BookRatingSection
+        <RatingSection
           rating={rating}
           onRatingChange={setRating}
           disabled={status === "want-to-read"}

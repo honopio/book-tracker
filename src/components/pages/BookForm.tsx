@@ -18,7 +18,7 @@ import {
 import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../ui/BackButton";
-import { BookRatingSection } from "../ui/BookRatingSection";
+import { RatingSection } from "../ui/RatingSection";
 import { Comment } from "../ui/Comment";
 
 function BookForm() {
@@ -243,7 +243,7 @@ function BookForm() {
               </Fade>
             )}
 
-            <BookRatingSection
+            <RatingSection
               rating={rating}
               onRatingChange={setRating}
               trackRating={trackRating}

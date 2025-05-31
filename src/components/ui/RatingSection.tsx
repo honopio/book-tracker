@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Paper, Typography, Rating, Switch } from "@mui/material";
 
-interface BookRatingSectionProps {
+interface RatingSectionProps {
   rating: number | null;
   onRatingChange: (newValue: number | null) => void;
   trackRating?: boolean;
@@ -11,7 +11,7 @@ interface BookRatingSectionProps {
   showToggle?: boolean;
 }
 
-export const BookRatingSection: React.FC<BookRatingSectionProps> = ({
+export const RatingSection: React.FC<RatingSectionProps> = ({
   rating,
   onRatingChange,
   trackRating = true,
