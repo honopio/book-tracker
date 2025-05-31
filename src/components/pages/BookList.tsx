@@ -14,6 +14,7 @@ import {
   Chip,
   LinearProgress,
   Rating,
+  Grid,
 } from "@mui/material";
 import { Add, GridView, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -160,6 +161,21 @@ const BookList = () => {
         <Tab label="Currently Reading" value="reading" />
         <Tab label="Finished" value="finished" />
       </Tabs>
+
+      {/* Books Display */}
+      <Box sx={{ mb: 2 }}>
+        <Typography variant="h6" color="text.secondary">
+          {books.length} book{books.length !== 1 ? "s" : ""}
+        </Typography>
+      </Box>
+
+      <Grid container spacing={3}>
+        {books.map((book) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={book.id}>
+            <BookCard book={book} />
+          </Grid>
+        ))}
+      </Grid>
 
       <Link to="/add-book">
         <Fab
