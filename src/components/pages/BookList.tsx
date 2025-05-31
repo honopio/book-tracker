@@ -9,6 +9,11 @@ import {
   Tabs,
   Tab,
   Fab,
+  Card,
+  CardContent,
+  Chip,
+  LinearProgress,
+  Rating,
 } from "@mui/material";
 import { Add, GridView, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -22,6 +27,76 @@ const BookList = () => {
   const [viewMode, setViewMode] = useState("grid");
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
   const [selectedTab, setSelectedTab] = useState("all");
+
+  const statusConfig = {
+    "want-to-read": { label: "Want to Read", color: "success" as const },
+    reading: { label: "Currently Reading", color: "secondary" as const },
+    finished: { label: "Finished", color: "primary" as const },
+  };
+
+  //bookcard
+  const BookCard = ({ book }) => (
+    <Card
+      sx={{
+        height: "100%",
+        cursor: "pointer",
+        transition: "all 0.2s",
+        "&:hover": {
+          transform: "translateY(-2px)",
+          boxShadow: 3,
+        },
+      }}
+    >
+      <CardContent>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="h6" component="h3" gutterBottom noWrap>
+            {book.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" noWrap>
+            by {book.author}
+          </Typography>
+        </Box>
+
+        <Box sx={{ mb: 2 }}>
+          <Chip
+            label={statusConfig[book.status].label}
+            color={statusConfig[book.status].color}
+            size="small"
+            sx={{ mb: 1 }}
+          />
+        </Box>
+
+        {book.status !== "want-to-read" && book.pageCount && (
+          <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
+            >
+              <Typography variant="caption" color="text.secondary">
+                Progress
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {book.currentPage}/{book.pageCount} pages
+              </Typography>
+            </Box>
+            <LinearProgress
+              variant="determinate"
+              value={(book.currentPage / book.pageCount) * 100}
+              sx={{ height: 6, borderRadius: 3 }}
+            />
+          </Box>
+        )}
+
+        {book.rating && (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Rating value={book.rating} readOnly size="small" />
+            <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+              {book.rating}/5
+            </Typography>
+          </Box>
+        )}
+      </CardContent>
+    </Card>
+  );
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
