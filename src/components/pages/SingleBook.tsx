@@ -4,8 +4,6 @@ import {
   Box,
   Paper,
   Typography,
-  LinearProgress,
-  TextField,
   Button,
   IconButton,
   Stack,
@@ -15,7 +13,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormHelperText,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { supabase } from "../../client";
@@ -71,13 +68,6 @@ const SingleBook: React.FC = () => {
   // Validate current and total pages
   const pageError =
     current !== undefined && total !== undefined && current > total;
-  const validatePages = () => {
-    if (pageError) {
-      setError("Current page cannot be greater than total pages");
-      return false;
-    }
-    return true;
-  };
 
   // Auto-update status based on current/total page in edit mode
   useEffect(() => {
@@ -91,7 +81,7 @@ const SingleBook: React.FC = () => {
 
   // Update book entry
   async function handleSave() {
-    if (!book || !validatePages()) return;
+    if (!book || pageError) return;
 
     const { error } = await supabase
       .from("book_user")
