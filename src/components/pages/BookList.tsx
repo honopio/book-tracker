@@ -9,17 +9,13 @@ import {
   Tabs,
   Tab,
   Fab,
-  Card,
-  CardContent,
-  Chip,
-  LinearProgress,
-  Rating,
   Grid,
   Menu,
   MenuItem,
 } from "@mui/material";
 import { Add, GridView, Sort, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import BookCardLibrary from "../ui/BookCardLibrary";
 
 // Fetch books from db
 import { useBooks } from "./Dashboard";
@@ -34,12 +30,6 @@ const BookList = () => {
   const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(
     null
   );
-
-  const statusConfig = {
-    "want-to-read": { label: "Want to Read", color: "success" as const },
-    reading: { label: "Currently Reading", color: "secondary" as const },
-    finished: { label: "Finished", color: "primary" as const },
-  };
 
   // Filter books based on selected tab, search term, and sort order
   const filteredBooks = books
@@ -76,71 +66,6 @@ const BookList = () => {
           return 0;
       }
     });
-
-  //bookcard
-  const BookCard = ({ book }) => (
-    <Card
-      sx={{
-        height: "100%",
-        cursor: "pointer",
-        transition: "all 0.2s",
-        "&:hover": {
-          transform: "translateY(-2px)",
-          boxShadow: 3,
-        },
-      }}
-    >
-      <CardContent>
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="h6" component="h3" gutterBottom noWrap>
-            {book.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" noWrap>
-            by {book.author}
-          </Typography>
-        </Box>
-
-        <Box sx={{ mb: 2 }}>
-          <Chip
-            label={statusConfig[book.status].label}
-            color={statusConfig[book.status].color}
-            size="small"
-            sx={{ mb: 1 }}
-          />
-        </Box>
-
-        {book.status !== "want-to-read" && book.pageCount && (
-          <Box sx={{ mb: 2 }}>
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
-            >
-              <Typography variant="caption" color="text.secondary">
-                {book.currentPage} / {book.pageCount} pages
-              </Typography>
-            </Box>
-            <LinearProgress
-              variant="determinate"
-              value={(book.currentPage / book.pageCount) * 100}
-              sx={{ height: 6, borderRadius: 3 }}
-            />
-          </Box>
-        )}
-
-        {book.rating !== null && (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Rating
-              value={book.rating}
-              readOnly
-              size="small"
-              sx={{
-                color: "primary.main",
-              }}
-            />
-          </Box>
-        )}
-      </CardContent>
-    </Card>
-  );
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -222,7 +147,8 @@ const BookList = () => {
       <Grid container spacing={3}>
         {filteredBooks.map((book) => (
           <Grid key={book.id}>
-            <BookCard book={book} />
+            {/* <BookCard book={book} /> */}
+            <BookCardLibrary book={book} viewMode={viewMode} />
           </Grid>
         ))}
       </Grid>
