@@ -22,6 +22,7 @@ import { supabase } from "../../client";
 import type { Book } from "../../types";
 import { BookRatingSection } from "../ui/BookRatingSection";
 import BackButton from "../ui/BackButton";
+import { Comment } from "../ui/Comment";
 
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -241,40 +242,12 @@ const SingleBook: React.FC = () => {
         />
 
         {/* Comment */}
-        <Paper
-          elevation={1}
-          sx={{
-            p: 2,
-            my: 3,
-          }}
-        >
-          <Typography variant="h3" mb={3}>
-            My thoughts
-          </Typography>
-          {editMode ? (
-            <TextField
-              multiline
-              minRows={2}
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              fullWidth
-            />
-          ) : (
-            <Box
-              minHeight={70}
-              display="flex"
-              alignItems="center"
-              sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 1,
-                p: 2,
-              }}
-            >
-              <Typography>{comment}</Typography>
-            </Box>
-          )}
-        </Paper>
+        <Comment
+          comment={comment}
+          setComment={setComment}
+          editMode={editMode}
+        />
+
         {/* Edit/Save/Cancel Buttons */}
         <Stack
           direction="row"

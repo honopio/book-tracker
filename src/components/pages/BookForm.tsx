@@ -19,6 +19,7 @@ import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../ui/BackButton";
 import { BookRatingSection } from "../ui/BookRatingSection";
+import { Comment } from "../ui/Comment";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
@@ -26,6 +27,7 @@ function BookForm() {
   const [trackProgress, setTrackProgress] = useState(false);
   const [trackRating, setTrackRating] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [comment, setComment] = useState("");
   const navigate = useNavigate();
 
   async function createBook(title: string, author: string) {
@@ -66,7 +68,6 @@ function BookForm() {
     const author = formData.get("book-author") as string;
     const currentPage = formData.get("book-current-page");
     const pageCount = formData.get("book-page-count");
-    const comment = formData.get("book-comment") as string;
 
     const bookId = await createBook(title, author);
 
@@ -252,27 +253,11 @@ function BookForm() {
             />
 
             {/* text field for personal comment */}
-            <Paper
-              elevation={1}
-              sx={{
-                p: 2,
-                mb: 2,
-              }}
-            >
-              <Typography variant="h3" component="legend" sx={{ mb: 2 }}>
-                Comment
-              </Typography>
-              <TextField
-                name="book-comment"
-                label="Comment"
-                variant="outlined"
-                multiline
-                rows={4}
-                fullWidth
-                placeholder="Add a personal comment about this book..."
-                sx={{ mb: 2 }}
-              />
-            </Paper>
+            <Comment
+              comment={comment}
+              setComment={setComment}
+              editMode={true}
+            />
 
             <Button
               variant="contained"
