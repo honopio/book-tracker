@@ -6,6 +6,7 @@ import { CssBaseline } from "@mui/material";
 import theme from "./theme.tsx";
 import Dashboard from "./components/pages/Dashboard";
 import SingleBook from "./components/pages/SingleBook.tsx";
+import BookList from "./components/pages/BookList.tsx";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="book/:id" element={<SingleBook />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="library" element={<BookList />} />
           <Route path="add-book" element={<BookForm />} />
         </Route>
       </Routes>
