@@ -15,8 +15,10 @@ import {
   LinearProgress,
   Rating,
   Grid,
+  Menu,
+  MenuItem,
 } from "@mui/material";
-import { Add, GridView, ViewList } from "@mui/icons-material";
+import { Add, GridView, Sort, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 // Fetch books from db
@@ -28,6 +30,10 @@ const BookList = () => {
   const [viewMode, setViewMode] = useState("grid");
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
   const [selectedTab, setSelectedTab] = useState("all");
+  const [sortBy, setSortBy] = useState("recent");
+  const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(
+    null
+  );
 
   const statusConfig = {
     "want-to-read": { label: "Want to Read", color: "success" as const },
@@ -132,6 +138,12 @@ const BookList = () => {
           />
 
           <Box sx={{ display: "flex", gap: 1 }}>
+            <IconButton
+              onClick={(e) => setSortMenuAnchor(e.currentTarget)}
+              color={sortBy !== "recent" ? "primary" : "default"}
+            >
+              <Sort />
+            </IconButton>
             {!isMobile && (
               <>
                 <IconButton
@@ -158,6 +170,7 @@ const BookList = () => {
         onChange={(e, newValue) => setSelectedTab(newValue)}
         variant="scrollable"
         scrollButtons="auto"
+        sx={{ mb: 3 }}
       >
         <Tab label="All Books" value="all" />
         <Tab label="Want to Read" value="want-to-read" />
@@ -180,6 +193,53 @@ const BookList = () => {
         ))}
       </Grid>
 
+      {/* Sort Menu */}
+      <Menu
+        anchorEl={sortMenuAnchor}
+        open={Boolean(sortMenuAnchor)}
+        onClose={() => setSortMenuAnchor(null)}
+      >
+        <MenuItem
+          onClick={() => {
+            setSortBy("recent");
+            setSortMenuAnchor(null);
+          }}
+        >
+          Recently Added
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setSortBy("title");
+            setSortMenuAnchor(null);
+          }}
+        >
+          Title (A-Z)
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setSortBy("author");
+            setSortMenuAnchor(null);
+          }}
+        >
+          Author (A-Z)
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setSortBy("rating");
+            setSortMenuAnchor(null);
+          }}
+        >
+          Highest Rated
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setSortBy("progress");
+            setSortMenuAnchor(null);
+          }}
+        >
+          Most Progress
+        </MenuItem>
+      </Menu>
       <Link to="/add-book">
         <Fab
           color="primary"
