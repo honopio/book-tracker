@@ -35,6 +35,15 @@ const BookList = () => {
     finished: { label: "Finished", color: "primary" as const },
   };
 
+  // Filter books based on selected tab
+  const filteredBooks = books.filter((book) => {
+    if (selectedTab === "all") return true;
+    if (selectedTab === "want-to-read") return book.status === "want-to-read";
+    if (selectedTab === "reading") return book.status === "reading";
+    if (selectedTab === "finished") return book.status === "finished";
+    return false;
+  });
+
   //bookcard
   const BookCard = ({ book }) => (
     <Card
@@ -165,12 +174,12 @@ const BookList = () => {
       {/* Books Display */}
       <Box sx={{ mb: 2 }}>
         <Typography variant="h6" color="text.secondary">
-          {books.length} book{books.length !== 1 ? "s" : ""}
+          {filteredBooks.length} book{filteredBooks.length !== 1 ? "s" : ""}
         </Typography>
       </Box>
 
       <Grid container spacing={3}>
-        {books.map((book) => (
+        {filteredBooks.map((book) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={book.id}>
             <BookCard book={book} />
           </Grid>
