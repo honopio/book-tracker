@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -97,6 +97,21 @@ function BookForm() {
         }
       });
   }
+
+  // Auto-update status based on current/total page
+  useEffect(() => {
+    if (
+      pageCount !== undefined &&
+      currentPage === pageCount &&
+      currentPage > 0
+    ) {
+      setStatus("finished");
+    } else if (currentPage && currentPage > 0) {
+      setStatus("reading");
+    } else if (currentPage === 0) {
+      setStatus("want-to-read");
+    }
+  }, [currentPage, pageCount]);
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
