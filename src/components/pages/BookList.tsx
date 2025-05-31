@@ -121,7 +121,7 @@ const BookList = () => {
           </Box>
         )}
 
-        {book.rating && (
+        {book.rating !== null && (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Rating value={book.rating} readOnly size="small" />
           </Box>
