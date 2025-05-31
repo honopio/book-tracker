@@ -8,8 +8,10 @@ import {
   useMediaQuery,
   Tabs,
   Tab,
+  Fab,
 } from "@mui/material";
-import { GridView, ViewList } from "@mui/icons-material";
+import { Add, GridView, ViewList } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const BookList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -79,6 +81,16 @@ const BookList = () => {
         <Tab label="Currently Reading" value="reading" />
         <Tab label="Finished" value="finished" />
       </Tabs>
+
+      <Link to="/add-book">
+        <Fab
+          color="primary"
+          sx={{ position: "fixed", bottom: 24, right: 24 }}
+          aria-label="add book"
+        >
+          <Add />
+        </Fab>
+      </Link>
     </Container>
   );
 };
