@@ -11,8 +11,6 @@ import {
   RadioGroup,
   Button,
   Stack,
-  Fade,
-  Switch,
   Alert,
 } from "@mui/material";
 import { supabase } from "../../client";
@@ -20,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "../ui/BackButton";
 import { RatingSection } from "../ui/RatingSection";
 import { Comment } from "../ui/Comment";
+import { ProgressSection } from "../ui/ProgressSection";
 
 function BookForm() {
   const [status, setStatus] = useState("want-to-read");
@@ -29,6 +28,12 @@ function BookForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [comment, setComment] = useState("");
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState<number | undefined>(undefined);
+  const [pageCount, setPageCount] = useState<number | undefined>(undefined);
+  const pageError =
+    currentPage !== undefined &&
+    pageCount !== undefined &&
+    currentPage > pageCount;
 
   async function createBook(title: string, author: string) {
     // Check if the book exists in the books table
@@ -170,78 +175,18 @@ function BookForm() {
 
             {/* optional current page */}
             {/* optional page count */}
-            {status === "reading" && (
-              <Fade in={status === "reading"} timeout={300}>
-                <Paper
-                  elevation={1}
-                  sx={{
-                    p: 2,
-                    mb: 2,
-                    width: "100%",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 2,
-                      mb: 2,
-                    }}
-                  >
-                    <Switch
-                      name="book-track-progress"
-                      color="primary"
-                      size="small"
-                      checked={trackProgress}
-                      onChange={(e) => setTrackProgress(e.target.checked)}
-                    />
-                    <Typography variant="h3">Track your progress</Typography>
-                  </Box>
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <Typography
-                      color={trackProgress ? "text.primary" : "text.secondary"}
-                    >
-                      I've read
-                    </Typography>
-                    <TextField
-                      name="book-current-page"
-                      type="number"
-                      size="small"
-                      sx={{ width: 80 }}
-                      slotProps={{ htmlInput: { min: 0 } }}
-                      disabled={!trackProgress}
-                      required={trackProgress}
-                    />
-                    <Typography
-                      color={trackProgress ? "text.primary" : "text.secondary"}
-                    >
-                      pages out of
-                    </Typography>
-                    <TextField
-                      name="book-page-count"
-                      type="number"
-                      size="small"
-                      sx={{ width: 80 }}
-                      slotProps={{ htmlInput: { min: 0 } }}
-                      disabled={!trackProgress}
-                      required={trackProgress}
-                    />
-                    <Typography
-                      color={trackProgress ? "text.primary" : "text.secondary"}
-                    >
-                      pages
-                    </Typography>
-                  </Box>
-                </Paper>
-              </Fade>
-            )}
+            <ProgressSection
+              current={currentPage}
+              setCurrent={setCurrentPage}
+              total={pageCount}
+              setTotal={setPageCount}
+              trackProgress={trackProgress}
+              setTrackProgress={setTrackProgress}
+              editMode={true}
+              pageError={pageError}
+              toggleSwitch={true}
+            />
 
             <RatingSection
               rating={rating}
