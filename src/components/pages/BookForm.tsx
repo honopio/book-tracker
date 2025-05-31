@@ -67,9 +67,6 @@ function BookForm() {
     const formData = new FormData(event.currentTarget);
     const title = formData.get("book-title") as string;
     const author = formData.get("book-author") as string;
-    const currentPage = formData.get("book-current-page");
-    const pageCount = formData.get("book-page-count");
-
     const bookId = await createBook(title, author);
 
     // Insert the book_user entry
