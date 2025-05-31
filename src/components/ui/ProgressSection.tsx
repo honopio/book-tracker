@@ -7,7 +7,9 @@ import {
   TextField,
   FormHelperText,
   Switch,
+  Chip,
 } from "@mui/material";
+import { Book } from "@mui/icons-material";
 
 interface ProgressSectionProps {
   current?: number;
@@ -38,6 +40,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
       sx={{
         p: 2,
         my: 3,
+        transition: "opacity 0.2s ease-in-out",
       }}
     >
       <Box display="flex" alignItems="center" mb={2} gap={2}>
@@ -54,16 +57,47 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
         </Typography>
       </Box>
 
-      <LinearProgress
-        variant="determinate"
-        value={total && current ? Math.floor((current / total) * 100) : 0}
-        sx={{ mb: 1 }}
-      />
-      <Typography variant="body1" mb={2}>
-        {current ?? 0} / {total ?? "?"} pages
-      </Typography>
+      {trackProgress ? (
+        <>
+          <LinearProgress
+            variant="determinate"
+            value={total && current ? Math.floor((current / total) * 100) : 0}
+            sx={{ mb: 1 }}
+          />
+          <Typography variant="body1" mb={4}>
+            {current ?? 0} / {total ?? "?"} pages
+            {total && current && current === total && (
+              <Chip
+                icon={<Book />}
+                label="Completed!"
+                size="small"
+                sx={{ ml: 3 }}
+              />
+            )}
+          </Typography>
+        </>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            py: 3,
+            color: "text.secondary",
+          }}
+        >
+          <Book />
+          <Typography variant="body2" color="text.secondary" textAlign="center">
+            Page tracking is disabled
+            <br />
+            <Typography variant="caption" color="text.disabled">
+              Enable the switch above to track your reading progress
+            </Typography>
+          </Typography>
+        </Box>
+      )}
 
-      {editMode && (
+      {editMode && trackProgress && (
         <Box display="flex" flexDirection="column" gap={1} mb={2}>
           <Box display="flex" gap={2}>
             <TextField
