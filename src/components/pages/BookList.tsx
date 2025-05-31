@@ -6,6 +6,8 @@ import {
   TextField,
   IconButton,
   useMediaQuery,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import { GridView, ViewList } from "@mui/icons-material";
 
@@ -13,6 +15,7 @@ const BookList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
+  const [selectedTab, setSelectedTab] = useState("all");
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -63,6 +66,19 @@ const BookList = () => {
           </Box>
         </Box>
       </Box>
+
+      {/* Tabs */}
+      <Tabs
+        value={selectedTab}
+        onChange={(e, newValue) => setSelectedTab(newValue)}
+        variant="scrollable"
+        scrollButtons="auto"
+      >
+        <Tab label="All Books" value="all" />
+        <Tab label="Want to Read" value="want-to-read" />
+        <Tab label="Currently Reading" value="reading" />
+        <Tab label="Finished" value="finished" />
+      </Tabs>
     </Container>
   );
 };
