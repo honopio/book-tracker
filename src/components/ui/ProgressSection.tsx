@@ -26,9 +26,9 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   setCurrent,
   total,
   setTotal,
-  trackProgress = false,
+  trackProgress = true,
   setTrackProgress,
-  editMode = false,
+  editMode = true,
   pageError = false,
   toggleSwitch = false,
 }) => {

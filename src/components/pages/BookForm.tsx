@@ -183,7 +183,6 @@ function BookForm() {
               setTotal={setPageCount}
               trackProgress={trackProgress}
               setTrackProgress={setTrackProgress}
-              editMode={true}
               pageError={pageError}
               toggleSwitch={true}
             />
@@ -210,6 +209,10 @@ function BookForm() {
               size="large"
               fullWidth
               sx={{ mt: 2 }}
+              disabled={
+                !status ||
+                (trackProgress && (pageError || currentPage === undefined))
+              }
             >
               Add Book
             </Button>
