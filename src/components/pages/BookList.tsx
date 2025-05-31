@@ -144,14 +144,21 @@ const BookList = () => {
         </Typography>
       </Box>
 
-      <Grid container spacing={3}>
-        {filteredBooks.map((book) => (
-          <Grid key={book.id}>
-            {/* <BookCard book={book} /> */}
-            <BookCardLibrary book={book} viewMode={viewMode} />
-          </Grid>
-        ))}
-      </Grid>
+      {viewMode === "grid" ? (
+        <Grid container spacing={3}>
+          {filteredBooks.map((book) => (
+            <Grid>
+              <BookCardLibrary key={book.id} book={book} viewMode={viewMode} />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Box>
+          {filteredBooks.map((book) => (
+            <BookCardLibrary key={book.id} book={book} viewMode={viewMode} />
+          ))}
+        </Box>
+      )}
 
       {/* Sort Menu */}
       <Menu
