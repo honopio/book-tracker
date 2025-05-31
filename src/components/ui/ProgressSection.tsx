@@ -64,17 +64,20 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
             value={total && current ? Math.floor((current / total) * 100) : 0}
             sx={{ mb: 1 }}
           />
-          <Typography variant="body1" mb={4}>
-            {current ?? 0} / {total ?? "?"} pages
-            {total && current && current === total && (
+          <Box display="flex" alignItems="center" gap={1} mb={2}>
+            <Typography variant="body1">
+              {current ?? 0} / {total ?? "?"} pages
+            </Typography>
+
+            {total && current != null && current === total && (
               <Chip
                 icon={<Book />}
                 label="Completed!"
+                color="success"
                 size="small"
-                sx={{ ml: 3 }}
               />
             )}
-          </Typography>
+          </Box>
         </>
       ) : (
         <Box
