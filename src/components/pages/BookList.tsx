@@ -82,10 +82,7 @@ const BookList = () => {
               sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
             >
               <Typography variant="caption" color="text.secondary">
-                Progress
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {book.currentPage}/{book.pageCount} pages
+                {book.currentPage} / {book.pageCount} pages
               </Typography>
             </Box>
             <LinearProgress
@@ -99,9 +96,6 @@ const BookList = () => {
         {book.rating && (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Rating value={book.rating} readOnly size="small" />
-            <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
-              {book.rating}/5
-            </Typography>
           </Box>
         )}
       </CardContent>
@@ -180,7 +174,7 @@ const BookList = () => {
 
       <Grid container spacing={3}>
         {filteredBooks.map((book) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={book.id}>
+          <Grid key={book.id}>
             <BookCard book={book} />
           </Grid>
         ))}
