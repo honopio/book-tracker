@@ -13,7 +13,11 @@ import {
 import { Add, GridView, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
+// Fetch books from db
+import { useBooks } from "./Dashboard";
+
 const BookList = () => {
+  const books = useBooks();
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
