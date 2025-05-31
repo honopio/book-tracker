@@ -6,6 +6,7 @@ import {
   LinearProgress,
   TextField,
   FormHelperText,
+  Switch,
 } from "@mui/material";
 
 interface ProgressSectionProps {
@@ -13,8 +14,11 @@ interface ProgressSectionProps {
   setCurrent: (value: number) => void;
   total?: number;
   setTotal: (value: number) => void;
+  trackProgress?: boolean;
+  setTrackProgress?: (value: boolean) => void;
   editMode?: boolean;
   pageError?: boolean;
+  toggleSwitch?: boolean;
 }
 
 export const ProgressSection: React.FC<ProgressSectionProps> = ({
@@ -22,8 +26,11 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   setCurrent,
   total,
   setTotal,
+  trackProgress = false,
+  setTrackProgress,
   editMode = false,
   pageError = false,
+  toggleSwitch = false,
 }) => {
   return (
     <Paper
@@ -33,9 +40,20 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
         my: 3,
       }}
     >
-      <Typography variant="h3" mb={3}>
-        Progress
-      </Typography>
+      <Box display="flex" alignItems="center" mb={2} gap={2}>
+        {toggleSwitch && (
+          <Switch
+            color="primary"
+            size="small"
+            checked={trackProgress}
+            onChange={(e) => setTrackProgress?.(e.target.checked)}
+          />
+        )}
+        <Typography variant="h3" mr={2}>
+          Track progress
+        </Typography>
+      </Box>
+
       <LinearProgress
         variant="determinate"
         value={total && current ? Math.floor((current / total) * 100) : 0}
