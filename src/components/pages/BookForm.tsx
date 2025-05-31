@@ -135,6 +135,7 @@ function BookForm() {
               total={pageCount}
               setCurrent={setCurrentPage}
               editMode={true}
+              bookCurrentPage={currentPage}
             />
 
             <ProgressSection
