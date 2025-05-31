@@ -6,12 +6,13 @@ import {
   Chip,
   LinearProgress,
   Rating,
+  Grid,
 } from "@mui/material";
 import type { Book } from "../../types";
 
 interface BookCardLibraryProps {
   book: Book;
-  viewMode?: "grid" | "list";
+  viewMode: string; // "grid" | "list"
 }
 
 const BookCardLibrary = (props: BookCardLibraryProps) => {
@@ -23,7 +24,7 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
   };
   if (!book) return null;
 
-  return (
+  return viewMode === "grid" ? (
     <Card
       sx={{
         height: "100%",
@@ -83,6 +84,59 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
             />
           </Box>
         )}
+      </CardContent>
+    </Card>
+  ) : (
+    <Card sx={{ mb: 2, cursor: "pointer" }}>
+      <CardContent>
+        <Grid container spacing={2} alignItems="center">
+          <Grid>
+            <Typography variant="h6" noWrap>
+              {book.title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" noWrap>
+              by {book.author}
+            </Typography>
+          </Grid>
+
+          <Grid>
+            <Chip
+              label={statusConfig[book.status].label}
+              color={statusConfig[book.status].color}
+              size="small"
+            />
+          </Grid>
+
+          {book.status !== "want-to-read" && book.pageCount && (
+            <Grid>
+              <Box>
+                <Typography variant="caption" color="text.secondary">
+                  {book.currentPage}/{book.pageCount} pages
+                </Typography>
+                <LinearProgress
+                  variant="determinate"
+                  value={((book.currentPage ?? 0) / book.pageCount) * 100}
+                  sx={{ height: 4, borderRadius: 2, mt: 0.5 }}
+                />
+              </Box>
+            </Grid>
+          )}
+
+          <Grid>
+            {book.rating && (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Rating value={book.rating} readOnly size="small" />
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ ml: 1 }}
+                >
+                  {book.rating}/5
+                </Typography>
+              </Box>
+            )}
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );
