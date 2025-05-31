@@ -19,13 +19,15 @@ import {
   Add,
   TrendingUp,
   Logout,
+  SpaceDashboard,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 const DRAWER_WIDTH = 320;
 
 const menuItems = [
-  { text: "My library", icon: <Book />, to: "/dashboard" },
+  { text: "My Dashboard", icon: <SpaceDashboard />, to: "/dashboard" },
+  { text: "My library", icon: <Book />, to: "/library" },
   { text: "Reading Stats", icon: <TrendingUp />, to: "/stats" },
   { text: "Add a book", icon: <Add />, to: "/add-book" },
   { text: "Logout", icon: <Logout />, to: "/logout" },
