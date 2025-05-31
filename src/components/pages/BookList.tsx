@@ -16,8 +16,6 @@ import {
 import { Add, GridView, Sort, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import BookCardLibrary from "../ui/BookCardLibrary";
-
-// Fetch books from db
 import { useBooks } from "./Dashboard";
 
 const BookList = () => {
@@ -77,9 +75,8 @@ const BookList = () => {
         My Books
       </Typography>
 
-      {/* Controls */}
+      {/* Search and View Toggle */}
       <Box sx={{ mb: 4 }}>
-        {/* Search and View Toggle */}
         <Box
           sx={{
             display: "flex",
@@ -147,7 +144,7 @@ const BookList = () => {
       {viewMode === "grid" ? (
         <Grid container spacing={3}>
           {filteredBooks.map((book) => (
-            <Grid>
+            <Grid key={book.id}>
               <BookCardLibrary key={book.id} book={book} viewMode={viewMode} />
             </Grid>
           ))}
