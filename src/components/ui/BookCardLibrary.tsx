@@ -125,14 +125,14 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
           <Grid>
             {book.rating && (
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Rating value={book.rating} readOnly size="small" />
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  sx={{ ml: 1 }}
-                >
-                  {book.rating}/5
-                </Typography>
+                <Rating
+                  value={book.rating}
+                  readOnly
+                  size="small"
+                  sx={{
+                    color: "primary.main",
+                  }}
+                />
               </Box>
             )}
           </Grid>
