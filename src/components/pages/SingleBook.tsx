@@ -34,6 +34,7 @@ const SingleBook: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const [trackProgress, setTrackProgress] = useState(true);
 
   // Fetch book details from db
   const fetchBook = async () => {
@@ -178,6 +179,9 @@ const SingleBook: React.FC = () => {
           setTotal={setTotal}
           editMode={editMode}
           pageError={pageError}
+          toggleSwitch={editMode}
+          trackProgress={trackProgress}
+          setTrackProgress={setTrackProgress}
         />
 
         <RatingSection
