@@ -41,7 +41,7 @@ const BookList = () => {
     finished: { label: "Finished", color: "primary" as const },
   };
 
-  // Filter books based on selected tab and sort them
+  // Filter books based on selected tab, search term, and sort order
   const filteredBooks = books
     .filter((book) => {
       if (selectedTab === "all") return true;
@@ -50,6 +50,11 @@ const BookList = () => {
       if (selectedTab === "finished") return book.status === "finished";
       return false;
     })
+    .filter(
+      (book) =>
+        book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchTerm.toLowerCase())
+    )
     .sort((a, b) => {
       switch (sortBy) {
         case "title":
