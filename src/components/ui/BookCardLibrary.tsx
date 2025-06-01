@@ -27,18 +27,40 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
   };
   if (!book) return null;
 
+  const isDashboard = viewMode === "carousel";
+
   // Shared content
   const TitleAuthor = (
-    <Box sx={{ mb: viewMode === "grid" ? 2 : 0 }}>
+    <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
       <Link
         to={`/book/${book.id}`}
-        style={{ textDecoration: "none", color: "inherit" }}
+        style={{
+          textDecoration: "none",
+          color: isDashboard ? textColor : "inherit",
+        }}
       >
-        <Typography variant="h6" component="h3" noWrap>
+        <Typography
+          variant={isDashboard ? "subtitle2" : "h6"}
+          component="h3"
+          noWrap
+          sx={{
+            color: isDashboard ? textColor : "inherit",
+            fontWeight: isDashboard ? 600 : "normal",
+          }}
+        >
+          {" "}
           {book.title}
         </Typography>
       </Link>
-      <Typography variant="body2" color="text.secondary" noWrap>
+      <Typography
+        variant={isDashboard ? "caption" : "body2"}
+        color={isDashboard ? textColor : "text.secondary"}
+        noWrap
+        sx={{
+          opacity: isDashboard ? 0.8 : 1,
+          mt: 0.5,
+        }}
+      >
         by {book.author}
       </Typography>
     </Box>
@@ -48,11 +70,20 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
     <Chip
       label={statusConfig[book.status].label}
       color={statusConfig[book.status].color}
-      size="small"
-      sx={{ mb: viewMode === "grid" ? 1 : 0 }}
+      size={isDashboard ? "small" : "small"}
+      variant={isDashboard ? "outlined" : "filled"}
+      sx={{
+        mb: isDashboard ? 1 : viewMode === "grid" ? 1 : 0,
+        ...(isDashboard && {
+          borderColor: textColor,
+          color: textColor,
+          "& .MuiChip-label": {
+            fontSize: "0.7rem",
+          },
+        }),
+      }}
     />
   );
-
   const Progress =
     book.status !== "want-to-read" && book.pageCount ? (
       <Box sx={{ mb: viewMode === "grid" ? 2 : 0 }}>
