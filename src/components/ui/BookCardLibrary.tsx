@@ -126,13 +126,37 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
           size="small"
           sx={{
             color: isDashboard ? textColor : "primary.main",
-            "& .MuiRating-iconEmpty": {
-              color: isDashboard ? `${textColor}40` : undefined,
-            },
           }}
         />
       </Box>
     ) : null;
+
+  // Carousel/Dashboard layout (compact, vertical)
+  if (isDashboard) {
+    return (
+      <Card
+        sx={{
+          width: 200,
+          height: "100%",
+          cursor: "pointer",
+          transition: "all 0.2s",
+          backgroundColor: "transparent",
+          border: `1px solid ${textColor}30`,
+          "&:hover": {
+            transform: "translateY(-2px)",
+            boxShadow: isDashboard ? `0 4px 12px ${textColor}20` : 3,
+          },
+        }}
+      >
+        <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
+          {TitleAuthor}
+          {StatusChip}
+          {Progress}
+          {RatingBox}
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card
