@@ -131,7 +131,7 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
       </Box>
     ) : null;
 
-  // Carousel/Dashboard layout (compact, vertical)
+  // Compact layout for carousel in dashboard layout
   if (isDashboard) {
     return (
       <Card

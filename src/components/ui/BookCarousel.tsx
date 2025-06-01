@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Paper, Typography, Chip, IconButton } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import BookCard from "./BookCard";
+import BookCardLibrary from "./BookCardLibrary"; // Updated import
 import type { BookCarouselProps } from "../../types";
 import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
@@ -156,15 +156,9 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 transition: "all 0.3s ease-in-out",
               }}
             >
-              <BookCard
-                id={book.id}
-                title={book.title}
-                author={book.author}
-                status={book.status}
-                progress={book.progress}
-                rating={book.rating}
-                pageCount={book.pageCount}
-                currentPage={book.currentPage}
+              <BookCardLibrary
+                book={book}
+                viewMode="carousel"
                 textColor={textColor}
               />
             </Box>
@@ -190,6 +184,10 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
               <IconButton
                 sx={{
                   color: textColor,
+                  border: `1px solid ${textColor}30`,
+                  "&:hover": {
+                    backgroundColor: `${textColor}10`,
+                  },
                 }}
                 size="large"
               >
