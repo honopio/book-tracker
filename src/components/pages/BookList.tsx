@@ -144,7 +144,7 @@ const BookList = () => {
       {viewMode === "grid" ? (
         <Grid container spacing={3}>
           {filteredBooks.map((book) => (
-            <Grid key={book.id}>
+            <Grid size={{ xs: 6, sm: 4, md: 3 }} key={book.id}>
               <BookCardLibrary key={book.id} book={book} viewMode={viewMode} />
             </Grid>
           ))}
