@@ -86,15 +86,19 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
   );
   const Progress =
     book.status !== "want-to-read" && book.pageCount ? (
-      <Box sx={{ mb: viewMode === "grid" ? 2 : 0 }}>
+      <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            mb: viewMode === "grid" ? 0.5 : 0,
+            mb: 0.5,
           }}
         >
-          <Typography variant="caption" color="text.secondary">
+          <Typography
+            variant="caption"
+            color={isDashboard ? textColor : "text.secondary"}
+            sx={{ opacity: isDashboard ? 0.8 : 1 }}
+          >
             {book.currentPage} / {book.pageCount} pages
           </Typography>
         </Box>
@@ -103,13 +107,15 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
           value={((book.currentPage ?? 0) / book.pageCount) * 100}
           sx={{
             height: viewMode === "grid" ? 6 : 4,
-            borderRadius: viewMode === "grid" ? 3 : 2,
-            mt: viewMode === "list" ? 0.5 : 0,
+            borderRadius: 2,
+            backgroundColor: isDashboard ? `${textColor}20` : undefined,
+            "& .MuiLinearProgress-bar": {
+              backgroundColor: isDashboard ? textColor : undefined,
+            },
           }}
         />
       </Box>
     ) : null;
-
   const RatingBox =
     book.rating !== null && book.rating !== undefined ? (
       <Box sx={{ display: "flex", alignItems: "center" }}>
