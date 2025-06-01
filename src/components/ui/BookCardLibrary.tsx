@@ -13,11 +13,13 @@ import { Link } from "react-router-dom";
 
 interface BookCardLibraryProps {
   book: Book;
-  viewMode: string; // "grid" | "list"
+  viewMode?: string; // "grid" | "list" | "carousel"
+  textColor?: string;
 }
 
 const BookCardLibrary = (props: BookCardLibraryProps) => {
-  const { book, viewMode = "grid" } = props;
+  const { book, viewMode = "grid", textColor } = props;
+
   const statusConfig = {
     "want-to-read": { label: "Want to Read", color: "success" as const },
     reading: { label: "Currently Reading", color: "secondary" as const },
