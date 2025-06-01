@@ -9,6 +9,7 @@ import {
   Grid,
 } from "@mui/material";
 import type { Book } from "../../types";
+import { Link } from "react-router-dom";
 
 interface BookCardLibraryProps {
   book: Book;
@@ -27,9 +28,14 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
   // Shared content
   const TitleAuthor = (
     <Box sx={{ mb: viewMode === "grid" ? 2 : 0 }}>
-      <Typography variant="h6" component="h3" gutterBottom noWrap>
-        {book.title}
-      </Typography>
+      <Link
+        to={`/book/${book.id}`}
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <Typography variant="h6" component="h3" noWrap>
+          {book.title}
+        </Typography>
+      </Link>
       <Typography variant="body2" color="text.secondary" noWrap>
         by {book.author}
       </Typography>
