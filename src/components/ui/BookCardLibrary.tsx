@@ -13,11 +13,13 @@ import { Link } from "react-router-dom";
 
 interface BookCardLibraryProps {
   book: Book;
-  viewMode: string; // "grid" | "list"
+  viewMode?: string; // "grid" | "list" | "carousel"
+  textColor?: string;
 }
 
 const BookCardLibrary = (props: BookCardLibraryProps) => {
-  const { book, viewMode = "grid" } = props;
+  const { book, viewMode = "grid", textColor } = props;
+
   const statusConfig = {
     "want-to-read": { label: "Want to Read", color: "success" as const },
     reading: { label: "Currently Reading", color: "secondary" as const },
@@ -25,18 +27,40 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
   };
   if (!book) return null;
 
+  const isDashboard = viewMode === "carousel";
+
   // Shared content
   const TitleAuthor = (
-    <Box sx={{ mb: viewMode === "grid" ? 2 : 0 }}>
+    <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
       <Link
         to={`/book/${book.id}`}
-        style={{ textDecoration: "none", color: "inherit" }}
+        style={{
+          textDecoration: "none",
+          color: isDashboard ? textColor : "inherit",
+        }}
       >
-        <Typography variant="h6" component="h3" noWrap>
+        <Typography
+          variant={isDashboard ? "subtitle2" : "h6"}
+          component="h3"
+          noWrap
+          sx={{
+            color: isDashboard ? textColor : "inherit",
+            fontWeight: isDashboard ? 600 : "normal",
+          }}
+        >
+          {" "}
           {book.title}
         </Typography>
       </Link>
-      <Typography variant="body2" color="text.secondary" noWrap>
+      <Typography
+        variant={isDashboard ? "caption" : "body2"}
+        color={isDashboard ? textColor : "text.secondary"}
+        noWrap
+        sx={{
+          opacity: isDashboard ? 0.8 : 1,
+          mt: 0.5,
+        }}
+      >
         by {book.author}
       </Typography>
     </Box>
@@ -46,22 +70,35 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
     <Chip
       label={statusConfig[book.status].label}
       color={statusConfig[book.status].color}
-      size="small"
-      sx={{ mb: viewMode === "grid" ? 1 : 0 }}
+      size={isDashboard ? "small" : "small"}
+      variant={isDashboard ? "outlined" : "filled"}
+      sx={{
+        mb: isDashboard ? 1 : viewMode === "grid" ? 1 : 0,
+        ...(isDashboard && {
+          borderColor: textColor,
+          color: textColor,
+          "& .MuiChip-label": {
+            fontSize: "0.7rem",
+          },
+        }),
+      }}
     />
   );
-
   const Progress =
     book.status !== "want-to-read" && book.pageCount ? (
-      <Box sx={{ mb: viewMode === "grid" ? 2 : 0 }}>
+      <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            mb: viewMode === "grid" ? 0.5 : 0,
+            mb: 0.5,
           }}
         >
-          <Typography variant="caption" color="text.secondary">
+          <Typography
+            variant="caption"
+            color={isDashboard ? textColor : "text.secondary"}
+            sx={{ opacity: isDashboard ? 0.8 : 1 }}
+          >
             {book.currentPage} / {book.pageCount} pages
           </Typography>
         </Box>
@@ -70,8 +107,11 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
           value={((book.currentPage ?? 0) / book.pageCount) * 100}
           sx={{
             height: viewMode === "grid" ? 6 : 4,
-            borderRadius: viewMode === "grid" ? 3 : 2,
-            mt: viewMode === "list" ? 0.5 : 0,
+            borderRadius: 2,
+            backgroundColor: isDashboard ? `${textColor}20` : undefined,
+            "& .MuiLinearProgress-bar": {
+              backgroundColor: isDashboard ? textColor : undefined,
+            },
           }}
         />
       </Box>
@@ -85,11 +125,38 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
           readOnly
           size="small"
           sx={{
-            color: "primary.main",
+            color: isDashboard ? textColor : "primary.main",
           }}
         />
       </Box>
     ) : null;
+
+  // Compact layout for carousel in dashboard layout
+  if (isDashboard) {
+    return (
+      <Card
+        sx={{
+          width: 200,
+          height: "100%",
+          cursor: "pointer",
+          transition: "all 0.2s",
+          backgroundColor: "transparent",
+          border: `1px solid ${textColor}30`,
+          "&:hover": {
+            transform: "translateY(-2px)",
+            boxShadow: isDashboard ? `0 4px 12px ${textColor}20` : 3,
+          },
+        }}
+      >
+        <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
+          {TitleAuthor}
+          {StatusChip}
+          {Progress}
+          {RatingBox}
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card
