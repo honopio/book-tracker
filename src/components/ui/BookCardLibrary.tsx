@@ -24,10 +24,72 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
   };
   if (!book) return null;
 
-  return viewMode === "grid" ? (
+  // Shared content
+  const TitleAuthor = (
+    <Box sx={{ mb: viewMode === "grid" ? 2 : 0 }}>
+      <Typography variant="h6" component="h3" gutterBottom noWrap>
+        {book.title}
+      </Typography>
+      <Typography variant="body2" color="text.secondary" noWrap>
+        by {book.author}
+      </Typography>
+    </Box>
+  );
+
+  const StatusChip = (
+    <Chip
+      label={statusConfig[book.status].label}
+      color={statusConfig[book.status].color}
+      size="small"
+      sx={{ mb: viewMode === "grid" ? 1 : 0 }}
+    />
+  );
+
+  const Progress =
+    book.status !== "want-to-read" && book.pageCount ? (
+      <Box sx={{ mb: viewMode === "grid" ? 2 : 0 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            mb: viewMode === "grid" ? 0.5 : 0,
+          }}
+        >
+          <Typography variant="caption" color="text.secondary">
+            {book.currentPage} / {book.pageCount} pages
+          </Typography>
+        </Box>
+        <LinearProgress
+          variant="determinate"
+          value={((book.currentPage ?? 0) / book.pageCount) * 100}
+          sx={{
+            height: viewMode === "grid" ? 6 : 4,
+            borderRadius: viewMode === "grid" ? 3 : 2,
+            mt: viewMode === "list" ? 0.5 : 0,
+          }}
+        />
+      </Box>
+    ) : null;
+
+  const RatingBox =
+    book.rating !== null && book.rating !== undefined ? (
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Rating
+          value={book.rating}
+          readOnly
+          size="small"
+          sx={{
+            color: "primary.main",
+          }}
+        />
+      </Box>
+    ) : null;
+
+  return (
     <Card
       sx={{
-        height: "100%",
+        height: viewMode === "grid" ? "100%" : undefined,
+        mb: viewMode === "list" ? 2 : 0,
         cursor: "pointer",
         transition: "all 0.2s",
         "&:hover": {
@@ -37,106 +99,21 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
       }}
     >
       <CardContent>
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="h6" component="h3" gutterBottom noWrap>
-            {book.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" noWrap>
-            by {book.author}
-          </Typography>
-        </Box>
-
-        <Box sx={{ mb: 2 }}>
-          <Chip
-            label={statusConfig[book.status].label}
-            color={statusConfig[book.status].color}
-            size="small"
-            sx={{ mb: 1 }}
-          />
-        </Box>
-
-        {book.status !== "want-to-read" && book.pageCount && (
-          <Box sx={{ mb: 2 }}>
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
-            >
-              <Typography variant="caption" color="text.secondary">
-                {book.currentPage} / {book.pageCount} pages
-              </Typography>
-            </Box>
-            <LinearProgress
-              variant="determinate"
-              value={((book.currentPage ?? 0) / book.pageCount) * 100}
-              sx={{ height: 6, borderRadius: 3 }}
-            />
-          </Box>
+        {viewMode === "grid" ? (
+          <>
+            {TitleAuthor}
+            <Box sx={{ mb: 2 }}>{StatusChip}</Box>
+            {Progress}
+            {RatingBox}
+          </>
+        ) : (
+          <Grid container spacing={4} alignItems="center">
+            <Grid>{TitleAuthor}</Grid>
+            <Grid>{StatusChip}</Grid>
+            {Progress && <Grid>{Progress}</Grid>}
+            <Grid>{RatingBox}</Grid>
+          </Grid>
         )}
-
-        {book.rating !== null && (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Rating
-              value={book.rating}
-              readOnly
-              size="small"
-              sx={{
-                color: "primary.main",
-              }}
-            />
-          </Box>
-        )}
-      </CardContent>
-    </Card>
-  ) : (
-    <Card sx={{ mb: 2, cursor: "pointer" }}>
-      <CardContent>
-        <Grid container spacing={2} alignItems="center">
-          <Grid>
-            <Typography variant="h6" noWrap>
-              {book.title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" noWrap>
-              by {book.author}
-            </Typography>
-          </Grid>
-
-          <Grid>
-            <Chip
-              label={statusConfig[book.status].label}
-              color={statusConfig[book.status].color}
-              size="small"
-            />
-          </Grid>
-
-          {book.status !== "want-to-read" && book.pageCount && (
-            <Grid>
-              <Box>
-                <Typography variant="caption" color="text.secondary">
-                  {book.currentPage}/{book.pageCount} pages
-                </Typography>
-                <LinearProgress
-                  variant="determinate"
-                  value={((book.currentPage ?? 0) / book.pageCount) * 100}
-                  sx={{ height: 4, borderRadius: 2, mt: 0.5 }}
-                />
-              </Box>
-            </Grid>
-          )}
-
-          <Grid>
-            {book.rating && (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Rating
-                  value={book.rating}
-                  readOnly
-                  size="small"
-                  sx={{
-                    color: "primary.main",
-                  }}
-                />
-              </Box>
-            )}
-          </Grid>
-        </Grid>
       </CardContent>
     </Card>
   );
