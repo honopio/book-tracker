@@ -18,7 +18,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 
 // fetch books from db
-function useBooks() {
+export function useBooks() {
   const [books, setBooks] = useState<Book[]>([]);
   useEffect(() => {
     async function fetchBooks() {
@@ -54,7 +54,7 @@ function useBooks() {
     }
     fetchBooks();
   }, []);
-
+  console.log("useBooks books:", books);
   return books;
 }
 
