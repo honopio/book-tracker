@@ -116,6 +116,7 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
         />
       </Box>
     ) : null;
+
   const RatingBox =
     book.rating !== null && book.rating !== undefined ? (
       <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -124,7 +125,10 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
           readOnly
           size="small"
           sx={{
-            color: "primary.main",
+            color: isDashboard ? textColor : "primary.main",
+            "& .MuiRating-iconEmpty": {
+              color: isDashboard ? `${textColor}40` : undefined,
+            },
           }}
         />
       </Box>
