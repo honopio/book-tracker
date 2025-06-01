@@ -127,7 +127,19 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
             </>
           )}
 
-          <Chip label="see all" variant="outlined" />
+          <Link to="/library" style={{ textDecoration: "none" }}>
+            <Chip
+              label="see all"
+              variant="outlined"
+              sx={{
+                borderColor: textColor,
+                color: textColor,
+                "&:hover": {
+                  backgroundColor: `${textColor}10`,
+                },
+              }}
+            />
+          </Link>
         </Box>
       </Box>
 
