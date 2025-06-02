@@ -8,8 +8,6 @@ import {
   Tooltip,
   Alert,
   Fade,
-  Button,
-  Paper,
 } from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
 import type { Book } from "../../types";
@@ -20,6 +18,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import Add from "@mui/icons-material/Add";
 import { demoBooks } from "../../data/demoData";
 import { useAuth } from "../../auth/AuthContext";
+import HeroSection from "../ui/HeroSection";
 
 // Updated useBooks hook to handle auth state
 export function useBooks(isLoggedIn: boolean) {
@@ -67,43 +66,6 @@ export function useBooks(isLoggedIn: boolean) {
 
   return books;
 }
-
-// Hero section component
-const HeroSection: React.FC = () => (
-  <Paper
-    elevation={0}
-    sx={{
-      background: `linear-gradient(135deg, ${theme.palette.primary.main}15, ${theme.palette.secondary.main}15)`,
-      p: 6,
-      mb: 4,
-      borderRadius: 2,
-      textAlign: "center",
-    }}
-  >
-    <Typography variant="h2" component="h1" gutterBottom>
-      Track Your Reading Journey
-    </Typography>
-    <Typography
-      variant="h6"
-      color="text.secondary"
-      sx={{ mb: 4, maxWidth: "600px", mx: "auto" }}
-    >
-      Organize your books and track your progress with ease. Join our community
-      of readers today!
-    </Typography>
-    <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-      <Button
-        variant="contained"
-        size="large"
-        component={NavLink}
-        to="/login"
-        sx={{ px: 4 }}
-      >
-        Get Started
-      </Button>
-    </Box>
-  </Paper>
-);
 
 const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
