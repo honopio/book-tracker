@@ -8,6 +8,8 @@ import {
   Tooltip,
   Alert,
   Fade,
+  Button,
+  Paper,
 } from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
 import type { Book } from "../../types";
@@ -15,12 +17,21 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../client";
 import theme from "../../theme";
 import { NavLink, useLocation } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
+import Add from "@mui/icons-material/Add";
+import { demoBooks } from "../../data/demoData";
+import { useAuth } from "../../auth/AuthContext";
 
-// fetch books from db
-export function useBooks() {
+// Updated useBooks hook to handle auth state
+export function useBooks(isLoggedIn: boolean) {
   const [books, setBooks] = useState<Book[]>([]);
+
   useEffect(() => {
+    if (!isLoggedIn) {
+      // Return demo data for logged-out users
+      setBooks(demoBooks);
+      return;
+    }
+
     async function fetchBooks() {
       // Fetch * from book_user table and join with titles and authors from books table
       const { data, error } = await supabase.from("book_user").select(`
@@ -48,20 +59,59 @@ export function useBooks() {
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-
         setBooks(merged as Book[]);
       }
     }
     fetchBooks();
-  }, []);
+  }, [isLoggedIn]);
+
   return books;
 }
 
+// Hero section component
+const HeroSection: React.FC = () => (
+  <Paper
+    elevation={0}
+    sx={{
+      background: `linear-gradient(135deg, ${theme.palette.primary.main}15, ${theme.palette.secondary.main}15)`,
+      p: 6,
+      mb: 4,
+      borderRadius: 2,
+      textAlign: "center",
+    }}
+  >
+    <Typography variant="h2" component="h1" gutterBottom>
+      Track Your Reading Journey
+    </Typography>
+    <Typography
+      variant="h6"
+      color="text.secondary"
+      sx={{ mb: 4, maxWidth: "600px", mx: "auto" }}
+    >
+      Organize your books and track your progress with ease. Join our community
+      of readers today!
+    </Typography>
+    <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+      <Button
+        variant="contained"
+        size="large"
+        component={NavLink}
+        to="/login"
+        sx={{ px: 4 }}
+      >
+        Get Started
+      </Button>
+    </Box>
+  </Paper>
+);
+
 const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
-  const books = useBooks();
   const location = useLocation();
   const message = location.state?.message;
+  const isLoggedIn = useAuth();
+
+  const books = useBooks(isLoggedIn);
 
   // Filter books by status
   const currentlyReading = books.filter((book) => book.status === "reading");
@@ -93,10 +143,16 @@ const Dashboard: React.FC = () => {
           maxWidth: "none",
         }}
       >
+        {/* hero section only for logged-out users */}
+        {!isLoggedIn && <HeroSection />}
+
+        {/* Dashboard title */}
         <Typography variant="h1" component="h1" m={8} align="center">
-          My Reading Dashboard
+          {isLoggedIn ? "My reading dashboard" : "Demo dashboard"}
         </Typography>
-        {message && (
+
+        {/* Success message for logged-in users who added a book */}
+        {message && isLoggedIn && (
           <Fade in={showSuccess} timeout={500}>
             <Alert
               color="info"
@@ -112,6 +168,14 @@ const Dashboard: React.FC = () => {
               {message}
             </Alert>
           </Fade>
+        )}
+
+        {/* Demo banner for logged-out users */}
+        {!isLoggedIn && (
+          <Alert severity="info" sx={{ mb: 3, fontSize: "1.25rem" }}>
+            This is a demo with sample books. Sign up to start tracking your own
+            reading!
+          </Alert>
         )}
 
         <Box
@@ -181,7 +245,7 @@ const Dashboard: React.FC = () => {
         >
           <Tooltip title="Add a book" arrow>
             <Fab color="primary" aria-label="add book">
-              <AddIcon />
+              <Add />
             </Fab>
           </Tooltip>
         </Box>
