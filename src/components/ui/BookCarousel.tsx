@@ -94,6 +94,9 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
           variant="h2"
           component="h2"
           sx={{ color: textColor, fontWeight: 600 }}
+          overflow={"hidden"}
+          textOverflow={"ellipsis"}
+          whiteSpace={"nowrap"}
         >
           {title}
         </Typography>
