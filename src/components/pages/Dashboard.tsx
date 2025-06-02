@@ -181,49 +181,39 @@ const Dashboard: React.FC = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: isSmall ? "column" : "row",
-            gap: 3,
+            flexDirection: "column",
+            gap: 2,
             width: "100%",
             minWidth: 0,
           }}
         >
-          {/* Left column: Currently Reading + Want to Read */}
-          <Box
-            sx={{
-              flex: isSmall ? "none" : "2",
-              minWidth: 0,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              width: isSmall ? "100%" : "auto",
-            }}
-          >
+          {/* first row: currently reading */}
+          <Box sx={{ width: "100%" }}>
             <BookCarousel
               books={currentlyReading}
               title="Currently Reading"
               backgroundColor={theme.palette.secondary.main}
               textColor={theme.palette.secondary.contrastText}
             />
-
-            <BookCarousel
-              books={wantToRead}
-              title="Want to Read"
-              backgroundColor={theme.palette.success.main}
-              textColor={theme.palette.success.contrastText}
-            />
           </Box>
 
-          {/* Right column: Finished Books */}
+          {/* Second row: want to read and finished books */}
           <Box
             sx={{
-              flex: isSmall ? "none" : "1",
-              minWidth: 0,
               display: "flex",
-              width: isSmall ? "100%" : "auto",
-              mt: isSmall ? 2 : 0,
+              flexDirection: isSmall ? "column" : "row",
+              gap: 2,
             }}
           >
-            <Box sx={{ width: "100%" }}>
+            <Box sx={{ width: isSmall ? "100%" : "60%" }}>
+              <BookCarousel
+                books={wantToRead}
+                title="Want to Read"
+                backgroundColor={theme.palette.success.main}
+                textColor={theme.palette.success.contrastText}
+              />
+            </Box>
+            <Box sx={{ width: isSmall ? "100%" : "40%" }}>
               <BookCarousel
                 books={finishedBooks}
                 title="Finished Books"
