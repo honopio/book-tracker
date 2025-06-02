@@ -12,9 +12,9 @@ interface StatusSectionProps {
 }
 
 const statusOptions = [
-  { value: "want-to-read", label: "Want to read", color: "default" as const },
-  { value: "reading", label: "Currently reading", color: "primary" as const },
-  { value: "finished", label: "Finished", color: "success" as const },
+  { value: "want-to-read", label: "Want to read", color: "success" as const },
+  { value: "reading", label: "Currently reading", color: "secondary" as const },
+  { value: "finished", label: "Finished", color: "primary" as const },
 ];
 
 export const StatusSection: React.FC<StatusSectionProps> = ({
