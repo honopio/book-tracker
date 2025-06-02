@@ -40,7 +40,7 @@ const BookCard = (props: BookCardProps) => {
         }}
       >
         <Typography
-          variant={isDashboard ? "subtitle2" : "h6"}
+          variant={isDashboard ? "h3" : "h6"} // larger for dashboard
           component="h3"
           noWrap
           sx={{
@@ -48,12 +48,11 @@ const BookCard = (props: BookCardProps) => {
             fontWeight: isDashboard ? 600 : "normal",
           }}
         >
-          {" "}
           {book.title}
         </Typography>
       </Link>
       <Typography
-        variant={isDashboard ? "caption" : "body2"}
+        variant={isDashboard ? "subtitle1" : "body2"} // larger for dashboard
         color={isDashboard ? textColor : "text.secondary"}
         noWrap
         sx={{
@@ -70,20 +69,18 @@ const BookCard = (props: BookCardProps) => {
     <Chip
       label={statusConfig[book.status].label}
       color={statusConfig[book.status].color}
-      size={isDashboard ? "small" : "small"}
+      size="small"
       variant={isDashboard ? "outlined" : "filled"}
       sx={{
         mb: isDashboard ? 1 : viewMode === "grid" ? 1 : 0,
         ...(isDashboard && {
           borderColor: textColor,
           color: textColor,
-          "& .MuiChip-label": {
-            fontSize: "0.7rem",
-          },
         }),
       }}
     />
   );
+
   const Progress =
     book.status !== "want-to-read" && book.pageCount ? (
       <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
@@ -106,7 +103,7 @@ const BookCard = (props: BookCardProps) => {
           variant="determinate"
           value={((book.currentPage ?? 0) / book.pageCount) * 100}
           sx={{
-            height: viewMode === "grid" ? 6 : 4,
+            height: 6,
             borderRadius: 2,
             backgroundColor: isDashboard ? `${textColor}20` : undefined,
             "& .MuiLinearProgress-bar": {
@@ -123,7 +120,7 @@ const BookCard = (props: BookCardProps) => {
         <Rating
           value={book.rating}
           readOnly
-          size="small"
+          size="medium"
           sx={{
             color: isDashboard ? textColor : "primary.main",
           }}

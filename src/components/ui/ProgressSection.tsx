@@ -82,10 +82,10 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
           />
           <Box display="flex" alignItems="center" gap={1} mb={2}>
             <Typography variant="body1">
-              {current ?? 0} / {total ?? "?"} pages
+              {current ?? "?"} / {total ?? "?"} pages
             </Typography>
 
-            {total && current != null && current === total && (
+            {total && current != null && current === total && current !== 0 && (
               <Chip
                 icon={<Book />}
                 label="Completed!"
@@ -145,6 +145,11 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
           {pageError && (
             <FormHelperText error>
               Current page cannot be greater than total pages
+            </FormHelperText>
+          )}
+          {(current === undefined || total === undefined) && (
+            <FormHelperText>
+              Please enter the number of pages to track your progress.
             </FormHelperText>
           )}
         </Box>

@@ -15,8 +15,10 @@ import { RatingSection } from "../ui/RatingSection";
 import { Comment } from "../ui/Comment";
 import { ProgressSection } from "../ui/ProgressSection";
 import { StatusSection } from "../ui/StatusSection";
+import { useAuth } from "../../auth/AuthContext";
 
 function BookForm() {
+  const user = useAuth();
   const [status, setStatus] = useState("want-to-read");
   const [rating, setRating] = useState<number | null>(0);
   const [trackProgress, setTrackProgress] = useState(false);
@@ -64,6 +66,10 @@ function BookForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!user) {
+      setSubmitError("You must be logged in to add a book.");
+      return;
+    }
     const formData = new FormData(event.currentTarget);
     const title = formData.get("book-title") as string;
     const author = formData.get("book-author") as string;
@@ -75,7 +81,7 @@ function BookForm() {
       .insert([
         {
           book_id: bookId,
-          user_id: 1, // HARDCODED UNTIL AUTH IS IMPLEMENTED
+          user_id: user.id,
           status: status,
           rating: rating,
           ...(trackProgress && currentPage && { current_page: currentPage }),
