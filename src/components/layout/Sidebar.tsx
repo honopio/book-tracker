@@ -130,7 +130,7 @@ function Sidebar({ open, onClose }: SidebarProps) {
                 to={item.to}
                 onClick={() => {
                   onClose();
-                  if (item.text === "Logout") {
+                  if (item.text === "Log out") {
                     signOut();
                   }
                 }}
