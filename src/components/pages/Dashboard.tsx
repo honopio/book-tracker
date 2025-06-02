@@ -54,7 +54,6 @@ export function useBooks() {
     }
     fetchBooks();
   }, []);
-  console.log("useBooks books:", books);
   return books;
 }
 

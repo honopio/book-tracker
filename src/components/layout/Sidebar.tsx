@@ -39,17 +39,15 @@ function Sidebar({ open, onClose }: SidebarProps) {
   const navigate = useNavigate();
   const user = useAuth();
 
-  let menuItems;
+  let menuItems = [
+    { text: "My Dashboard", icon: <SpaceDashboard />, to: "/dashboard" },
+    { text: "My library", icon: <Book />, to: "/library" },
+    { text: "Add a book", icon: <Add />, to: "/add-book" },
+  ];
   if (user) {
-    menuItems = [
-      { text: "My Dashboard", icon: <SpaceDashboard />, to: "/dashboard" },
-      { text: "My library", icon: <Book />, to: "/library" },
-      { text: "Reading Stats", icon: <TrendingUp />, to: "/stats" },
-      { text: "Add a book", icon: <Add />, to: "/add-book" },
-      { text: "Logout", icon: <Logout />, to: "/login" },
-    ];
+    menuItems.push({ text: "Logout", icon: <Logout />, to: "/login" });
   } else {
-    menuItems = [{ text: "Sign in", icon: <Person />, to: "/login" }];
+    menuItems.push({ text: "Login", icon: <Person />, to: "/login" });
   }
 
   async function signOut() {
