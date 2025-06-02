@@ -20,22 +20,26 @@ const HeroSection: React.FC = () => (
     }}
   >
     <Box
-    // sx={{
-    //   flex: 1,
-    // }}
+      sx={{
+        flex: 1,
+        textAlign: "left",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
     >
-      <Typography variant="h2" component="h1" gutterBottom>
+      <Typography variant="h1" component="h1" gutterBottom>
         Track Your Reading Journey
       </Typography>
       <Typography
-        variant="h6"
+        variant="h2"
         color="text.secondary"
-        sx={{ mb: 4, maxWidth: "600px", mx: "auto" }}
+        sx={{ mb: 4, maxWidth: "600px" }}
       >
-        Organize your books and track your progress with ease. Join our
-        community of readers today!
+        Never lose track of your reading list again. Start your personal book
+        tracker today!
       </Typography>
-      <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+      <Box sx={{ display: "flex", gap: 2 }}>
         <Button
           variant="contained"
           size="large"
