@@ -137,6 +137,18 @@ const BookList = () => {
         <Tab label="Finished" value="finished" />
       </Tabs>
 
+      {!user && (
+        <Box sx={{ my: 4, textAlign: "center" }}>
+          <Alert severity="info" sx={{ fontSize: "1.25rem", py: 2 }}>
+            This is a demo with sample books. You can{" "}
+            <Link to="/login" style={{ color: "inherit" }}>
+              log in or sign up
+            </Link>{" "}
+            to manage your books
+          </Alert>
+        </Box>
+      )}
+
       {/* Books Display */}
       <Box sx={{ mb: 2 }}>
         <Typography variant="h6" color="text.secondary">
@@ -157,17 +169,6 @@ const BookList = () => {
           {filteredBooks.map((book) => (
             <BookCard key={book.id} book={book} viewMode={viewMode} />
           ))}
-        </Box>
-      )}
-      {!user && (
-        <Box sx={{ mt: 4, textAlign: "center" }}>
-          <Alert severity="info" sx={{ fontSize: "1.25rem", py: 2 }}>
-            You can{" "}
-            <Link to="/login" style={{ color: "inherit" }}>
-              log in or sign up
-            </Link>{" "}
-            to manage your books
-          </Alert>
         </Box>
       )}
 
