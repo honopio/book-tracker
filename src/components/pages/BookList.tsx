@@ -162,8 +162,11 @@ const BookList = () => {
       {!user && (
         <Box sx={{ mt: 4, textAlign: "center" }}>
           <Alert severity="info" sx={{ fontSize: "1.25rem", py: 2 }}>
-            You can <Link to="/login">log in or sign up</Link> to manage your
-            books
+            You can{" "}
+            <Link to="/login" style={{ color: "inherit" }}>
+              log in or sign up
+            </Link>{" "}
+            to manage your books
           </Alert>
         </Box>
       )}
