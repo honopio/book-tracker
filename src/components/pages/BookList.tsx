@@ -17,6 +17,7 @@ import { Add, GridView, Sort, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import BookCard from "../ui/BookCard";
 import { useBooks } from "./Dashboard";
+import { useAuth } from "../../auth/AuthContext";
 
 const BookList = () => {
   const books = useBooks();
@@ -28,6 +29,7 @@ const BookList = () => {
   const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(
     null
   );
+  const { user } = useAuth();
 
   // Filter books based on selected tab, search term, and sort order
   const filteredBooks = books
@@ -135,6 +137,7 @@ const BookList = () => {
       </Tabs>
 
       {/* Books Display */}
+
       <Box sx={{ mb: 2 }}>
         <Typography variant="h6" color="text.secondary">
           {filteredBooks.length} book{filteredBooks.length !== 1 ? "s" : ""}
