@@ -13,6 +13,7 @@ const Footer: React.FC = () => (
       borderTop: "1px solid",
       borderColor: "divider",
       backgroundColor: "background.default",
+      height: "30px",
     }}
   >
     <Toolbar>
