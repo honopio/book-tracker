@@ -11,13 +11,13 @@ import {
 import type { Book } from "../../types";
 import { Link } from "react-router-dom";
 
-interface BookCardLibraryProps {
+interface BookCardProps {
   book: Book;
   viewMode?: string; // "grid" | "list" | "carousel"
   textColor?: string;
 }
 
-const BookCardLibrary = (props: BookCardLibraryProps) => {
+const BookCard = (props: BookCardProps) => {
   const { book, viewMode = "grid", textColor } = props;
 
   const statusConfig = {
@@ -192,4 +192,4 @@ const BookCardLibrary = (props: BookCardLibraryProps) => {
   );
 };
 
-export default BookCardLibrary;
+export default BookCard;
