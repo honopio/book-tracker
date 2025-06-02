@@ -12,6 +12,7 @@ import {
   Grid,
   Menu,
   MenuItem,
+  Alert,
 } from "@mui/material";
 import { Add, GridView, Sort, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -29,7 +30,7 @@ const BookList = () => {
   const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(
     null
   );
-  const { user } = useAuth();
+  const user = useAuth();
 
   // Filter books based on selected tab, search term, and sort order
   const filteredBooks = books
@@ -137,7 +138,6 @@ const BookList = () => {
       </Tabs>
 
       {/* Books Display */}
-
       <Box sx={{ mb: 2 }}>
         <Typography variant="h6" color="text.secondary">
           {filteredBooks.length} book{filteredBooks.length !== 1 ? "s" : ""}
@@ -157,6 +157,14 @@ const BookList = () => {
           {filteredBooks.map((book) => (
             <BookCard key={book.id} book={book} viewMode={viewMode} />
           ))}
+        </Box>
+      )}
+      {!user && (
+        <Box sx={{ mt: 4, textAlign: "center" }}>
+          <Alert severity="info" sx={{ fontSize: "1.25rem", py: 2 }}>
+            You can <Link to="/login">log in or sign up</Link> to manage your
+            books
+          </Alert>
         </Box>
       )}
 
