@@ -45,9 +45,9 @@ function Sidebar({ open, onClose }: SidebarProps) {
     { text: "Add a book", icon: <Add />, to: "/add-book" },
   ];
   if (user) {
-    menuItems.push({ text: "Logout", icon: <Logout />, to: "/login" });
+    menuItems.push({ text: "Log out", icon: <Logout />, to: "/login" });
   } else {
-    menuItems.push({ text: "Login", icon: <Person />, to: "/login" });
+    menuItems.push({ text: "Log in", icon: <Person />, to: "/login" });
   }
 
   async function signOut() {
@@ -72,8 +72,6 @@ function Sidebar({ open, onClose }: SidebarProps) {
       sx={{
         "& .MuiDrawer-paper": {
           width: DRAWER_WIDTH,
-          boxSizing: "border-box",
-          backgroundColor: "background.paper",
         },
       }}
     >
@@ -103,17 +101,19 @@ function Sidebar({ open, onClose }: SidebarProps) {
             textAlign: "center",
           }}
         >
-          <Avatar
-            sx={{
-              width: 64,
-              height: 64,
-              mx: "auto",
-              mb: 2,
-              backgroundColor: "primary.light",
-            }}
-          >
-            <Person sx={{ fontSize: 40 }} />
-          </Avatar>
+          <Link to={user ? "/dashboard" : "/login"}>
+            <Avatar
+              sx={{
+                width: 64,
+                height: 64,
+                mx: "auto",
+                mb: 2,
+                backgroundColor: "primary.light",
+              }}
+            >
+              <Person sx={{ fontSize: 40 }} />
+            </Avatar>
+          </Link>
           <Typography variant="h6" gutterBottom>
             {user?.email || "Not logged in"}
           </Typography>
