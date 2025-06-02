@@ -14,11 +14,10 @@ import type { Book } from "../../types";
 import { useEffect, useState } from "react";
 import { supabase } from "../../client";
 import theme from "../../theme";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import Add from "@mui/icons-material/Add";
 import { demoBooks } from "../../data/demoData";
 import { useAuth } from "../../auth/AuthContext";
-import HeroSection from "../ui/HeroSection";
 
 // Updated useBooks hook to handle auth state
 export function useBooks(isLoggedIn: boolean) {
@@ -105,9 +104,6 @@ const Dashboard: React.FC = () => {
           maxWidth: "none",
         }}
       >
-        {/* hero section only for logged-out users */}
-        {!isLoggedIn && <HeroSection />}
-
         {/* Dashboard title */}
         <Typography variant="h1" component="h1" m={8} align="center">
           {isLoggedIn ? "My reading dashboard" : "Demo dashboard"}
@@ -135,8 +131,11 @@ const Dashboard: React.FC = () => {
         {/* Demo banner for logged-out users */}
         {!isLoggedIn && (
           <Alert severity="info" sx={{ mb: 3, fontSize: "1.25rem" }}>
-            This is a demo with sample books. Sign up to start tracking your own
-            reading!
+            This is a demo with sample books.{" "}
+            <Link to="/login" style={{ color: "inherit" }}>
+              Log in or sign up
+            </Link>{" "}
+            to start tracking your own reading!
           </Alert>
         )}
 
