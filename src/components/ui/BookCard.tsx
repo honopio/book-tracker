@@ -1,195 +1,192 @@
-import React, { useState } from "react";
 import {
   Card,
   CardContent,
-  Typography,
   Box,
+  Typography,
+  Chip,
   LinearProgress,
   Rating,
-  IconButton,
-  Menu,
-  MenuItem,
-  Chip,
-  CardActions,
+  Grid,
 } from "@mui/material";
-import { MenuBook, Delete } from "@mui/icons-material";
-import { type BookCardProps } from "../../types";
+import type { Book } from "../../types";
 import { Link } from "react-router-dom";
 
-const BookCard: React.FC<BookCardProps> = ({
-  id,
-  title,
-  author,
-  status,
-  progress = 0,
-  rating,
-  pageCount,
-  currentPage,
-  textColor,
-}) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+interface BookCardProps {
+  book: Book;
+  viewMode?: string; // "grid" | "list" | "carousel"
+  textColor?: string;
+}
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    setAnchorEl(event.currentTarget);
+const BookCard = (props: BookCardProps) => {
+  const { book, viewMode = "grid", textColor } = props;
+
+  const statusConfig = {
+    "want-to-read": { label: "Want to Read", color: "success" as const },
+    reading: { label: "Currently Reading", color: "secondary" as const },
+    finished: { label: "Finished", color: "primary" as const },
   };
+  if (!book) return null;
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  const isDashboard = viewMode === "carousel";
 
-  const setRating = (newValue: number | null) => {
-    console.log(`Rating set to: ${newValue}`);
-  };
-
-  const getMenuItems = () => {
-    if (status === "reading") {
-      return [
-        {
-          label: "finished",
-          action: () => handleStatusChange("finished"),
-        },
-      ];
-    }
-    if (status === "want-to-read") {
-      return [
-        {
-          label: "start reading",
-          action: () => handleStatusChange("reading"),
-        },
-      ];
-    }
-    return [];
-  };
-
-  const handleStatusChange = (
-    newStatus: "reading" | "want-to-read" | "finished"
-  ) => {
-    //HANDLE STATUS CHANGE HERE
-    console.log(`Status changed to: ${newStatus}`);
-  };
-
-  const handleDelete = () => {
-    //HANDLE DELETE HERE
-    console.log(`Book with ID ${id} deleted`);
-  };
-
-  return (
-    <Card
-      sx={(theme) => ({
-        width: 200,
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        boxShadow: "none",
-        backgroundColor: "transparent",
-        border: `1px solid ${theme.palette.background.default}`,
-      })}
-    >
-      {/* Book details */}
-      <CardContent
-        sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          p: 2,
-          "&:last-child": {
-            pb: 2,
-          },
+  // Shared content
+  const TitleAuthor = (
+    <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
+      <Link
+        to={`/book/${book.id}`}
+        style={{
+          textDecoration: "none",
+          color: isDashboard ? textColor : "inherit",
         }}
       >
-        <Link
-          to={`/book/${id}`}
-          style={{ textDecoration: "none", color: "inherit" }}
+        <Typography
+          variant={isDashboard ? "subtitle2" : "h6"}
+          component="h3"
+          noWrap
+          sx={{
+            color: isDashboard ? textColor : "inherit",
+            fontWeight: isDashboard ? 600 : "normal",
+          }}
         >
-          <Typography variant="h4" noWrap>
-            {title}
-          </Typography>
-        </Link>
-
-        <Typography variant="caption" sx={{ mb: 3 }}>
-          {author}
+          {" "}
+          {book.title}
         </Typography>
+      </Link>
+      <Typography
+        variant={isDashboard ? "caption" : "body2"}
+        color={isDashboard ? textColor : "text.secondary"}
+        noWrap
+        sx={{
+          opacity: isDashboard ? 0.8 : 1,
+          mt: 0.5,
+        }}
+      >
+        by {book.author}
+      </Typography>
+    </Box>
+  );
 
-        {/* Progress bar for currently reading and finished */}
-        {(progress > 0 || status === "finished") && (
-          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-            {/* Book icon on the left */}
-            <MenuBook sx={{ mr: 1, color: textColor }} />
-
-            {/* Progress bar */}
-            <Box sx={{ flex: 1 }}>
-              <LinearProgress
-                variant="determinate"
-                value={status === "finished" ? 100 : progress}
-                sx={{
-                  backgroundColor: "#eee",
-                  "& .MuiLinearProgress-bar": { backgroundColor: textColor },
-                }}
-              />
-              <Typography variant="caption">
-                {status === "finished"
-                  ? "Finished!"
-                  : `Page ${currentPage} of ${pageCount}`}
-              </Typography>
-            </Box>
-          </Box>
-        )}
-
-        {/* Rating for finished books */}
-        {status !== "want-to-read" && (
-          <Box sx={{ mb: 1 }}>
-            <Rating
-              value={rating ? rating : 0}
-              size="medium"
-              precision={0.5}
-              sx={{ mb: 0.5, color: textColor }}
-              onChange={(event, newValue) => {
-                setRating(newValue);
-              }}
-            />
-          </Box>
-        )}
-
-        <CardActions
+  const StatusChip = (
+    <Chip
+      label={statusConfig[book.status].label}
+      color={statusConfig[book.status].color}
+      size={isDashboard ? "small" : "small"}
+      variant={isDashboard ? "outlined" : "filled"}
+      sx={{
+        mb: isDashboard ? 1 : viewMode === "grid" ? 1 : 0,
+        ...(isDashboard && {
+          borderColor: textColor,
+          color: textColor,
+          "& .MuiChip-label": {
+            fontSize: "0.7rem",
+          },
+        }),
+      }}
+    />
+  );
+  const Progress =
+    book.status !== "want-to-read" && book.pageCount ? (
+      <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
+        <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
+            mb: 0.5,
           }}
         >
-          <Chip
-            label={status.replace(/-/g, " ")}
-            onClick={status === "finished" ? undefined : handleMenuOpen}
-            variant="outlined"
-          />
-          {status !== "finished" && (
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              {getMenuItems().map((item, idx) => (
-                <MenuItem
-                  key={item.label}
-                  onClick={() => {
-                    item.action();
-                    handleMenuClose();
-                  }}
-                >
-                  {item.label}
-                </MenuItem>
-              ))}
-            </Menu>
-          )}
-          <IconButton
-            onClick={handleDelete}
-            sx={{ ml: "auto" }}
-            aria-label="delete"
+          <Typography
+            variant="caption"
+            color={isDashboard ? textColor : "text.secondary"}
+            sx={{ opacity: isDashboard ? 0.8 : 1 }}
           >
-            <Delete />
-          </IconButton>
-        </CardActions>
+            {book.currentPage} / {book.pageCount} pages
+          </Typography>
+        </Box>
+        <LinearProgress
+          variant="determinate"
+          value={((book.currentPage ?? 0) / book.pageCount) * 100}
+          sx={{
+            height: viewMode === "grid" ? 6 : 4,
+            borderRadius: 2,
+            backgroundColor: isDashboard ? `${textColor}20` : undefined,
+            "& .MuiLinearProgress-bar": {
+              backgroundColor: isDashboard ? textColor : undefined,
+            },
+          }}
+        />
+      </Box>
+    ) : null;
+
+  const RatingBox =
+    book.rating !== null && book.rating !== undefined ? (
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Rating
+          value={book.rating}
+          readOnly
+          size="small"
+          sx={{
+            color: isDashboard ? textColor : "primary.main",
+          }}
+        />
+      </Box>
+    ) : null;
+
+  // Compact layout for carousel in dashboard layout
+  if (isDashboard) {
+    return (
+      <Card
+        sx={{
+          width: 200,
+          height: "100%",
+          cursor: "pointer",
+          transition: "all 0.2s",
+          backgroundColor: "transparent",
+          border: `1px solid ${textColor}30`,
+          "&:hover": {
+            transform: "translateY(-2px)",
+            boxShadow: isDashboard ? `0 4px 12px ${textColor}20` : 3,
+          },
+        }}
+      >
+        <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
+          {TitleAuthor}
+          {StatusChip}
+          {Progress}
+          {RatingBox}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card
+      sx={{
+        height: viewMode === "grid" ? "100%" : undefined,
+        mb: viewMode === "list" ? 2 : 0,
+        cursor: "pointer",
+        transition: "all 0.2s",
+        "&:hover": {
+          transform: "translateY(-2px)",
+          boxShadow: 3,
+        },
+      }}
+    >
+      <CardContent>
+        {viewMode === "grid" ? (
+          <>
+            {TitleAuthor}
+            <Box sx={{ mb: 2 }}>{StatusChip}</Box>
+            {Progress}
+            {RatingBox}
+          </>
+        ) : (
+          <Grid container spacing={4} alignItems="center">
+            <Grid>{TitleAuthor}</Grid>
+            <Grid>{StatusChip}</Grid>
+            {Progress && <Grid>{Progress}</Grid>}
+            <Grid>{RatingBox}</Grid>
+          </Grid>
+        )}
       </CardContent>
     </Card>
   );

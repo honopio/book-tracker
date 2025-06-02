@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { Add, GridView, Sort, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import BookCardLibrary from "../ui/BookCardLibrary";
+import BookCard from "../ui/BookCard";
 import { useBooks } from "./Dashboard";
 
 const BookList = () => {
@@ -145,14 +145,14 @@ const BookList = () => {
         <Grid container spacing={3}>
           {filteredBooks.map((book) => (
             <Grid size={{ xs: 6, sm: 4, md: 3 }} key={book.id}>
-              <BookCardLibrary key={book.id} book={book} viewMode={viewMode} />
+              <BookCard key={book.id} book={book} viewMode={viewMode} />
             </Grid>
           ))}
         </Grid>
       ) : (
         <Box>
           {filteredBooks.map((book) => (
-            <BookCardLibrary key={book.id} book={book} viewMode={viewMode} />
+            <BookCard key={book.id} book={book} viewMode={viewMode} />
           ))}
         </Box>
       )}
