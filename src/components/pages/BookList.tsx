@@ -21,7 +21,8 @@ import { useBooks } from "./Dashboard";
 import { useAuth } from "../../auth/AuthContext";
 
 const BookList = () => {
-  const books = useBooks();
+  const user = useAuth();
+  const books = useBooks(!!user);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
@@ -30,7 +31,6 @@ const BookList = () => {
   const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(
     null
   );
-  const user = useAuth();
 
   // Filter books based on selected tab, search term, and sort order
   const filteredBooks = books

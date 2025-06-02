@@ -56,7 +56,7 @@ function Sidebar({ open, onClose }: SidebarProps) {
     if (error) {
       console.error("Error signing out:", error);
     } else {
-      navigate("/login");
+      navigate("/dashboard");
     }
   }
 
