@@ -11,7 +11,6 @@ const HeroSection: React.FC = () => (
   <Paper
     elevation={0}
     sx={{
-      background: `linear-gradient(135deg, ${theme.palette.primary.main}15, ${theme.palette.secondary.main}15)`,
       p: 6,
       mb: 4,
       borderRadius: 2,
@@ -26,6 +25,7 @@ const HeroSection: React.FC = () => (
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        ml: { xs: 0, md: 6 },
       }}
     >
       <Typography variant="h1" component="h1" gutterBottom>
@@ -66,14 +66,15 @@ const HeroSection: React.FC = () => (
         display: "flex",
       }}
     >
-      <img
+      <Box
+        component="img"
         src={books}
         alt="Books"
-        style={{
+        sx={{
           width: "100%",
-          maxWidth: "400px",
+          maxWidth: "500px",
           height: "auto",
-          margin: "0 auto",
+          objectFit: "contain",
         }}
       />
     </Box>
