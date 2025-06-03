@@ -68,7 +68,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
             onChange={(e) => setTrackProgress?.(e.target.checked)}
           />
         )}
-        <Typography variant="h3" mr={2}>
+        <Typography variant="h4" mr={2}>
           Track progress
         </Typography>
       </Box>

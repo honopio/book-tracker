@@ -136,7 +136,7 @@ const SingleBook: React.FC = () => {
             <Delete />
           </IconButton>
         </Stack>
-        <Typography variant="h3" color="text.secondary" mb={3}>
+        <Typography variant="h4" color="text.secondary" mb={3}>
           {book.author}
         </Typography>
 

@@ -40,8 +40,8 @@ const BookCard = (props: BookCardProps) => {
         }}
       >
         <Typography
-          variant={isDashboard ? "h3" : "h6"} // larger for dashboard
-          component="h3"
+          variant={isDashboard ? "h4" : "h6"} // larger for dashboard
+          component="h4"
           noWrap
           sx={{
             color: isDashboard ? textColor : "inherit",
