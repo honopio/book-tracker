@@ -18,8 +18,7 @@ import { StatusSection } from "../ui/StatusSection";
 import { useAuth } from "../../auth/AuthContext";
 
 function BookForm() {
-  const { user, loading } = useAuth();
-  if (loading) return null;
+  const user = useAuth();
   const [status, setStatus] = useState("want-to-read");
   const [rating, setRating] = useState<number | null>(0);
   const [trackProgress, setTrackProgress] = useState(false);

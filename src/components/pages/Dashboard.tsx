@@ -70,8 +70,7 @@ const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
   const location = useLocation();
   const message = location.state?.message;
-  const { user, loading } = useAuth();
-  if (loading) return null;
+  const user = useAuth();
   const isLoggedIn = !!user;
 
   const books = useBooks(isLoggedIn);
