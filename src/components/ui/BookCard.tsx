@@ -89,7 +89,7 @@ const BookCard = (props: BookCardProps) => {
             mb: 0.5,
           }}
         >
-          {!isDashboard && book.pageCount && book.currentPage && (
+          {!isDashboard && book.pageCount && book.currentPage ? (
             <Typography
               variant="caption"
               color={isDashboard ? textColor : "text.secondary"}
@@ -97,6 +97,8 @@ const BookCard = (props: BookCardProps) => {
             >
               {book.currentPage} / {book.pageCount} pages
             </Typography>
+          ) : (
+            <Box sx={{ height: "20px" }} />
           )}
         </Box>
         <LinearProgress
