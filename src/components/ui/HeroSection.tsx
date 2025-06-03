@@ -54,6 +54,7 @@ const HeroSection: React.FC = () => (
           fontSize: { xs: "2rem", sm: "2.5rem", lg: "3rem", xl: "4rem" },
           fontWeight: 700,
         }}
+        maxWidth={800}
       >
         Track Your Reading Journey
       </Typography>
