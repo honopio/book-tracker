@@ -101,7 +101,9 @@ const BookCard = (props: BookCardProps) => {
         </Box>
         <LinearProgress
           variant="determinate"
-          value={((book.currentPage ?? 0) / book.pageCount) * 100}
+          value={
+            book.progress || ((book.currentPage ?? 0) / book.pageCount) * 100
+          }
           sx={{
             height: 6,
             borderRadius: 2,
