@@ -113,7 +113,7 @@ function BookForm() {
         mx: "auto",
       }}
     >
-      <Paper elevation={1} sx={{ p: 4 }}>
+      <Paper elevation={1} sx={{ p: 3 }}>
         <BackButton />
         {!user && (
           <Box sx={{ my: 4, textAlign: "center" }}>
@@ -128,8 +128,8 @@ function BookForm() {
         )}
 
         <Typography
-          variant="h3"
-          component="h3"
+          variant="h2"
+          component="h2"
           sx={{ mb: 3, textAlign: "center" }}
         >
           Add a new book to your collection
