@@ -1,54 +1,62 @@
-# React + TypeScript + Vite
+# BookTracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BookTracker is a book tracking app. Its purpose is to help users keep track of their books.
+It allows users to add books, browse their library, update their reading progress, rate finished books, and keep notes.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Add books to your personal library
+- Track reading status: want to read, currently reading, finished
+- Update reading progress by pages
+- Rate books and comment them
+- User authentication
+- Responsive design (Material UI)
+- Demo mode for logged-out users
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend:** React, TypeScript, Vite
+- **UI:** Material UI (MUI)
+- **Backend:** Supabase (PostgreSQL, Auth)
+- **State Management:** React Context, Custom Hooks
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Getting Started
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. **Clone the repository:**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+   ```sh
+   git clone https://github.com/your-username/book-tracker.git
+   cd book-tracker
+   ```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+2. **Install dependencies:**
+
+   ```sh
+   npm install
+   ```
+
+3. **Database Setup**
+
+   1. Create a new Supabase project.
+   2. Run the SQL in `schema.sql` to set up tables, policies, and demo data.
+
+4. **Set up environment variables:**
+
+   - Copy `.env.local.example` to `.env.local` and add your Supabase credentials.
+
+5. **Run the app locally:**
+
+   ```sh
+   npm run dev
+   ```
+
+6. **Open in your browser:**
+   - Visit [http://localhost:5173](http://localhost:5173)
+
+## Project Structure
+
+- `src/components/` – UI components (layout, pages, reusable UI)
+- `src/hooks/` – Custom React hooks
+- `src/auth/` – Authentication context
+- `src/types.ts` – TypeScript types
+- `src/theme.tsx` – MUI theme customization
