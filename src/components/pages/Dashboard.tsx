@@ -107,7 +107,7 @@ const Dashboard: React.FC = () => {
       >
         {/* Dashboard title */}
         <Typography
-          variant={isSmall ? "h3" : "h1"}
+          variant={isSmall ? "h2" : "h1"}
           component="h1"
           align="center"
           sx={{ mb: 4 }}
@@ -152,6 +152,7 @@ const Dashboard: React.FC = () => {
             gap: 2,
             width: "100%",
             minWidth: 0,
+            height: "100%",
           }}
         >
           {/* first row: currently reading */}
