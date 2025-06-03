@@ -107,7 +107,12 @@ const Dashboard: React.FC = () => {
         }}
       >
         {/* Dashboard title */}
-        <Typography variant="h1" component="h1" m={8} align="center">
+        <Typography
+          variant={isSmall ? "h2" : "h1"}
+          component="h1"
+          align="center"
+          sx={{ mb: 4 }}
+        >
           {isLoggedIn ? "My reading dashboard" : "Demo dashboard"}
         </Typography>
 
