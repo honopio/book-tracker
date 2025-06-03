@@ -119,6 +119,7 @@ const BookCard = (props: BookCardProps) => {
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Rating
           value={book.rating}
+          precision={0.5}
           readOnly
           size="medium"
           sx={{
