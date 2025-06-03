@@ -41,7 +41,6 @@ const BookCard = (props: BookCardProps) => {
       >
         <Typography
           variant="h5"
-          noWrap
           sx={{
             color: isDashboard ? textColor : "inherit",
             fontWeight: isDashboard ? 600 : "normal",
