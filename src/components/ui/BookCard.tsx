@@ -40,9 +40,7 @@ const BookCard = (props: BookCardProps) => {
         }}
       >
         <Typography
-          variant={isDashboard ? "h3" : "h6"} // larger for dashboard
-          component="h3"
-          noWrap
+          variant="h5"
           sx={{
             color: isDashboard ? textColor : "inherit",
             fontWeight: isDashboard ? 600 : "normal",
@@ -52,7 +50,7 @@ const BookCard = (props: BookCardProps) => {
         </Typography>
       </Link>
       <Typography
-        variant={isDashboard ? "subtitle1" : "body2"} // larger for dashboard
+        variant="body2"
         color={isDashboard ? textColor : "text.secondary"}
         noWrap
         sx={{
@@ -82,8 +80,8 @@ const BookCard = (props: BookCardProps) => {
   );
 
   const Progress =
-    book.status !== "want-to-read" && book.pageCount ? (
-      <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
+    book.progress !== undefined ? (
+      <Box sx={{ my: viewMode === "list" ? 0 : 2 }}>
         <Box
           sx={{
             display: "flex",
@@ -91,17 +89,21 @@ const BookCard = (props: BookCardProps) => {
             mb: 0.5,
           }}
         >
-          <Typography
-            variant="caption"
-            color={isDashboard ? textColor : "text.secondary"}
-            sx={{ opacity: isDashboard ? 0.8 : 1 }}
-          >
-            {book.currentPage} / {book.pageCount} pages
-          </Typography>
+          {!isDashboard && book.pageCount && book.currentPage ? (
+            <Typography
+              variant="caption"
+              color={isDashboard ? textColor : "text.secondary"}
+              sx={{ opacity: 0.8 }}
+            >
+              {book.currentPage} / {book.pageCount} pages
+            </Typography>
+          ) : (
+            <Box sx={{ height: "20px" }} />
+          )}
         </Box>
         <LinearProgress
           variant="determinate"
-          value={((book.currentPage ?? 0) / book.pageCount) * 100}
+          value={book.progress}
           sx={{
             height: 6,
             borderRadius: 2,
@@ -119,6 +121,7 @@ const BookCard = (props: BookCardProps) => {
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Rating
           value={book.rating}
+          precision={0.5}
           readOnly
           size="medium"
           sx={{

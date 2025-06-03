@@ -14,8 +14,8 @@ import HeroSection from "./components/ui/HeroSection.tsx";
 import React from "react";
 
 function HomeRedirect() {
-  const { user, loading } = useAuth();
-  const isLoggedIn = !loading && !!user;
+  const user = useAuth();
+  const isLoggedIn = Boolean(user);
   const navigate = useNavigate();
   React.useEffect(() => {
     if (isLoggedIn) {

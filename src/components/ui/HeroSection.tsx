@@ -59,7 +59,7 @@ const HeroSection: React.FC = () => (
         Track Your Reading Journey
       </Typography>
       <Typography
-        component="h2"
+        component="h3"
         color="text.secondary"
         sx={{
           mb: 4,

@@ -70,8 +70,7 @@ const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
   const location = useLocation();
   const message = location.state?.message;
-  const { user, loading } = useAuth();
-  if (loading) return null;
+  const user = useAuth();
   const isLoggedIn = !!user;
 
   const books = useBooks(isLoggedIn);
@@ -107,7 +106,12 @@ const Dashboard: React.FC = () => {
         }}
       >
         {/* Dashboard title */}
-        <Typography variant="h1" component="h1" m={8} align="center">
+        <Typography
+          variant={isSmall ? "h2" : "h1"}
+          component="h1"
+          align="center"
+          sx={{ mb: 4 }}
+        >
           {isLoggedIn ? "My reading dashboard" : "Demo dashboard"}
         </Typography>
 
@@ -148,6 +152,7 @@ const Dashboard: React.FC = () => {
             gap: 2,
             width: "100%",
             minWidth: 0,
+            height: "100%",
           }}
         >
           {/* first row: currently reading */}

@@ -18,8 +18,7 @@ import { StatusSection } from "../ui/StatusSection";
 import { useAuth } from "../../auth/AuthContext";
 
 function BookForm() {
-  const { user, loading } = useAuth();
-  if (loading) return null;
+  const user = useAuth();
   const [status, setStatus] = useState("want-to-read");
   const [rating, setRating] = useState<number | null>(0);
   const [trackProgress, setTrackProgress] = useState(false);
@@ -114,7 +113,7 @@ function BookForm() {
         mx: "auto",
       }}
     >
-      <Paper elevation={1} sx={{ p: 4 }}>
+      <Paper elevation={1} sx={{ p: 3 }}>
         <BackButton />
         {!user && (
           <Box sx={{ my: 4, textAlign: "center" }}>

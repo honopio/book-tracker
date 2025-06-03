@@ -18,14 +18,15 @@ const theme = createTheme({
       letterSpacing: "-0.02em",
     },
     h2: {
-      fontSize: "1.5rem",
+      fontSize: "2rem",
+      fontWeight: 600,
     },
     h3: {
-      fontSize: "1.25rem",
+      fontSize: "1.5rem",
       fontWeight: 600,
     },
     h4: {
-      fontSize: "1rem",
+      fontSize: "1.25rem",
       fontWeight: 600,
     },
     h5: {

@@ -32,7 +32,7 @@ export const RatingSection: React.FC<RatingSectionProps> = ({
             disabled={disabled}
           />
           <Typography
-            variant="h3"
+            variant="h4"
             color={disabled ? "text.secondary" : "text.primary"}
           >
             My rating
@@ -41,7 +41,7 @@ export const RatingSection: React.FC<RatingSectionProps> = ({
       )}
 
       {!showToggle && (
-        <Typography variant="h3" mb={3}>
+        <Typography variant="h4" mb={3}>
           My rating
         </Typography>
       )}

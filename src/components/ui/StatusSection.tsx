@@ -31,11 +31,11 @@ export const StatusSection: React.FC<StatusSectionProps> = ({
 
     // Auto-adjust current page based on status selection
     if (setCurrent) {
-      if (statusValue === "want-to-read") {
+      if (statusValue === "want-to-read" && current !== undefined) {
         setCurrent(0);
       } else if (statusValue === "finished" && total !== undefined) {
         setCurrent(total);
-      } else if (statusValue === "reading") {
+      } else if (statusValue === "reading" && current !== undefined) {
         // Use existing book progress or default to 0
         setCurrent(bookCurrentPage ?? current ?? 0);
       }
