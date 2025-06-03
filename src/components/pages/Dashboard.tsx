@@ -11,14 +11,15 @@ import {
 } from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
 import { useEffect, useState } from "react";
-import theme from "../../theme";
 import { NavLink, useLocation } from "react-router-dom";
 import Add from "@mui/icons-material/Add";
 import { useAuth } from "../../auth/AuthContext";
 import { useBooks } from "../../hooks/useBooks";
 import { LoggedOffAlert } from "../ui/LoggedOffAlert";
+import { useTheme } from "@mui/material/styles";
 
 const Dashboard: React.FC = () => {
+  const theme = useTheme();
   const isSmall = useMediaQuery("(max-width:900px)");
   const location = useLocation();
   const message = location.state?.message;
@@ -46,26 +47,26 @@ const Dashboard: React.FC = () => {
         minHeight: "100vh",
         width: "100vw",
         overflow: "hidden",
-        px: "5%",
+        px: { xs: 0, sm: 3, md: 4 },
         py: 4,
       }}
     >
       <Container
-        maxWidth="xl"
         sx={{
           width: "100%",
           maxWidth: "none",
         }}
       >
         {/* Dashboard title */}
-        <Typography
-          variant={isSmall ? "h2" : "h1"}
-          component="h1"
-          align="center"
-          sx={{ mb: 4 }}
-        >
-          {isLoggedIn ? "My reading dashboard" : "Demo dashboard"}
-        </Typography>
+        <Box sx={{ textAlign: "center" }}>
+          <Typography
+            variant={isSmall ? "h2" : "h1"}
+            component="h1"
+            sx={{ mb: 4 }}
+          >
+            {isLoggedIn ? "My reading dashboard" : "Demo dashboard"}
+          </Typography>
+        </Box>
 
         {/* Success message for logged-in users who added a book */}
         {message && isLoggedIn && (

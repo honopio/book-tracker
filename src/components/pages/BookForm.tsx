@@ -9,7 +9,7 @@ import {
   Alert,
 } from "@mui/material";
 import { supabase } from "../../client";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BackButton from "../ui/BackButton";
 import { RatingSection } from "../ui/RatingSection";
 import { Comment } from "../ui/Comment";
@@ -120,13 +120,11 @@ function BookForm() {
           <LoggedOffAlert customText="This is a demo with sample books. The changes you make here will not be saved." />
         )}
 
-        <Typography
-          variant="h2"
-          component="h2"
-          sx={{ mb: 3, textAlign: "center" }}
-        >
-          Add a new book to your collection
-        </Typography>
+        <Box sx={{ textAlign: "center", mb: 3 }}>
+          <Typography variant="h2" component="h2" sx={{ mb: 3 }}>
+            Add a book to your collection
+          </Typography>
+        </Box>
 
         <form onSubmit={handleSubmit}>
           <Stack spacing={3}>

@@ -80,6 +80,8 @@ const HeroSection: React.FC = () => (
       >
         <Button
           variant="contained"
+          disableElevation
+          color="secondary"
           component={NavLink}
           to="/login"
           sx={{ fontSize: { xs: "0.8rem", sm: "1rem" } }}
@@ -87,7 +89,9 @@ const HeroSection: React.FC = () => (
           Get Started
         </Button>
         <Button
-          variant="outlined"
+          variant="contained"
+          disableElevation
+          color="success"
           component={NavLink}
           to="/dashboard"
           sx={{ fontSize: { xs: "0.8rem", sm: "1rem" } }}

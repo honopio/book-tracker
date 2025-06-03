@@ -123,7 +123,7 @@ const SingleBook: React.FC = () => {
         mx: "auto",
       }}
     >
-      <Paper elevation={1} sx={{ p: 4 }}>
+      <Paper elevation={1} sx={{ p: { xs: 1, sm: 4 } }}>
         <BackButton />
         <LoggedOffAlert customText="This is a demo with sample books. The changes you make here will not be saved." />
         <Stack
@@ -131,7 +131,7 @@ const SingleBook: React.FC = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="h1" gutterBottom>
+          <Typography variant="h2" gutterBottom>
             {book.title}
           </Typography>
           <IconButton onClick={() => setDeleteDialog(true)}>
