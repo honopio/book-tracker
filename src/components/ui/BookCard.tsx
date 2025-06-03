@@ -40,8 +40,7 @@ const BookCard = (props: BookCardProps) => {
         }}
       >
         <Typography
-          variant={isDashboard ? "h4" : "h6"} // larger for dashboard
-          component="h4"
+          variant="h5"
           noWrap
           sx={{
             color: isDashboard ? textColor : "inherit",
@@ -52,7 +51,7 @@ const BookCard = (props: BookCardProps) => {
         </Typography>
       </Link>
       <Typography
-        variant={isDashboard ? "subtitle1" : "body2"} // larger for dashboard
+        variant="body2"
         color={isDashboard ? textColor : "text.secondary"}
         noWrap
         sx={{
@@ -83,7 +82,7 @@ const BookCard = (props: BookCardProps) => {
 
   const Progress =
     book.status !== "want-to-read" && book.pageCount ? (
-      <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
+      <Box sx={{ my: viewMode === "list" ? 0 : 2 }}>
         <Box
           sx={{
             display: "flex",
@@ -91,13 +90,15 @@ const BookCard = (props: BookCardProps) => {
             mb: 0.5,
           }}
         >
-          <Typography
-            variant="caption"
-            color={isDashboard ? textColor : "text.secondary"}
-            sx={{ opacity: isDashboard ? 0.8 : 1 }}
-          >
-            {book.currentPage} / {book.pageCount} pages
-          </Typography>
+          {!isDashboard && (
+            <Typography
+              variant="caption"
+              color={isDashboard ? textColor : "text.secondary"}
+              sx={{ opacity: 0.8 }}
+            >
+              {book.currentPage} / {book.pageCount} pages
+            </Typography>
+          )}
         </Box>
         <LinearProgress
           variant="determinate"
