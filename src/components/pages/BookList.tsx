@@ -17,7 +17,7 @@ import {
 import { Add, GridView, Sort, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import BookCard from "../ui/BookCard";
-import { useBooks } from "./Dashboard";
+import { useBooks } from "../../hooks/useBooks";
 import { useAuth } from "../../auth/AuthContext";
 
 const BookList = () => {
