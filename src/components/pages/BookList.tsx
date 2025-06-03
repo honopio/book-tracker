@@ -64,13 +64,11 @@ const BookList = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography
-        variant="h1"
-        component="h1"
-        sx={{ mb: 4, textAlign: "center" }}
-      >
-        My Books
-      </Typography>
+      <Box sx={{ textAlign: "center" }}>
+        <Typography variant="h1" component="h1" sx={{ mb: 4 }}>
+          My Books
+        </Typography>
+      </Box>
 
       {/* Search and View Toggle */}
       <Box sx={{ mb: 4 }}>

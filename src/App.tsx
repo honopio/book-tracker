@@ -3,7 +3,7 @@ import Layout from "./components/layout/Layout";
 import BookForm from "./components/pages/BookForm.tsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import theme from "./theme.tsx";
+import { lightTheme, darkTheme } from "./theme.tsx";
 import Dashboard from "./components/pages/Dashboard";
 import SingleBook from "./components/pages/SingleBook.tsx";
 import BookList from "./components/pages/BookList.tsx";
@@ -12,6 +12,7 @@ import AuthPage from "./components/pages/AuthPage";
 import { useAuth } from "./auth/AuthContext.tsx";
 import HeroSection from "./components/ui/HeroSection.tsx";
 import React from "react";
+import { useTheme } from "./context/themeContext.tsx";
 
 function HomeRedirect() {
   const user = useAuth();
@@ -27,8 +28,9 @@ function HomeRedirect() {
 }
 
 function App() {
+  const { mode } = useTheme();
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>
       <CssBaseline />
       <AuthProvider>
         <Routes>

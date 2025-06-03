@@ -9,17 +9,8 @@ import {
   Avatar,
   ListItemButton,
   Typography,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material";
-import {
-  Person,
-  Close,
-  Book,
-  Add,
-  Logout,
-  SpaceDashboard,
-} from "@mui/icons-material";
+import { Person, Book, Add, Logout, SpaceDashboard } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
@@ -78,8 +69,8 @@ function Sidebar({ open, onClose }: SidebarProps) {
         <Box
           sx={{
             p: 3,
-            backgroundColor: "primary.main",
-            color: "primary.contrastText",
+            backgroundColor: "secondary.main",
+            color: "secondary.contrastText",
             textAlign: "center",
           }}
         >

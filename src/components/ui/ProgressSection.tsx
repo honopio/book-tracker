@@ -131,7 +131,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
               slotProps={{
                 htmlInput: { min: 0, max: total ?? undefined },
               }}
-              sx={{ width: 120 }}
+              sx={{ width: 150 }}
               error={pageError}
             />
             <TextField
@@ -142,7 +142,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
               slotProps={{
                 htmlInput: { min: current ?? 0 },
               }}
-              sx={{ width: 120 }}
+              sx={{ width: 150 }}
               error={pageError}
             />
           </Box>

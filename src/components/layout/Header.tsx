@@ -4,13 +4,16 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { Link } from "react-router-dom";
-import { Person } from "@mui/icons-material";
+import { DarkMode, LightMode, Person } from "@mui/icons-material";
+import { useTheme } from "../../context/themeContext.tsx";
 
 interface HeaderProps {
   onDrawerOpen: () => void;
 }
 
 function Header({ onDrawerOpen }: HeaderProps) {
+  const { mode, toggleTheme } = useTheme();
+
   return (
     <>
       <AppBar
@@ -32,7 +35,7 @@ function Header({ onDrawerOpen }: HeaderProps) {
                 mr: 2,
                 display: "flex",
                 alignItems: "center",
-                color: "text.primary",
+                color: "text.main",
                 "&:hover": {
                   backgroundColor: "transparent",
                 },
@@ -43,7 +46,7 @@ function Header({ onDrawerOpen }: HeaderProps) {
                 variant="h6"
                 component="div"
                 sx={{ ml: 1.5, flexGrow: 1 }}
-                color="text.primary"
+                color="text.main"
               >
                 BookTracker
               </Typography>
@@ -51,11 +54,18 @@ function Header({ onDrawerOpen }: HeaderProps) {
           </Link>
 
           <div style={{ flexGrow: 1 }} />
-
+          {/* Optionally, add a floating button to toggle theme */}
+          <IconButton
+            onClick={toggleTheme}
+            aria-label="Toggle dark mode"
+            sx={{ color: "text.main", mr: 3 }}
+          >
+            {mode === "light" ? <LightMode /> : <DarkMode />}
+          </IconButton>
           <IconButton
             onClick={onDrawerOpen}
             sx={{
-              color: "text.primary",
+              color: "text.main",
             }}
           >
             <Person />
