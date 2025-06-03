@@ -17,7 +17,6 @@ import {
   Close,
   Book,
   Add,
-  TrendingUp,
   Logout,
   SpaceDashboard,
 } from "@mui/icons-material";
@@ -56,7 +55,7 @@ function Sidebar({ open, onClose }: SidebarProps) {
     if (error) {
       console.error("Error signing out:", error);
     } else {
-      navigate("/dashboard");
+      navigate("/login");
     }
   }
 
