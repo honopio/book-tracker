@@ -68,7 +68,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
             onChange={(e) => setTrackProgress?.(e.target.checked)}
           />
         )}
-        <Typography variant="h4" mr={2}>
+        <Typography variant="h3" mr={2}>
           Track progress
         </Typography>
       </Box>
@@ -85,14 +85,18 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
               {current ?? "?"} / {total ?? "?"} pages
             </Typography>
 
-            {total && current != null && current === total && current !== 0 && (
-              <Chip
-                icon={<Book />}
-                label="Completed!"
-                color="success"
-                size="small"
-              />
-            )}
+            {total !== undefined &&
+              current !== undefined &&
+              total > 0 &&
+              current === total &&
+              current > 0 && (
+                <Chip
+                  icon={<Book />}
+                  label="Completed!"
+                  color="success"
+                  size="small"
+                />
+              )}
           </Box>
         </>
       ) : (

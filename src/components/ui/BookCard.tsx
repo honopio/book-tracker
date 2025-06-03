@@ -32,23 +32,15 @@ const BookCard = (props: BookCardProps) => {
   // Shared content
   const TitleAuthor = (
     <Box sx={{ mb: viewMode === "list" ? 0 : 2 }}>
-      <Link
-        to={`/book/${book.id}`}
-        style={{
-          textDecoration: "none",
+      <Typography
+        variant="h5"
+        sx={{
           color: isDashboard ? textColor : "inherit",
+          fontWeight: isDashboard ? 600 : "normal",
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{
-            color: isDashboard ? textColor : "inherit",
-            fontWeight: isDashboard ? 600 : "normal",
-          }}
-        >
-          {book.title}
-        </Typography>
-      </Link>
+        {book.title}
+      </Typography>
       <Typography
         variant="body2"
         color={isDashboard ? textColor : "text.secondary"}
@@ -134,72 +126,86 @@ const BookCard = (props: BookCardProps) => {
   // Compact layout for carousel in dashboard layout
   if (isDashboard) {
     return (
-      <Card
-        variant="outlined"
-        sx={{
-          width: 200,
-          height: 220,
-          cursor: "pointer",
-          transition: "all 0.2s",
-          backgroundColor: "transparent",
-          border: `2px solid ${textColor}30`,
-          "&:hover": {
-            transform: "translateY(-2px)",
-          },
+      <Link
+        to={`/book/${book.id}`}
+        style={{
+          textDecoration: "none",
         }}
       >
-        <CardContent
+        <Card
+          variant="outlined"
           sx={{
-            p: 2,
-            "&:last-child": { pb: 2 },
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            height: "100%",
+            width: 200,
+            height: 220,
+            cursor: "pointer",
+            transition: "all 0.2s",
+            backgroundColor: "transparent",
+            border: `2px solid ${textColor}30`,
+            "&:hover": {
+              transform: "translateY(-2px)",
+            },
           }}
         >
-          <Box>
-            {TitleAuthor}
-            {StatusChip}
-            {Progress}
-          </Box>
-          <Box sx={{ mt: 1 }}>{RatingBox}</Box>
-        </CardContent>
-      </Card>
+          <CardContent
+            sx={{
+              p: 2,
+              "&:last-child": { pb: 2 },
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "100%",
+            }}
+          >
+            <Box>
+              {TitleAuthor}
+              {StatusChip}
+              {Progress}
+            </Box>
+            <Box sx={{ mt: 1 }}>{RatingBox}</Box>
+          </CardContent>
+        </Card>
+      </Link>
     );
   }
 
   return (
-    <Card
-      sx={{
-        height: viewMode === "grid" ? "100%" : undefined,
-        mb: viewMode === "list" ? 2 : 0,
-        cursor: "pointer",
-        transition: "all 0.2s",
-        "&:hover": {
-          transform: "translateY(-2px)",
-          boxShadow: 3,
-        },
+    <Link
+      to={`/book/${book.id}`}
+      style={{
+        textDecoration: "none",
       }}
     >
-      <CardContent>
-        {viewMode === "grid" ? (
-          <>
-            {TitleAuthor}
-            <Box sx={{ mb: 2 }}>{StatusChip}</Box>
-            {Progress}
-            {RatingBox}
-          </>
-        ) : (
-          <Grid container spacing={4} alignItems="center">
-            <Grid>{TitleAuthor}</Grid>
-            <Grid>{StatusChip}</Grid>
-            {Progress && <Grid>{Progress}</Grid>}
-            <Grid>{RatingBox}</Grid>
-          </Grid>
-        )}
-      </CardContent>
-    </Card>
+      <Card
+        sx={{
+          height: viewMode === "grid" ? "100%" : undefined,
+          mb: viewMode === "list" ? 2 : 0,
+          cursor: "pointer",
+          transition: "all 0.2s",
+          "&:hover": {
+            transform: "translateY(-2px)",
+            boxShadow: 3,
+          },
+        }}
+      >
+        <CardContent>
+          {viewMode === "grid" ? (
+            <>
+              {TitleAuthor}
+              <Box sx={{ mb: 2 }}>{StatusChip}</Box>
+              {Progress}
+              {RatingBox}
+            </>
+          ) : (
+            <Grid container spacing={4} alignItems="center">
+              <Grid>{TitleAuthor}</Grid>
+              <Grid>{StatusChip}</Grid>
+              {Progress && <Grid>{Progress}</Grid>}
+              <Grid>{RatingBox}</Grid>
+            </Grid>
+          )}
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 
