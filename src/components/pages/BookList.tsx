@@ -118,7 +118,7 @@ const BookList = () => {
       {/* Tabs */}
       <Tabs
         value={selectedTab}
-        onChange={(e, newValue) => setSelectedTab(newValue)}
+        onChange={(_event, newValue) => setSelectedTab(newValue)}
         variant="scrollable"
         scrollButtons="auto"
         sx={{ mb: 3 }}
