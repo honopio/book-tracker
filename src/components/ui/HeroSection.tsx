@@ -14,13 +14,16 @@ const HeroSection: React.FC = () => (
       borderRadius: 2,
       textAlign: "center",
       display: "flex",
+      flexDirection: { xs: "column", md: "row" },
     }}
   >
     <Box
       sx={{
         flex: 1,
         display: "flex",
-        justifyContent: "flex-end",
+        justifyContent: { md: "flex-end", xs: "center" },
+
+        pb: { xs: 4, md: 0 },
       }}
     >
       <Box
