@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
-import theme from "../../theme";
 import books from "../../assets/books.png";
 
 // Hero section component
@@ -12,7 +11,6 @@ const HeroSection: React.FC = () => (
     elevation={0}
     sx={{
       p: 6,
-      mb: 4,
       borderRadius: 2,
       textAlign: "center",
       display: "flex",
@@ -21,11 +19,30 @@ const HeroSection: React.FC = () => (
     <Box
       sx={{
         flex: 1,
+        display: "flex",
+        justifyContent: "flex-end",
+      }}
+    >
+      <Box
+        component="img"
+        src={books}
+        alt="Books"
+        sx={{
+          width: "100%",
+          maxWidth: "500px",
+          height: "auto",
+          objectFit: "contain",
+        }}
+      />
+    </Box>
+    <Box
+      sx={{
+        flex: 1,
         textAlign: "left",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        ml: { xs: 0, md: 6 },
+        pl: 10,
       }}
     >
       <Typography variant="h1" component="h1" gutterBottom>
@@ -59,24 +76,6 @@ const HeroSection: React.FC = () => (
           Explore Demo
         </Button>
       </Box>
-    </Box>
-    <Box
-      sx={{
-        flex: 1,
-        display: "flex",
-      }}
-    >
-      <Box
-        component="img"
-        src={books}
-        alt="Books"
-        sx={{
-          width: "100%",
-          maxWidth: "500px",
-          height: "auto",
-          objectFit: "contain",
-        }}
-      />
     </Box>
   </Paper>
 );
