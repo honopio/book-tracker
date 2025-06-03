@@ -32,7 +32,7 @@ const HeroSection: React.FC = () => (
         alt="Books"
         sx={{
           width: "100%",
-          maxWidth: "500px",
+          maxWidth: { xs: "350px", md: "500px" },
           height: "auto",
           objectFit: "contain",
         }}
@@ -41,40 +41,55 @@ const HeroSection: React.FC = () => (
     <Box
       sx={{
         flex: 1,
-        textAlign: "left",
+        textAlign: { xs: "center", md: "left" },
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        pl: 10,
+        pl: { lg: 10, md: 5, xs: 0 },
       }}
     >
-      <Typography variant="h1" component="h1" gutterBottom>
+      <Typography
+        component="h1"
+        sx={{
+          fontSize: { xs: "2rem", sm: "2.5rem", lg: "3rem", xl: "4rem" },
+          fontWeight: 700,
+        }}
+      >
         Track Your Reading Journey
       </Typography>
       <Typography
-        variant="h2"
+        component="h2"
         color="text.secondary"
-        sx={{ mb: 4, maxWidth: "600px" }}
+        sx={{
+          mb: 4,
+          maxWidth: "600px",
+          fontSize: { xs: "1rem", sm: "1.2rem", lg: "1.5rem", xl: "1.8rem" },
+          mx: { xs: "auto", md: 0 },
+        }}
       >
         Never lose track of your reading list again. Start your personal book
         tracker today!
       </Typography>
-      <Box sx={{ display: "flex", gap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          justifyContent: { xs: "center", md: "flex-start" },
+        }}
+      >
         <Button
           variant="contained"
-          size="large"
           component={NavLink}
           to="/login"
-          sx={{ px: 4 }}
+          sx={{ fontSize: { xs: "0.8rem", sm: "1rem" } }}
         >
           Get Started
         </Button>
         <Button
           variant="outlined"
-          size="large"
           component={NavLink}
           to="/dashboard"
-          sx={{ px: 4 }}
+          sx={{ fontSize: { xs: "0.8rem", sm: "1rem" } }}
         >
           Explore Demo
         </Button>
