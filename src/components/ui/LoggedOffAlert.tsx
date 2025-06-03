@@ -6,8 +6,8 @@ export const LoggedOffAlert = ({ customText }: { customText?: string }) => {
     <Box sx={{ my: 4, textAlign: "center" }}>
       <Alert
         severity="info"
-        color="success"
         sx={{ mb: 3, fontSize: { xs: "1rem", sm: "1.2rem" } }}
+        variant="filled"
       >
         {customText || (
           <>
