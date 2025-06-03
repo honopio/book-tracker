@@ -114,7 +114,14 @@ const SingleBook: React.FC = () => {
   if (!book) return null;
 
   return (
-    <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
+    <Box
+      sx={{
+        width: "100%",
+        maxWidth: { xs: "100%", sm: 600, md: 800 },
+        py: 3,
+        mx: "auto",
+      }}
+    >
       <Paper elevation={1} sx={{ p: 4 }}>
         <BackButton />
         <Stack
