@@ -11,14 +11,17 @@ import { AuthProvider } from "./auth/AuthContext";
 import AuthPage from "./components/pages/AuthPage";
 import { useAuth } from "./auth/AuthContext.tsx";
 import HeroSection from "./components/ui/HeroSection.tsx";
+import React from "react";
 
 function HomeRedirect() {
   const isLoggedIn = useAuth();
   const navigate = useNavigate();
-  if (isLoggedIn) {
-    navigate("/dashboard", { replace: true });
-    return null;
-  }
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isLoggedIn, navigate]);
+  if (isLoggedIn) return null;
   return <HeroSection />;
 }
 
