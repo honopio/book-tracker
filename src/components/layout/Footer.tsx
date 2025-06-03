@@ -13,11 +13,10 @@ const Footer: React.FC = () => (
       borderTop: "1px solid",
       borderColor: "divider",
       backgroundColor: "background.default",
-      height: "30px",
       marginTop: "auto",
     }}
   >
-    <Toolbar sx={{ minHeight: "40px !important" }}>
+    <Toolbar>
       <Box sx={{ flexGrow: 1 }}>
         <Typography
           variant="body2"
