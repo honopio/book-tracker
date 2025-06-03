@@ -12,13 +12,13 @@ import {
   Grid,
   Menu,
   MenuItem,
-  Alert,
 } from "@mui/material";
 import { Add, GridView, Sort, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import BookCard from "../ui/BookCard";
-import { useBooks } from "./Dashboard";
+import { useBooks } from "../../hooks/useBooks";
 import { useAuth } from "../../auth/AuthContext";
+import { LoggedOffAlert } from "../ui/LoggedOffAlert";
 
 const BookList = () => {
   const user = useAuth();
@@ -131,17 +131,7 @@ const BookList = () => {
         <Tab label="Finished" value="finished" />
       </Tabs>
 
-      {!user && (
-        <Box sx={{ my: 4, textAlign: "center" }}>
-          <Alert severity="info" sx={{ fontSize: "1.25rem", py: 2 }}>
-            This is a demo with sample books. You can{" "}
-            <Link to="/login" style={{ color: "inherit" }}>
-              log in or sign up
-            </Link>{" "}
-            to manage your books
-          </Alert>
-        </Box>
-      )}
+      {!user && <LoggedOffAlert />}
 
       {/* Books Display */}
       <Box sx={{ mb: 2 }}>

@@ -10,7 +10,7 @@ const HeroSection: React.FC = () => (
   <Paper
     elevation={0}
     sx={{
-      p: 6,
+      p: 4,
       borderRadius: 2,
       textAlign: "center",
       display: "flex",

@@ -10,61 +10,13 @@ import {
   Fade,
 } from "@mui/material";
 import BookCarousel from "../ui/BookCarousel";
-import type { Book } from "../../types";
 import { useEffect, useState } from "react";
-import { supabase } from "../../client";
 import theme from "../../theme";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Add from "@mui/icons-material/Add";
-import { demoBooks } from "../../data/demoData";
 import { useAuth } from "../../auth/AuthContext";
-
-// Updated useBooks hook to handle auth state
-export function useBooks(isLoggedIn: boolean) {
-  const [books, setBooks] = useState<Book[]>([]);
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      // Return demo data for logged-out users
-      setBooks(demoBooks);
-      return;
-    }
-
-    async function fetchBooks() {
-      // Fetch * from book_user table and join with titles and authors from books table
-      const { data, error } = await supabase.from("book_user").select(`
-          *,
-          books (
-            title,
-            author
-          )
-        `);
-      console.log("Fetched books:", data, error);
-      if (!error && data) {
-        // Flatten and map DB fields to Book props
-        const merged = data.map((row: any) => ({
-          title: row.books?.title,
-          author: row.books?.author,
-          id: row.id,
-          status: row.status,
-          progress: row.progress,
-          rating: row.rating,
-          createdAt: row.created_at,
-          currentPage: row.current_page,
-          pageCount: row.page_count,
-        }));
-        merged.sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        setBooks(merged as Book[]);
-      }
-    }
-    fetchBooks();
-  }, [isLoggedIn]);
-
-  return books;
-}
+import { useBooks } from "../../hooks/useBooks";
+import { LoggedOffAlert } from "../ui/LoggedOffAlert";
 
 const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
@@ -136,14 +88,12 @@ const Dashboard: React.FC = () => {
 
         {/* Demo banner for logged-out users */}
         {!isLoggedIn && (
-          <Alert severity="info" sx={{ mb: 3, fontSize: "1.25rem" }}>
-            This is a demo with sample books.{" "}
-            <Link to="/login" style={{ color: "inherit" }}>
-              Log in or sign up
-            </Link>{" "}
-            to start tracking your own reading!
-          </Alert>
+          <Box sx={{ my: 4, textAlign: "center" }}>
+            <LoggedOffAlert />
+          </Box>
         )}
+
+        {/* Main content area */}
 
         <Box
           sx={{
