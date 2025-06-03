@@ -16,7 +16,7 @@ const Footer: React.FC = () => (
       height: "30px",
     }}
   >
-    <Toolbar>
+    <Toolbar sx={{ minHeight: "40px !important" }}>
       <Box sx={{ flexGrow: 1 }}>
         <Typography variant="body2" align="center" color="text.primary">
           BookTracker &copy; {new Date().getFullYear()} &mdash; Track your
