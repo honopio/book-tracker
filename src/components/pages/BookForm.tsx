@@ -16,6 +16,7 @@ import { Comment } from "../ui/Comment";
 import { ProgressSection } from "../ui/ProgressSection";
 import { StatusSection } from "../ui/StatusSection";
 import { useAuth } from "../../auth/AuthContext";
+import { LoggedOffAlert } from "../ui/LoggedOffAlert";
 
 function BookForm() {
   const user = useAuth();
@@ -116,15 +117,7 @@ function BookForm() {
       <Paper elevation={1} sx={{ p: 3 }}>
         <BackButton />
         {!user && (
-          <Box sx={{ my: 4, textAlign: "center" }}>
-            <Alert severity="info" sx={{ fontSize: "1.25rem", py: 2 }}>
-              You have to{" "}
-              <Link to="/login" style={{ color: "inherit" }}>
-                log in or sign up
-              </Link>{" "}
-              to add a book to your library
-            </Alert>
-          </Box>
+          <LoggedOffAlert customText="This is a demo with sample books. The changes you make here will not be saved." />
         )}
 
         <Typography

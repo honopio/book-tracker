@@ -12,10 +12,11 @@ import {
 import BookCarousel from "../ui/BookCarousel";
 import { useEffect, useState } from "react";
 import theme from "../../theme";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Add from "@mui/icons-material/Add";
 import { useAuth } from "../../auth/AuthContext";
 import { useBooks } from "../../hooks/useBooks";
+import { LoggedOffAlert } from "../ui/LoggedOffAlert";
 
 const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
@@ -87,14 +88,12 @@ const Dashboard: React.FC = () => {
 
         {/* Demo banner for logged-out users */}
         {!isLoggedIn && (
-          <Alert severity="info" sx={{ mb: 3, fontSize: "1.25rem" }}>
-            This is a demo with sample books.{" "}
-            <Link to="/login" style={{ color: "inherit" }}>
-              Log in or sign up
-            </Link>{" "}
-            to start tracking your own reading!
-          </Alert>
+          <Box sx={{ my: 4, textAlign: "center" }}>
+            <LoggedOffAlert />
+          </Box>
         )}
+
+        {/* Main content area */}
 
         <Box
           sx={{

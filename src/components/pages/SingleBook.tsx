@@ -21,6 +21,7 @@ import BackButton from "../ui/BackButton";
 import { Comment } from "../ui/Comment";
 import { ProgressSection } from "../ui/ProgressSection";
 import { StatusSection } from "../ui/StatusSection";
+import { LoggedOffAlert } from "../ui/LoggedOffAlert";
 
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -124,6 +125,7 @@ const SingleBook: React.FC = () => {
     >
       <Paper elevation={1} sx={{ p: 4 }}>
         <BackButton />
+        <LoggedOffAlert customText="This is a demo with sample books. The changes you make here will not be saved." />
         <Stack
           direction="row"
           justifyContent="space-between"
