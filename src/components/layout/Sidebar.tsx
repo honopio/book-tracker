@@ -17,7 +17,6 @@ import {
   Close,
   Book,
   Add,
-  TrendingUp,
   Logout,
   SpaceDashboard,
 } from "@mui/icons-material";
@@ -37,7 +36,8 @@ function Sidebar({ open, onClose }: SidebarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
-  const user = useAuth();
+  const { user, loading } = useAuth();
+  if (loading) return null;
 
   let menuItems = [
     { text: "My Dashboard", icon: <SpaceDashboard />, to: "/dashboard" },
@@ -56,7 +56,7 @@ function Sidebar({ open, onClose }: SidebarProps) {
     if (error) {
       console.error("Error signing out:", error);
     } else {
-      navigate("/dashboard");
+      navigate("/login");
     }
   }
 

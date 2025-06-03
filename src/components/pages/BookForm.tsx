@@ -18,7 +18,8 @@ import { StatusSection } from "../ui/StatusSection";
 import { useAuth } from "../../auth/AuthContext";
 
 function BookForm() {
-  const user = useAuth();
+  const { user, loading } = useAuth();
+  if (loading) return null;
   const [status, setStatus] = useState("want-to-read");
   const [rating, setRating] = useState<number | null>(0);
   const [trackProgress, setTrackProgress] = useState(false);
@@ -105,7 +106,14 @@ function BookForm() {
   }
 
   return (
-    <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
+    <Box
+      sx={{
+        width: "100%",
+        maxWidth: { xs: "100%", sm: 600, md: 800 },
+        py: 3,
+        mx: "auto",
+      }}
+    >
       <Paper elevation={1} sx={{ p: 4 }}>
         <BackButton />
         {!user && (
