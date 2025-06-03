@@ -21,7 +21,8 @@ import { useBooks } from "./Dashboard";
 import { useAuth } from "../../auth/AuthContext";
 
 const BookList = () => {
-  const user = useAuth();
+  const { user, loading } = useAuth();
+  if (loading) return null;
   const books = useBooks(!!user);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
