@@ -14,11 +14,17 @@ const Footer: React.FC = () => (
       borderColor: "divider",
       backgroundColor: "background.default",
       height: "30px",
+      marginTop: "auto",
     }}
   >
     <Toolbar sx={{ minHeight: "40px !important" }}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="body2" align="center" color="text.primary">
+        <Typography
+          variant="body2"
+          align="center"
+          color="text.primary"
+          whiteSpace="nowrap"
+        >
           BookTracker &copy; {new Date().getFullYear()} &mdash; Track your
           reading journey!
         </Typography>
