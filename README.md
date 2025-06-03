@@ -35,17 +35,22 @@ It allows users to add books, browse their library, update their reading progres
    npm install
    ```
 
-3. **Set up environment variables:**
+3. **Database Setup**
+
+   1. Create a new Supabase project.
+   2. Run the SQL in `schema.sql` to set up tables, policies, and demo data.
+
+4. **Set up environment variables:**
 
    - Copy `.env.local.example` to `.env.local` and add your Supabase credentials.
 
-4. **Run the app locally:**
+5. **Run the app locally:**
 
    ```sh
    npm run dev
    ```
 
-5. **Open in your browser:**
+6. **Open in your browser:**
    - Visit [http://localhost:5173](http://localhost:5173)
 
 ## Project Structure
