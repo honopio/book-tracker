@@ -25,16 +25,12 @@ import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 
-const DRAWER_WIDTH = 320;
-
 interface SidebarProps {
   open: boolean;
   onClose: () => void;
 }
 
 function Sidebar({ open, onClose }: SidebarProps) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const user = useAuth();
 
@@ -68,29 +64,16 @@ function Sidebar({ open, onClose }: SidebarProps) {
       ModalProps={{
         keepMounted: true,
       }}
-      sx={{
-        "& .MuiDrawer-paper": {
-          width: DRAWER_WIDTH,
-        },
-      }}
     >
       <Box
         sx={{
-          width: DRAWER_WIDTH,
+          width: { xs: 220, sm: 320 },
           height: "100%",
           display: "flex",
           flexDirection: "column",
         }}
         role="presentation"
       >
-        {isMobile && (
-          <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1 }}>
-            <ListItemButton onClick={onClose}>
-              <Close />
-            </ListItemButton>
-          </Box>
-        )}
-
         {/* User Profile Section */}
         <Box
           sx={{
@@ -113,7 +96,12 @@ function Sidebar({ open, onClose }: SidebarProps) {
               <Person sx={{ fontSize: 40 }} />
             </Avatar>
           </Link>
-          <Typography variant="h6" gutterBottom>
+          <Typography
+            gutterBottom
+            sx={{
+              fontSize: { xs: "0.9rem", sm: "1.1rem" },
+            }}
+          >
             {user?.email || "Not logged in"}
           </Typography>
         </Box>
