@@ -89,7 +89,7 @@ const BookCard = (props: BookCardProps) => {
             mb: 0.5,
           }}
         >
-          {!isDashboard && (
+          {!isDashboard && book.pageCount && book.currentPage && (
             <Typography
               variant="caption"
               color={isDashboard ? textColor : "text.secondary"}
