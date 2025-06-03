@@ -162,7 +162,9 @@ VALUES
   ('Klara and the Sun', 'Kazuo Ishiguro'),
   ('One Piece (Vol. 100)', 'Eiichiro Oda'),
   ('One Hundred Years of Solitude', 'Gabriel García Márquez'),
-  ('All about Love', 'bell hooks');
+  ('All about Love', 'bell hooks'),
+  ('Discipline and Punish', 'Michel Foucault'),
+  ('Crime and Punishment', 'Fyodor Dostoevsky');
 
 -- insert demo book-user relationships
 INSERT INTO public.book_user (book_id, user_id, status, rating, page_count, current_page)
@@ -173,5 +175,6 @@ VALUES
   ((SELECT id FROM public.books WHERE title = 'War and Peace' AND author = 'Leo Tolstoy'), '00000000-0000-0000-0000-000000000000', 'finished', NULL, 1225, 1225),
   ((SELECT id FROM public.books WHERE title = 'Klara and the Sun' AND author = 'Kazuo Ishiguro'), '00000000-0000-0000-0000-000000000000', 'finished', 5, 320, 320),
   ((SELECT id FROM public.books WHERE title = 'One Piece (Vol. 100)' AND author = 'Eiichiro Oda'), '00000000-0000-0000-0000-000000000000', 'reading', 4.5, 200, 100),
-  ((SELECT id FROM public.books WHERE title = 'One Hundred Years of Solitude' AND author = 'Gabriel García Márquez'), '00000000-0000-0000-0000-000000000000', 'reading', 5, NULL, NULL),
-  ((SELECT id FROM public.books WHERE title = 'All about Love' AND author = 'bell hooks'), '00000000-0000-0000-0000-000000000000', 'want-to-read', NULL, NULL, NULL);
+  ((SELECT id FROM public.books WHERE title = 'All about Love' AND author = 'bell hooks'), '00000000-0000-0000-0000-000000000000', 'want-to-read', NULL, NULL, NULL),
+  ((SELECT id FROM public.books WHERE title = 'Discipline and Punish' AND author = 'Michel Foucault'), '00000000-0000-0000-0000-000000000000', 'want-to-read', NULL, 352, 0),
+  ((SELECT id FROM public.books WHERE title = 'Crime and Punishment' AND author = 'Fyodor Dostoevsky'), '00000000-0000-0000-0000-000000000000', 'finished', NULL, 430, 430);
