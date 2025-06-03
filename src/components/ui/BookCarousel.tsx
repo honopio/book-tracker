@@ -91,8 +91,8 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         }}
       >
         <Typography
-          variant="h2"
-          component="h2"
+          variant="h3"
+          component="h3"
           sx={{ color: textColor, fontWeight: 600 }}
           overflow={"hidden"}
           textOverflow={"ellipsis"}

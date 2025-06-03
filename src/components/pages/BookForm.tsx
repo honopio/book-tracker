@@ -128,8 +128,8 @@ function BookForm() {
         )}
 
         <Typography
-          variant="h2"
-          component="h2"
+          variant="h3"
+          component="h3"
           sx={{ mb: 3, textAlign: "center" }}
         >
           Add a new book to your collection
