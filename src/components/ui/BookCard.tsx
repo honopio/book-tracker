@@ -80,7 +80,7 @@ const BookCard = (props: BookCardProps) => {
   );
 
   const Progress =
-    book.status !== "want-to-read" && book.pageCount ? (
+    book.progress !== undefined ? (
       <Box sx={{ my: viewMode === "list" ? 0 : 2 }}>
         <Box
           sx={{
@@ -101,9 +101,7 @@ const BookCard = (props: BookCardProps) => {
         </Box>
         <LinearProgress
           variant="determinate"
-          value={
-            book.progress || ((book.currentPage ?? 0) / book.pageCount) * 100
-          }
+          value={book.progress}
           sx={{
             height: 6,
             borderRadius: 2,
