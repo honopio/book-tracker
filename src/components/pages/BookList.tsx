@@ -53,15 +53,9 @@ const BookList = () => {
         case "author":
           return a.author.localeCompare(b.author);
         case "rating":
-          // Highest rated first, unrated last
           return (b.rating || 0) - (a.rating || 0);
         case "progress":
-          // Most progress first (by percent)
-          const aProgress =
-            a.pageCount && a.currentPage ? a.currentPage / a.pageCount : 0;
-          const bProgress =
-            b.pageCount && b.currentPage ? b.currentPage / b.pageCount : 0;
-          return bProgress - aProgress;
+          return (b.progress || 0) - (a.progress || 0);
         case "recent":
         default:
           return 0;
