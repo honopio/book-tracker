@@ -132,24 +132,35 @@ const BookCard = (props: BookCardProps) => {
   if (isDashboard) {
     return (
       <Card
+        variant="outlined"
         sx={{
           width: 200,
-          height: "100%",
+          height: 220,
           cursor: "pointer",
           transition: "all 0.2s",
           backgroundColor: "transparent",
-          border: `1px solid ${textColor}30`,
+          border: `2px solid ${textColor}30`,
           "&:hover": {
             transform: "translateY(-2px)",
-            boxShadow: isDashboard ? `0 4px 12px ${textColor}20` : 3,
           },
         }}
       >
-        <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
-          {TitleAuthor}
-          {StatusChip}
-          {Progress}
-          {RatingBox}
+        <CardContent
+          sx={{
+            p: 2,
+            "&:last-child": { pb: 2 },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "100%",
+          }}
+        >
+          <Box>
+            {TitleAuthor}
+            {StatusChip}
+            {Progress}
+          </Box>
+          <Box sx={{ mt: 1 }}>{RatingBox}</Box>
         </CardContent>
       </Card>
     );

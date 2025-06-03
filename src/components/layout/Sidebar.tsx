@@ -39,17 +39,15 @@ function Sidebar({ open, onClose }: SidebarProps) {
   const navigate = useNavigate();
   const user = useAuth();
 
-  let menuItems;
+  let menuItems = [
+    { text: "My Dashboard", icon: <SpaceDashboard />, to: "/dashboard" },
+    { text: "My library", icon: <Book />, to: "/library" },
+    { text: "Add a book", icon: <Add />, to: "/add-book" },
+  ];
   if (user) {
-    menuItems = [
-      { text: "My Dashboard", icon: <SpaceDashboard />, to: "/dashboard" },
-      { text: "My library", icon: <Book />, to: "/library" },
-      { text: "Reading Stats", icon: <TrendingUp />, to: "/stats" },
-      { text: "Add a book", icon: <Add />, to: "/add-book" },
-      { text: "Logout", icon: <Logout />, to: "/login" },
-    ];
+    menuItems.push({ text: "Log out", icon: <Logout />, to: "/login" });
   } else {
-    menuItems = [{ text: "Sign in", icon: <Person />, to: "/login" }];
+    menuItems.push({ text: "Log in", icon: <Person />, to: "/login" });
   }
 
   async function signOut() {
@@ -58,7 +56,7 @@ function Sidebar({ open, onClose }: SidebarProps) {
     if (error) {
       console.error("Error signing out:", error);
     } else {
-      navigate("/login");
+      navigate("/dashboard");
     }
   }
 
@@ -74,8 +72,6 @@ function Sidebar({ open, onClose }: SidebarProps) {
       sx={{
         "& .MuiDrawer-paper": {
           width: DRAWER_WIDTH,
-          boxSizing: "border-box",
-          backgroundColor: "background.paper",
         },
       }}
     >
@@ -105,17 +101,19 @@ function Sidebar({ open, onClose }: SidebarProps) {
             textAlign: "center",
           }}
         >
-          <Avatar
-            sx={{
-              width: 64,
-              height: 64,
-              mx: "auto",
-              mb: 2,
-              backgroundColor: "primary.light",
-            }}
-          >
-            <Person sx={{ fontSize: 40 }} />
-          </Avatar>
+          <Link to={user ? "/dashboard" : "/login"}>
+            <Avatar
+              sx={{
+                width: 64,
+                height: 64,
+                mx: "auto",
+                mb: 2,
+                backgroundColor: "primary.light",
+              }}
+            >
+              <Person sx={{ fontSize: 40 }} />
+            </Avatar>
+          </Link>
           <Typography variant="h6" gutterBottom>
             {user?.email || "Not logged in"}
           </Typography>
@@ -132,7 +130,7 @@ function Sidebar({ open, onClose }: SidebarProps) {
                 to={item.to}
                 onClick={() => {
                   onClose();
-                  if (item.text === "Logout") {
+                  if (item.text === "Log out") {
                     signOut();
                   }
                 }}

@@ -9,7 +9,7 @@ import {
   Alert,
 } from "@mui/material";
 import { supabase } from "../../client";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BackButton from "../ui/BackButton";
 import { RatingSection } from "../ui/RatingSection";
 import { Comment } from "../ui/Comment";
@@ -108,6 +108,18 @@ function BookForm() {
     <Box sx={{ maxWidth: 800, mx: "auto", p: 3 }}>
       <Paper elevation={1} sx={{ p: 4 }}>
         <BackButton />
+        {!user && (
+          <Box sx={{ my: 4, textAlign: "center" }}>
+            <Alert severity="info" sx={{ fontSize: "1.25rem", py: 2 }}>
+              You have to{" "}
+              <Link to="/login" style={{ color: "inherit" }}>
+                log in or sign up
+              </Link>{" "}
+              to add a book to your library
+            </Alert>
+          </Box>
+        )}
+
         <Typography
           variant="h2"
           component="h2"

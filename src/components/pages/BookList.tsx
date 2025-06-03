@@ -12,14 +12,17 @@ import {
   Grid,
   Menu,
   MenuItem,
+  Alert,
 } from "@mui/material";
 import { Add, GridView, Sort, ViewList } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import BookCard from "../ui/BookCard";
 import { useBooks } from "./Dashboard";
+import { useAuth } from "../../auth/AuthContext";
 
 const BookList = () => {
-  const books = useBooks();
+  const user = useAuth();
+  const books = useBooks(!!user);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
@@ -133,6 +136,18 @@ const BookList = () => {
         <Tab label="Currently Reading" value="reading" />
         <Tab label="Finished" value="finished" />
       </Tabs>
+
+      {!user && (
+        <Box sx={{ my: 4, textAlign: "center" }}>
+          <Alert severity="info" sx={{ fontSize: "1.25rem", py: 2 }}>
+            This is a demo with sample books. You can{" "}
+            <Link to="/login" style={{ color: "inherit" }}>
+              log in or sign up
+            </Link>{" "}
+            to manage your books
+          </Alert>
+        </Box>
+      )}
 
       {/* Books Display */}
       <Box sx={{ mb: 2 }}>

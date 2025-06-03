@@ -208,10 +208,10 @@ export default function AuthPage() {
                   mb: 2,
                 }}
               />
-              <Typography variant="h4" component="h1" gutterBottom>
+              <Typography variant="h3" component="h1" gutterBottom>
                 BookTracker
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body1" color="text.secondary">
                 Track your reading journey with ease
               </Typography>
             </Box>

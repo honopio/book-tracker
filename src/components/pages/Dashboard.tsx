@@ -14,13 +14,22 @@ import type { Book } from "../../types";
 import { useEffect, useState } from "react";
 import { supabase } from "../../client";
 import theme from "../../theme";
-import { NavLink, useLocation } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import Add from "@mui/icons-material/Add";
+import { demoBooks } from "../../data/demoData";
+import { useAuth } from "../../auth/AuthContext";
 
-// fetch books from db
-export function useBooks() {
+// Updated useBooks hook to handle auth state
+export function useBooks(isLoggedIn: boolean) {
   const [books, setBooks] = useState<Book[]>([]);
+
   useEffect(() => {
+    if (!isLoggedIn) {
+      // Return demo data for logged-out users
+      setBooks(demoBooks);
+      return;
+    }
+
     async function fetchBooks() {
       // Fetch * from book_user table and join with titles and authors from books table
       const { data, error } = await supabase.from("book_user").select(`
@@ -48,21 +57,22 @@ export function useBooks() {
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-
         setBooks(merged as Book[]);
       }
     }
     fetchBooks();
-  }, []);
-  console.log("useBooks books:", books);
+  }, [isLoggedIn]);
+
   return books;
 }
 
 const Dashboard: React.FC = () => {
   const isSmall = useMediaQuery("(max-width:900px)");
-  const books = useBooks();
   const location = useLocation();
   const message = location.state?.message;
+  const isLoggedIn = useAuth();
+
+  const books = useBooks(isLoggedIn);
 
   // Filter books by status
   const currentlyReading = books.filter((book) => book.status === "reading");
@@ -94,10 +104,13 @@ const Dashboard: React.FC = () => {
           maxWidth: "none",
         }}
       >
+        {/* Dashboard title */}
         <Typography variant="h1" component="h1" m={8} align="center">
-          My Reading Dashboard
+          {isLoggedIn ? "My reading dashboard" : "Demo dashboard"}
         </Typography>
-        {message && (
+
+        {/* Success message for logged-in users who added a book */}
+        {message && isLoggedIn && (
           <Fade in={showSuccess} timeout={500}>
             <Alert
               color="info"
@@ -115,52 +128,53 @@ const Dashboard: React.FC = () => {
           </Fade>
         )}
 
+        {/* Demo banner for logged-out users */}
+        {!isLoggedIn && (
+          <Alert severity="info" sx={{ mb: 3, fontSize: "1.25rem" }}>
+            This is a demo with sample books.{" "}
+            <Link to="/login" style={{ color: "inherit" }}>
+              Log in or sign up
+            </Link>{" "}
+            to start tracking your own reading!
+          </Alert>
+        )}
+
         <Box
           sx={{
             display: "flex",
-            flexDirection: isSmall ? "column" : "row",
-            gap: 3,
+            flexDirection: "column",
+            gap: 2,
             width: "100%",
             minWidth: 0,
           }}
         >
-          {/* Left column: Currently Reading + Want to Read */}
-          <Box
-            sx={{
-              flex: isSmall ? "none" : "2",
-              minWidth: 0,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              width: isSmall ? "100%" : "auto",
-            }}
-          >
+          {/* first row: currently reading */}
+          <Box sx={{ width: "100%" }}>
             <BookCarousel
               books={currentlyReading}
               title="Currently Reading"
               backgroundColor={theme.palette.secondary.main}
               textColor={theme.palette.secondary.contrastText}
             />
-
-            <BookCarousel
-              books={wantToRead}
-              title="Want to Read"
-              backgroundColor={theme.palette.success.main}
-              textColor={theme.palette.success.contrastText}
-            />
           </Box>
 
-          {/* Right column: Finished Books */}
+          {/* Second row: want to read and finished books */}
           <Box
             sx={{
-              flex: isSmall ? "none" : "1",
-              minWidth: 0,
               display: "flex",
-              width: isSmall ? "100%" : "auto",
-              mt: isSmall ? 2 : 0,
+              flexDirection: isSmall ? "column" : "row",
+              gap: 2,
             }}
           >
-            <Box sx={{ width: "100%" }}>
+            <Box sx={{ width: isSmall ? "100%" : "60%" }}>
+              <BookCarousel
+                books={wantToRead}
+                title="Want to Read"
+                backgroundColor={theme.palette.success.main}
+                textColor={theme.palette.success.contrastText}
+              />
+            </Box>
+            <Box sx={{ width: isSmall ? "100%" : "40%" }}>
               <BookCarousel
                 books={finishedBooks}
                 title="Finished Books"
@@ -182,7 +196,7 @@ const Dashboard: React.FC = () => {
         >
           <Tooltip title="Add a book" arrow>
             <Fab color="primary" aria-label="add book">
-              <AddIcon />
+              <Add />
             </Fab>
           </Tooltip>
         </Box>
