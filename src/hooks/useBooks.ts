@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const DEMO_USER_ID = "00000000-0000-0000-0000-000000000000";
 
-function mapAndSortBooks(data: any[]): Book[] {
+function mapBooks(data: any[]): Book[] {
   const merged = data.map((row: any) => ({
     title: row.books?.title,
     author: row.books?.author,
@@ -16,18 +16,16 @@ function mapAndSortBooks(data: any[]): Book[] {
     currentPage: row.current_page,
     pageCount: row.page_count,
   }));
-  merged.sort(
-    (a, b) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
   return merged as Book[];
 }
 
 export function useBooks(isLoggedIn: boolean) {
   const [books, setBooks] = useState<Book[]>([]);
-
   useEffect(() => {
     async function fetchBooks() {
+      const { data: { user } } = await supabase.auth.getUser()
+      const userId = user?.id || DEMO_USER_ID;
+
       let query = supabase
         .from("book_user")
         .select(`
@@ -36,17 +34,15 @@ export function useBooks(isLoggedIn: boolean) {
             title,
             author
           )
-        `);
-
-      if (!isLoggedIn) {
-        query = query.eq("user_id", DEMO_USER_ID);
-      }
+        `)
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
 
       const { data, error } = await query;
       if (error) {
         setBooks([]);
       } else if (data) {
-        setBooks(mapAndSortBooks(data));
+        setBooks(mapBooks(data));
       }
     }
 

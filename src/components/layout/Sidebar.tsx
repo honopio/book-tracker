@@ -38,7 +38,6 @@ function Sidebar({ open, onClose }: SidebarProps) {
 
   async function signOut() {
     const { error } = await supabase.auth.signOut();
-    console.log("signed out");
     if (error) {
       console.error("Error signing out:", error);
     } else {
