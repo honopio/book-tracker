@@ -171,7 +171,6 @@ function BookForm() {
               trackRating={trackRating}
               onTrackRatingChange={setTrackRating}
               disabled={status === "want-to-read"}
-              showToggle={true}
             />
 
             <Comment comment={comment} setComment={setComment} />

@@ -221,7 +221,6 @@ const SingleBook: React.FC = () => {
           }}
           disabled={formState.status === "want-to-read"}
           readOnly={!editMode}
-          showToggle={false}
         />
 
         {/* Comment */}
