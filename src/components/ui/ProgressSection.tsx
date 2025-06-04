@@ -22,7 +22,6 @@ interface ProgressSectionProps {
   pageError?: boolean;
   toggleSwitch?: boolean;
   onStatusChange?: (status: string) => void;
-  autoUpdateStatus?: boolean;
 }
 
 export const ProgressSection: React.FC<ProgressSectionProps> = ({
@@ -36,10 +35,9 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   pageError = false,
   toggleSwitch = false,
   onStatusChange,
-  autoUpdateStatus = true,
 }) => {
   useEffect(() => {
-    if (!autoUpdateStatus || !onStatusChange) return;
+    if (!onStatusChange) return;
 
     if (total !== undefined && current === total && current > 0) {
       onStatusChange("finished");
@@ -48,7 +46,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
     } else if (current === 0) {
       onStatusChange("want-to-read");
     }
-  }, [current, total, autoUpdateStatus, onStatusChange]);
+  }, [current, total, onStatusChange]);
 
   return (
     <Paper
