@@ -29,10 +29,6 @@ type AuthMode = "signin" | "signup" | "forgot" | "reset-sent";
 
 export default function AuthPage() {
   const [mode, setMode] = useState<AuthMode>("signin");
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState<{
     type: "error" | "success";
@@ -48,37 +44,28 @@ export default function AuthPage() {
     });
   }, [navigate]);
 
-  const updateFormData = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setMessage(null);
-  };
-
   const switchMode = (newMode: AuthMode) => {
     setMode(newMode);
     setMessage(null);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  async function handleSubmit(formData: FormData) {
     setMessage(null);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
       if (mode === "forgot") {
-        const { error } = await supabase.auth.resetPasswordForEmail(
-          formData.email
-        );
+        const { error } = await supabase.auth.resetPasswordForEmail(email);
         if (error) throw error;
         setMode("reset-sent");
         return;
       }
-
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
-          email: formData.email,
-          password: formData.password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
-          },
+          email,
+          password,
+          options: { emailRedirectTo: `${window.location.origin}/dashboard` },
         });
         if (error) throw error;
         setMessage({
@@ -87,19 +74,17 @@ export default function AuthPage() {
         });
         return;
       }
-
       // Sign in
       const { error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
+        email,
+        password,
       });
       if (error) throw error;
-
       navigate("/dashboard");
     } catch (error: any) {
       setMessage({ type: "error", text: error.message });
     }
-  };
+  }
 
   // Reset sent confirmation screen
   if (mode === "reset-sent") {
@@ -174,15 +159,12 @@ export default function AuthPage() {
                 {message.text}
               </Alert>
             )}
-
-            {/* Form */}
-            <Box component="form" onSubmit={handleSubmit}>
+            <Box component="form" action={handleSubmit} noValidate>
               <TextField
                 fullWidth
                 label="Email"
                 type="email"
-                value={formData.email}
-                onChange={(e) => updateFormData("email", e.target.value)}
+                name="email"
                 required
                 autoComplete="username"
                 sx={{ mb: 3 }}
@@ -197,14 +179,13 @@ export default function AuthPage() {
                 }}
               />
 
-              {/* password input only for main auth modes */}
+              {/* password input not needed when password forgotten */}
               {!isForgot && (
                 <TextField
                   fullWidth
                   label="Password"
                   type={showPassword ? "text" : "password"}
-                  value={formData.password}
-                  onChange={(e) => updateFormData("password", e.target.value)}
+                  name="password"
                   required
                   autoComplete={isSignUp ? "new-password" : "current-password"}
                   sx={{ mb: 3 }}
