@@ -29,12 +29,12 @@ function BookForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   // const [comment, setComment] = useState("");
   const navigate = useNavigate();
-  // const [currentPage, setCurrentPage] = useState<number | undefined>(undefined);
+  // const [current, setCurrentPage] = useState<number | undefined>(undefined);
   // const [pageCount, setPageCount] = useState<number | undefined>(undefined);
   const pageError =
-    formState.currentPage !== undefined &&
+    formState.current !== undefined &&
     formState.pageCount !== undefined &&
-    formState.currentPage > formState.pageCount;
+    formState.current > formState.pageCount;
 
   async function createBook(title: string, author: string) {
     // Check if the book exists in the books table
@@ -88,7 +88,7 @@ function BookForm() {
           status: formState.status,
           rating: formState.trackRating ? formState.rating : null,
           ...(formState.trackProgress &&
-            formState.currentPage && { current_page: formState.currentPage }),
+            formState.current && { current_page: formState.current }),
           ...(formState.trackProgress &&
             formState.pageCount && { page_count: formState.pageCount }),
           comment: formState.comment || null,
@@ -149,35 +149,57 @@ function BookForm() {
             />
 
             <StatusSection
-              status={status}
-              onStatusChange={setStatus}
-              current={currentPage}
-              total={pageCount}
-              setCurrent={setCurrentPage}
-              bookCurrentPage={currentPage}
+              status={formState.status}
+              onStatusChange={(status) =>
+                dispatch({ type: "set_status", newValue: status })
+              }
+              current={formState.current}
+              total={formState.pageCount}
+              setCurrent={(current) =>
+                dispatch({ type: "set_current", newValue: current })
+              }
+              bookCurrentPage={formState.current}
             />
 
             <ProgressSection
-              current={currentPage}
-              setCurrent={setCurrentPage}
-              total={pageCount}
-              setTotal={setPageCount}
-              trackProgress={trackProgress}
-              setTrackProgress={setTrackProgress}
+              current={formState.current}
+              setCurrent={(current) =>
+                dispatch({ type: "set_current", newValue: current })
+              }
+              total={formState.pageCount}
+              setTotal={(pageCount) =>
+                dispatch({ type: "set_total", newValue: pageCount })
+              }
+              trackProgress={formState.trackProgress}
+              setTrackProgress={(trackProgress) =>
+                dispatch({
+                  type: "set_track_progress",
+                  newValue: trackProgress,
+                })
+              }
               pageError={pageError}
-              status={status}
-              onStatusChange={setStatus}
+              status={formState.status}
+              onStatusChange={(status) =>
+                dispatch({ type: "set_status", newValue: status })
+              }
             />
 
             <RatingSection
-              rating={rating}
-              onRatingChange={setRating}
+              rating={formState.rating}
+              onRatingChange={(rating) =>
+                dispatch({ type: "set_rating", newValue: rating })
+              }
               trackRating={trackRating}
               onTrackRatingChange={setTrackRating}
-              disabled={status === "want-to-read"}
+              disabled={formState.status === "want-to-read"}
             />
 
-            <Comment comment={comment} setComment={setComment} />
+            <Comment
+              comment={formState.comment}
+              setComment={(comment) =>
+                dispatch({ type: "set_comment", newValue: comment })
+              }
+            />
 
             <Button
               variant="contained"
@@ -186,8 +208,9 @@ function BookForm() {
               fullWidth
               sx={{ mt: 2 }}
               disabled={
-                !status ||
-                (trackProgress && (pageError || currentPage === undefined))
+                !formState.status ||
+                (formState.trackProgress &&
+                  (pageError || formState.current === undefined))
               }
             >
               Add Book
