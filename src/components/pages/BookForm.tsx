@@ -114,7 +114,7 @@ function BookForm() {
       sx={{
         width: "100%",
         maxWidth: { xs: "100%", sm: 600, md: 800 },
-        py: 3,
+        py: { xs: 0, sm: 5 },
         mx: "auto",
       }}
     >
@@ -125,7 +125,15 @@ function BookForm() {
         )}
 
         <Box sx={{ textAlign: "center", mb: 3 }}>
-          <Typography variant="h2" component="h2" sx={{ mb: 3 }}>
+          <Typography
+            variant="h2"
+            component="h2"
+            sx={{
+              mb: 3,
+              fontSize: { xs: "1.5rem", sm: "2rem" },
+              fontWeight: { xs: 500, sm: 600 },
+            }}
+          >
             Add a book to your collection
           </Typography>
         </Box>

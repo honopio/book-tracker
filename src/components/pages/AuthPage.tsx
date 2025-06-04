@@ -117,11 +117,22 @@ export default function AuthPage() {
 
   return (
     <Box
-      sx={{ minHeight: "100vh", display: "flex", alignItems: "center", py: 4 }}
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+      }}
     >
-      <Container maxWidth="sm">
-        <Card sx={{ borderRadius: 4 }} elevation={5}>
-          <CardContent sx={{ p: 6 }}>
+      <Container maxWidth="sm" sx={{ p: { xs: 0, sm: 2 } }}>
+        <Card
+          sx={{
+            borderRadius: { xs: 0, sm: 4 },
+            height: { xs: "100vh", sm: "auto" },
+            width: { xs: "100vw", sm: "auto" },
+          }}
+          elevation={5}
+        >
+          <CardContent sx={{ p: { xs: 3, sm: 6 } }}>
             {/* Header */}
             <Box sx={{ textAlign: "center", mb: 4 }}>
               <LocalLibrary

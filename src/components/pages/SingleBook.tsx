@@ -131,11 +131,11 @@ const SingleBook: React.FC = () => {
       sx={{
         width: "100%",
         maxWidth: { xs: "100%", sm: 600, md: 800 },
-        py: 3,
+        py: { xs: 0, sm: 5 },
         mx: "auto",
       }}
     >
-      <Paper elevation={1} sx={{ p: { xs: 1, sm: 4 } }}>
+      <Paper elevation={1} sx={{ p: 3 }}>
         <BackButton />
         {!user && (
           <LoggedOffAlert customText="This is a demo with sample books. The changes you make here will not be saved." />
@@ -145,7 +145,11 @@ const SingleBook: React.FC = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="h2" gutterBottom>
+          <Typography
+            variant="h2"
+            gutterBottom
+            sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}
+          >
             {book.title}
           </Typography>
           <IconButton onClick={() => setDeleteDialog(true)}>
