@@ -113,7 +113,7 @@ export default function AuthPage() {
         }}
       >
         <Container maxWidth="sm">
-          <Card sx={{ borderRadius: 4 }} elevation={20}>
+          <Card sx={{ borderRadius: 4 }} elevation={5}>
             <CardContent sx={{ p: 6 }}>
               <Box sx={{ textAlign: "center", mb: 4 }}>
                 <LocalLibrary
@@ -197,7 +197,7 @@ export default function AuthPage() {
       }}
     >
       <Container maxWidth="sm">
-        <Card sx={{ borderRadius: 4 }} elevation={20}>
+        <Card sx={{ borderRadius: 4 }} elevation={5}>
           <CardContent sx={{ p: 6 }}>
             {/* Header */}
             <Box sx={{ textAlign: "center", mb: 4 }}>
