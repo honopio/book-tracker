@@ -150,7 +150,6 @@ function BookForm() {
               current={currentPage}
               total={pageCount}
               setCurrent={setCurrentPage}
-              editMode={true}
               bookCurrentPage={currentPage}
             />
 
@@ -175,11 +174,7 @@ function BookForm() {
               showToggle={true}
             />
 
-            <Comment
-              comment={comment}
-              setComment={setComment}
-              editMode={true}
-            />
+            <Comment comment={comment} setComment={setComment} />
 
             <Button
               variant="contained"

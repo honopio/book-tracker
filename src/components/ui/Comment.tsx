@@ -4,13 +4,13 @@ import { Paper, Typography, TextField } from "@mui/material";
 interface CommentProps {
   comment: string;
   setComment: (value: string) => void;
-  editMode: boolean;
+  editMode?: boolean;
 }
 
 export const Comment: React.FC<CommentProps> = ({
   comment,
   setComment,
-  editMode,
+  editMode = true,
 }) => {
   return (
     <Paper elevation={1} sx={{ p: 2, my: 3 }}>
