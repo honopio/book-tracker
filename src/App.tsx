@@ -7,12 +7,12 @@ import { lightTheme, darkTheme } from "./theme.tsx";
 import Dashboard from "./components/pages/Dashboard";
 import SingleBook from "./components/pages/SingleBook.tsx";
 import BookList from "./components/pages/BookList.tsx";
-import { AuthProvider } from "./auth/AuthContext";
+import { AuthProvider } from "./context/AuthContext.tsx";
 import AuthPage from "./components/pages/AuthPage";
-import { useAuth } from "./auth/AuthContext.tsx";
+import { useAuth } from "./context/AuthContext.tsx";
 import HeroSection from "./components/ui/HeroSection.tsx";
 import React from "react";
-import { useTheme } from "./context/themeContext.tsx";
+import { useTheme } from "./context/ThemeContext.tsx";
 
 function HomeRedirect() {
   const user = useAuth();

@@ -81,7 +81,7 @@ const BookCard = (props: BookCardProps) => {
             mb: 0.5,
           }}
         >
-          {!isDashboard && book.pageCount && book.currentPage ? (
+          {isDashboard ? null : book.pageCount && book.currentPage ? (
             <Typography
               variant="caption"
               color={isDashboard ? textColor : "text.secondary"}
@@ -90,7 +90,7 @@ const BookCard = (props: BookCardProps) => {
               {book.currentPage} / {book.pageCount} pages
             </Typography>
           ) : (
-            <Box sx={{ height: "20px" }} />
+            !isDashboard && <Box sx={{ height: "20px" }} />
           )}
         </Box>
         <LinearProgress
@@ -99,7 +99,7 @@ const BookCard = (props: BookCardProps) => {
           sx={{
             height: 6,
             borderRadius: 2,
-            backgroundColor: isDashboard ? `${textColor}20` : undefined,
+            backgroundColor: isDashboard ? `${textColor}40` : undefined,
             "& .MuiLinearProgress-bar": {
               backgroundColor: isDashboard ? textColor : undefined,
             },
@@ -118,6 +118,9 @@ const BookCard = (props: BookCardProps) => {
           size="medium"
           sx={{
             color: isDashboard ? textColor : "primary.main",
+            "& .MuiRating-iconEmpty": {
+              color: isDashboard ? textColor : "primary.main",
+            },
           }}
         />
       </Box>
@@ -180,7 +183,6 @@ const BookCard = (props: BookCardProps) => {
           height: viewMode === "grid" ? "100%" : undefined,
           mb: viewMode === "list" ? 2 : 0,
           cursor: "pointer",
-          transition: "all 0.2s",
           "&:hover": {
             transform: "translateY(-2px)",
             boxShadow: 3,

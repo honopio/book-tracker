@@ -14,7 +14,7 @@ import { Person, Book, Add, Logout, SpaceDashboard } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 interface SidebarProps {
   open: boolean;
@@ -31,18 +31,17 @@ function Sidebar({ open, onClose }: SidebarProps) {
     { text: "Add a book", icon: <Add />, to: "/add-book" },
   ];
   if (user) {
-    menuItems.push({ text: "Log out", icon: <Logout />, to: "/login" });
+    menuItems.push({ text: "Log out", icon: <Logout />, to: "/" });
   } else {
     menuItems.push({ text: "Log in", icon: <Person />, to: "/login" });
   }
 
   async function signOut() {
     const { error } = await supabase.auth.signOut();
-    console.log("signed out");
     if (error) {
       console.error("Error signing out:", error);
     } else {
-      navigate("/login");
+      navigate("/");
     }
   }
 

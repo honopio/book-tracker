@@ -18,11 +18,10 @@ interface ProgressSectionProps {
   setTotal: (value: number) => void;
   trackProgress?: boolean;
   setTrackProgress?: (value: boolean) => void;
-  editMode?: boolean;
+  readOnly?: boolean;
   pageError?: boolean;
-  toggleSwitch?: boolean;
+  status: string;
   onStatusChange?: (status: string) => void;
-  autoUpdateStatus?: boolean;
 }
 
 export const ProgressSection: React.FC<ProgressSectionProps> = ({
@@ -32,40 +31,37 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   setTotal,
   trackProgress = true,
   setTrackProgress,
-  editMode = true,
+  readOnly = false,
   pageError = false,
-  toggleSwitch = false,
+  status = "want-to-read",
   onStatusChange,
-  autoUpdateStatus = true,
 }) => {
   useEffect(() => {
-    if (!autoUpdateStatus || !onStatusChange) return;
+    if (!onStatusChange) return;
+    let newStatus = status;
 
     if (total !== undefined && current === total && current > 0) {
-      onStatusChange("finished");
+      newStatus = "finished";
     } else if (current && current > 0) {
-      onStatusChange("reading");
-    } else if (current === 0) {
-      onStatusChange("want-to-read");
+      newStatus = "reading";
     }
-  }, [current, total, autoUpdateStatus, onStatusChange]);
+    if (newStatus !== status) {
+      onStatusChange(newStatus!);
+    }
+  }, [current, total, onStatusChange, status]);
 
   return (
     <Paper
-      elevation={1}
-      sx={{
-        p: 2,
-        my: 3,
-        transition: "opacity 0.2s ease-in-out",
-      }}
+      variant="outlined"
+      sx={{ p: 2, my: 3, transition: "opacity 0.2s ease-in-out" }}
     >
       <Box display="flex" alignItems="center" mb={2} gap={2}>
-        {toggleSwitch && (
+        {!readOnly && setTrackProgress && (
           <Switch
             color="primary"
             size="small"
             checked={trackProgress}
-            onChange={(e) => setTrackProgress?.(e.target.checked)}
+            onChange={(e) => setTrackProgress(e.target.checked)}
           />
         )}
         <Typography variant="h3" mr={2}>
@@ -73,7 +69,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
         </Typography>
       </Box>
 
-      {trackProgress ? (
+      {trackProgress || readOnly ? (
         <>
           <LinearProgress
             variant="determinate"
@@ -84,7 +80,6 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
             <Typography variant="body1">
               {current ?? "?"} / {total ?? "?"} pages
             </Typography>
-
             {total !== undefined &&
               current !== undefined &&
               total > 0 &&
@@ -120,7 +115,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
         </Box>
       )}
 
-      {editMode && trackProgress && (
+      {!readOnly && trackProgress && (
         <Box display="flex" flexDirection="column" gap={1} mb={2}>
           <Box display="flex" gap={2}>
             <TextField

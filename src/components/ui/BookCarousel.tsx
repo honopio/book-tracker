@@ -77,7 +77,6 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         flexDirection: "column",
         boxShadow: "none",
         overflow: "hidden",
-        // height: "100%", // right column takes full height but left column's cards shrink
       }}
     >
       {/* Header */}
@@ -91,9 +90,13 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
         }}
       >
         <Typography
-          variant="h3"
+          variant="h4"
           component="h3"
-          sx={{ color: textColor, fontWeight: 600 }}
+          sx={{
+            color: textColor,
+            fontWeight: 600,
+            fontSize: { xs: "1rem", sm: "1.5rem", md: "1.75rem" },
+          }}
           overflow={"hidden"}
           textOverflow={"ellipsis"}
           whiteSpace={"nowrap"}
@@ -112,6 +115,7 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 sx={{
                   color: textColor,
                   opacity: canScrollLeft ? 1 : 0.5,
+                  p: { xs: 0, sm: 1 },
                 }}
               >
                 <ChevronLeft />
@@ -123,6 +127,7 @@ const BookCarousel: React.FC<BookCarouselProps> = ({
                 sx={{
                   color: textColor,
                   opacity: canScrollRight ? 1 : 0.5,
+                  p: { xs: 0, sm: 1 },
                 }}
               >
                 <ChevronRight />

@@ -8,7 +8,6 @@ interface RatingSectionProps {
   onTrackRatingChange?: (checked: boolean) => void;
   disabled?: boolean;
   readOnly?: boolean;
-  showToggle?: boolean;
 }
 
 export const RatingSection: React.FC<RatingSectionProps> = ({
@@ -18,11 +17,10 @@ export const RatingSection: React.FC<RatingSectionProps> = ({
   onTrackRatingChange,
   disabled = false,
   readOnly = false,
-  showToggle = false,
 }) => {
   return (
-    <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
-      {showToggle && onTrackRatingChange && (
+    <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+      {onTrackRatingChange ? (
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <Switch
             color="primary"
@@ -38,9 +36,7 @@ export const RatingSection: React.FC<RatingSectionProps> = ({
             My rating
           </Typography>
         </Box>
-      )}
-
-      {!showToggle && (
+      ) : (
         <Typography variant="h4" mb={3}>
           My rating
         </Typography>
@@ -53,8 +49,8 @@ export const RatingSection: React.FC<RatingSectionProps> = ({
           value={rating}
           onChange={(_, newValue) => onRatingChange(newValue)}
           readOnly={readOnly}
-          disabled={disabled || (showToggle && !trackRating)}
-          sx={{ color: "primary.main", mb: showToggle ? 1 : 0 }}
+          disabled={disabled || (onTrackRatingChange && !trackRating)}
+          sx={{ color: "primary.main", mb: onTrackRatingChange ? 1 : 0 }}
         />
         {disabled && (
           <Typography variant="body2" color="text.secondary">
