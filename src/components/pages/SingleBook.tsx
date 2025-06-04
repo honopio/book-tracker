@@ -105,20 +105,25 @@ const SingleBook: React.FC = () => {
 
   // Validate current and total pages
   const pageError =
-    current !== undefined && total !== undefined && current > total;
+    state.current !== undefined &&
+    state.total !== undefined &&
+    state.current > state.total;
 
   // Update book entry
   async function handleSave() {
     if (!book || pageError) return;
-
     const { error } = await supabase
       .from("book_user")
       .update({
-        current_page: trackProgress && current !== undefined ? current : null,
-        page_count: trackProgress && total !== undefined ? total : null,
-        rating,
-        comment,
-        status: status,
+        current_page:
+          state.trackProgress && state.current !== undefined
+            ? state.current
+            : null,
+        page_count:
+          state.trackProgress && state.total !== undefined ? state.total : null,
+        rating: state.rating,
+        comment: state.comment,
+        status: state.status,
       })
       .eq("id", book.id);
 
@@ -200,7 +205,6 @@ const SingleBook: React.FC = () => {
           trackProgress={trackProgress}
           setTrackProgress={setTrackProgress}
           onStatusChange={setStatus}
-          autoUpdateStatus={editMode}
         />
 
         <RatingSection
