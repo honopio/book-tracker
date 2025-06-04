@@ -18,9 +18,7 @@ interface ProgressSectionProps {
   setTotal: (value: number) => void;
   trackProgress?: boolean;
   setTrackProgress?: (value: boolean) => void;
-  editMode?: boolean;
   pageError?: boolean;
-  toggleSwitch?: boolean;
   status: string;
   onStatusChange?: (status: string) => void;
 }
@@ -32,9 +30,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   setTotal,
   trackProgress = true,
   setTrackProgress,
-  editMode = true,
   pageError = false,
-  toggleSwitch = false,
   status = "want-to-read",
   onStatusChange,
 }) => {
@@ -56,19 +52,15 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   return (
     <Paper
       elevation={1}
-      sx={{
-        p: 2,
-        my: 3,
-        transition: "opacity 0.2s ease-in-out",
-      }}
+      sx={{ p: 2, my: 3, transition: "opacity 0.2s ease-in-out" }}
     >
       <Box display="flex" alignItems="center" mb={2} gap={2}>
-        {toggleSwitch && (
+        {setTrackProgress && (
           <Switch
             color="primary"
             size="small"
             checked={trackProgress}
-            onChange={(e) => setTrackProgress?.(e.target.checked)}
+            onChange={(e) => setTrackProgress(e.target.checked)}
           />
         )}
         <Typography variant="h3" mr={2}>
@@ -87,7 +79,6 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
             <Typography variant="body1">
               {current ?? "?"} / {total ?? "?"} pages
             </Typography>
-
             {total !== undefined &&
               current !== undefined &&
               total > 0 &&
@@ -123,7 +114,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
         </Box>
       )}
 
-      {editMode && trackProgress && (
+      {trackProgress && (
         <Box display="flex" flexDirection="column" gap={1} mb={2}>
           <Box display="flex" gap={2}>
             <TextField
