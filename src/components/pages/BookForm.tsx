@@ -17,50 +17,20 @@ import { ProgressSection } from "../ui/ProgressSection";
 import { StatusSection } from "../ui/StatusSection";
 import { useAuth } from "../../auth/AuthContext";
 import { LoggedOffAlert } from "../ui/LoggedOffAlert";
-
-const formReducer = (state: any, action: any) => {
-  switch (action.type) {
-    case "set_status":
-      return { ...state, status: action.newValue };
-    case "set_rating":
-      return { ...state, rating: action.newValue };
-    case "set_current":
-      return { ...state, currentPage: action.newValue };
-    case "set_total":
-      return { ...state, pageCount: action.newValue };
-    case "set_comment":
-      return { ...state, comment: action.newValue };
-    case "set_track_progress":
-      return { ...state, trackProgress: action.newValue };
-    case "set_track_rating":
-      return { ...state, trackRating: action.newValue };
-    case "set_all":
-      return action.newValues;
-    default:
-      return state;
-  }
-};
+import { formReducer, initialFormState } from "../../hooks/formReducer";
 
 function BookForm() {
   const user = useAuth();
-  const [formState, dispatch] = useReducer(formReducer, {
-    status: "want-to-read",
-    rating: 0,
-    currentPage: undefined,
-    pageCount: undefined,
-    comment: "",
-    trackProgress: false,
-    trackRating: false,
-  });
-  const [status, setStatus] = useState("want-to-read");
-  const [rating, setRating] = useState<number | null>(0);
-  const [trackProgress, setTrackProgress] = useState(false);
+  const [formState, dispatch] = useReducer(formReducer, initialFormState);
+  // const [status, setStatus] = useState("want-to-read");
+  // const [rating, setRating] = useState<number | null>(0);
+  // const [trackProgress, setTrackProgress] = useState(false);
   const [trackRating, setTrackRating] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [comment, setComment] = useState("");
+  // const [comment, setComment] = useState("");
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState<number | undefined>(undefined);
-  const [pageCount, setPageCount] = useState<number | undefined>(undefined);
+  // const [currentPage, setCurrentPage] = useState<number | undefined>(undefined);
+  // const [pageCount, setPageCount] = useState<number | undefined>(undefined);
   const pageError =
     currentPage !== undefined &&
     pageCount !== undefined &&
