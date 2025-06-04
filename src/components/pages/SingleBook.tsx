@@ -91,11 +91,16 @@ const SingleBook: React.FC = () => {
       currentPage: data.current_page,
       pageCount: data.page_count,
     });
-    setCurrent(data.current_page);
-    setTotal(data.page_count);
-    setRating(data.rating);
-    setComment(data.comment || "");
-    setStatus(data.status);
+    // setCurrent(data.current_page);
+    // setTotal(data.page_count);
+    // setRating(data.rating);
+    // setComment(data.comment || "");
+    // setStatus(data.status);
+    dispatch({ type: "set_status", newValue: data.status });
+    dispatch({ type: "set_rating", newValue: data.rating });
+    dispatch({ type: "set_current", newValue: data.current_page });
+    dispatch({ type: "set_total", newValue: data.page_count });
+    dispatch({ type: "set_comment", newValue: data.comment || "" });
   };
 
   // Initial fetch
@@ -185,11 +190,15 @@ const SingleBook: React.FC = () => {
 
         {/* Status Section */}
         <StatusSection
-          status={status}
-          onStatusChange={setStatus}
-          current={current}
-          total={total}
-          setCurrent={setCurrent}
+          status={state.status}
+          onStatusChange={(newStatus: string) => {
+            dispatch({ type: "set_status", newValue: newStatus });
+          }}
+          current={state.current}
+          total={state.total}
+          setCurrent={(value: number) => {
+            dispatch({ type: "set_current", newValue: value });
+          }}
           editMode={editMode}
           bookCurrentPage={book.currentPage}
         />
