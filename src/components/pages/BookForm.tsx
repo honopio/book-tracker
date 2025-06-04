@@ -30,11 +30,11 @@ function BookForm() {
   // const [comment, setComment] = useState("");
   const navigate = useNavigate();
   // const [current, setCurrentPage] = useState<number | undefined>(undefined);
-  // const [pageCount, setPageCount] = useState<number | undefined>(undefined);
+  // const [total, setPageCount] = useState<number | undefined>(undefined);
   const pageError =
     formState.current !== undefined &&
-    formState.pageCount !== undefined &&
-    formState.current > formState.pageCount;
+    formState.total !== undefined &&
+    formState.current > formState.total;
 
   async function createBook(title: string, author: string) {
     // Check if the book exists in the books table
@@ -90,7 +90,7 @@ function BookForm() {
           ...(formState.trackProgress &&
             formState.current && { current_page: formState.current }),
           ...(formState.trackProgress &&
-            formState.pageCount && { page_count: formState.pageCount }),
+            formState.total && { page_count: formState.total }),
           comment: formState.comment || null,
         },
       ])
@@ -154,7 +154,7 @@ function BookForm() {
                 dispatch({ type: "set_status", newValue: status })
               }
               current={formState.current}
-              total={formState.pageCount}
+              total={formState.total}
               setCurrent={(current) =>
                 dispatch({ type: "set_current", newValue: current })
               }
@@ -166,9 +166,9 @@ function BookForm() {
               setCurrent={(current) =>
                 dispatch({ type: "set_current", newValue: current })
               }
-              total={formState.pageCount}
-              setTotal={(pageCount) =>
-                dispatch({ type: "set_total", newValue: pageCount })
+              total={formState.total}
+              setTotal={(total) =>
+                dispatch({ type: "set_total", newValue: total })
               }
               trackProgress={formState.trackProgress}
               setTrackProgress={(trackProgress) =>
