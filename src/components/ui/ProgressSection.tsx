@@ -37,12 +37,11 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   useEffect(() => {
     if (!onStatusChange) return;
     let newStatus = status;
+
     if (total !== undefined && current === total && current > 0) {
       newStatus = "finished";
     } else if (current && current > 0) {
       newStatus = "reading";
-    } else if (current === 0) {
-      newStatus = "want-to-read";
     }
     if (newStatus !== status) {
       onStatusChange(newStatus!);
