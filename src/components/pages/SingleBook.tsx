@@ -22,8 +22,10 @@ import { Comment } from "../ui/Comment";
 import { ProgressSection } from "../ui/ProgressSection";
 import { StatusSection } from "../ui/StatusSection";
 import { LoggedOffAlert } from "../ui/LoggedOffAlert";
+import { useAuth } from "../../context/AuthContext";
 
 const SingleBook: React.FC = () => {
+  const user = useAuth();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
@@ -125,7 +127,9 @@ const SingleBook: React.FC = () => {
     >
       <Paper elevation={1} sx={{ p: { xs: 1, sm: 4 } }}>
         <BackButton />
-        <LoggedOffAlert customText="This is a demo with sample books. The changes you make here will not be saved." />
+        {!user && (
+          <LoggedOffAlert customText="This is a demo with sample books. The changes you make here will not be saved." />
+        )}
         <Stack
           direction="row"
           justifyContent="space-between"
