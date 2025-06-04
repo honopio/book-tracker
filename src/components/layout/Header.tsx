@@ -1,12 +1,7 @@
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
+import { AppBar, Toolbar, Typography, IconButton, Button } from "@mui/material";
+import { LocalLibrary, DarkMode, LightMode, Person } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { DarkMode, LightMode, Person } from "@mui/icons-material";
 import { useTheme } from "../../context/ThemeContext.tsx";
-import { Button } from "@mui/material";
 
 interface HeaderProps {
   onDrawerOpen: () => void;
@@ -30,7 +25,7 @@ function Header({ onDrawerOpen }: HeaderProps) {
       >
         <Toolbar>
           <Button
-            startIcon={<LocalLibraryIcon />}
+            startIcon={<LocalLibrary />}
             color="inherit"
             component={Link}
             to="/"
