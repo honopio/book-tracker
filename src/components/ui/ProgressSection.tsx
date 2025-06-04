@@ -18,6 +18,7 @@ interface ProgressSectionProps {
   setTotal: (value: number) => void;
   trackProgress?: boolean;
   setTrackProgress?: (value: boolean) => void;
+  readOnly?: boolean;
   pageError?: boolean;
   status: string;
   onStatusChange?: (status: string) => void;
@@ -30,6 +31,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   setTotal,
   trackProgress = true,
   setTrackProgress,
+  readOnly = false,
   pageError = false,
   status = "want-to-read",
   onStatusChange,
@@ -54,7 +56,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
       sx={{ p: 2, my: 3, transition: "opacity 0.2s ease-in-out" }}
     >
       <Box display="flex" alignItems="center" mb={2} gap={2}>
-        {setTrackProgress && (
+        {!readOnly && setTrackProgress && (
           <Switch
             color="primary"
             size="small"
@@ -67,7 +69,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
         </Typography>
       </Box>
 
-      {trackProgress ? (
+      {trackProgress || readOnly ? (
         <>
           <LinearProgress
             variant="determinate"
@@ -113,7 +115,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
         </Box>
       )}
 
-      {trackProgress && (
+      {!readOnly && trackProgress && (
         <Box display="flex" flexDirection="column" gap={1} mb={2}>
           <Box display="flex" gap={2}>
             <TextField

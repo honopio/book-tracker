@@ -22,40 +22,13 @@ import { Comment } from "../ui/Comment";
 import { ProgressSection } from "../ui/ProgressSection";
 import { StatusSection } from "../ui/StatusSection";
 import { LoggedOffAlert } from "../ui/LoggedOffAlert";
-
-const formReducer = (state: any, action: any) => {
-  switch (action.type) {
-    case "set_status":
-      return { ...state, status: action.newValue };
-    case "set_rating":
-      return { ...state, rating: action.newValue };
-    case "set_current":
-      return { ...state, current: action.newValue };
-    case "set_total":
-      return { ...state, total: action.newValue };
-    case "set_comment":
-      return { ...state, comment: action.newValue };
-    case "set_track_progress":
-      return { ...state, trackProgress: action.newValue };
-    case "set_all":
-      return action.newValues;
-    default:
-      return state;
-  }
-};
+import { formReducer, initialFormState } from "../../hooks/formReducer";
 
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
-  const [formState, dispatch] = useReducer(formReducer, {
-    status: "",
-    rating: null,
-    current: undefined,
-    total: undefined,
-    comment: "",
-    trackProgress: true,
-  });
+  const [formState, dispatch] = useReducer(formReducer, initialFormState);
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -86,7 +59,7 @@ const SingleBook: React.FC = () => {
         current: data.current_page,
         total: data.page_count,
         comment: data.comment || "",
-        trackProgress: true,
+        trackProgress: data.current_page !== null || data.page_count !== null,
       },
     });
   };
@@ -208,6 +181,7 @@ const SingleBook: React.FC = () => {
           setTrackProgress={(value: boolean) => {
             dispatch({ type: "set_track_progress", newValue: value });
           }}
+          readOnly={!editMode}
           status={formState.status}
           onStatusChange={(newStatus: string) => {
             dispatch({ type: "set_status", newValue: newStatus });
