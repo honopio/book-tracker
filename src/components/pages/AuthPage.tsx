@@ -25,15 +25,15 @@ import {
 import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
 
+type AuthMode = "signin" | "signup" | "forgot" | "reset-sent";
+
 export default function AuthPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [signupMsg, setSignupMsg] = useState("");
+  const [mode, setMode] = useState<AuthMode>("signin");
   const [showPassword, setShowPassword] = useState(false);
-  const [tabValue, setTabValue] = useState(0);
-  const [forgotPassword, setForgotPassword] = useState(false);
-  const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [message, setMessage] = useState<{
+    type: "error" | "success";
+    text: string;
+  } | null>(null);
 
   const navigate = useNavigate();
 
@@ -44,141 +44,67 @@ export default function AuthPage() {
     });
   }, [navigate]);
 
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-    setError("");
-    setSignupMsg("");
-    setForgotPassword(false);
-    setResetEmailSent(false);
+  const switchMode = (newMode: AuthMode) => {
+    setMode(newMode);
+    setMessage(null);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setSignupMsg("");
+  async function handleSubmit(formData: FormData) {
+    setMessage(null);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    if (tabValue === 1) {
-      // Sign Up
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
-        },
-      });
-
-      if (error) {
-        setError(error.message);
-      } else {
-        setSignupMsg(
-          "Check your email to confirm your registration and complete setup."
-        );
+    try {
+      if (mode === "forgot") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email);
+        if (error) throw error;
+        setMode("reset-sent");
+        return;
       }
-    } else {
-      // Sign In
+      if (mode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${window.location.origin}/dashboard` },
+        });
+        if (error) throw error;
+        setMessage({
+          type: "success",
+          text: "Check your email to confirm your registration and complete setup.",
+        });
+        return;
+      }
+      // Sign in
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-
-      if (error) {
-        setError(error.message);
-      } else {
-        navigate("/dashboard");
-      }
+      if (error) throw error;
+      navigate("/dashboard");
+    } catch (error: any) {
+      setMessage({ type: "error", text: error.message });
     }
-  };
+  }
 
-  const handleForgotPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
-
-    if (error) {
-      setError(error.message);
-    } else {
-      setResetEmailSent(true);
-    }
-  };
-
-  // Forgot Password Screen
-  if (forgotPassword) {
+  // Reset sent confirmation screen
+  if (mode === "reset-sent") {
     return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
+      <Box sx={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
         <Container maxWidth="sm">
           <Card sx={{ borderRadius: 4 }} elevation={5}>
-            <CardContent sx={{ p: 6 }}>
-              <Box sx={{ textAlign: "center", mb: 4 }}>
-                <LocalLibrary
-                  sx={{
-                    fontSize: 48,
-                    color: "primary.main",
-                    mb: 2,
-                  }}
-                />
-                <Typography variant="h4" component="h1" gutterBottom>
-                  Reset Password
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Enter your email address and we'll send you a link to reset
-                  your password.
-                </Typography>
-              </Box>
-
-              {error && (
-                <Alert severity="error" sx={{ mb: 3 }}>
-                  {error}
-                </Alert>
-              )}
-
-              {resetEmailSent ? (
-                <Box sx={{ textAlign: "center", py: 4 }}>
-                  <CheckCircle
-                    sx={{ fontSize: 64, color: "primary.main", mb: 2 }}
-                  />
-                  <Typography variant="h6" gutterBottom>
-                    Email Sent!
-                  </Typography>
-                  <Typography variant="body2" sx={{ mb: 3 }}>
-                    Check your email for password reset instructions.
-                  </Typography>
-                  <Button onClick={() => setForgotPassword(false)} fullWidth>
-                    Back to Sign In
-                  </Button>
-                </Box>
-              ) : (
-                <Box component="form" onSubmit={handleForgotPassword}>
-                  <TextField
-                    fullWidth
-                    label="Email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    sx={{ mb: 3 }}
-                  />
-
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mb: 2, py: 1.5 }}
-                  >
-                    Send Reset Email
-                  </Button>
-
-                  <Button fullWidth onClick={() => setForgotPassword(false)}>
-                    Back to Sign In
-                  </Button>
-                </Box>
-              )}
+            <CardContent sx={{ p: 6, textAlign: "center" }}>
+              <CheckCircle
+                sx={{ fontSize: 64, color: "primary.main", mb: 2 }}
+              />
+              <Typography variant="h6" gutterBottom>
+                Email Sent!
+              </Typography>
+              <Typography variant="body2" sx={{ mb: 3 }}>
+                Check your email for password reset instructions.
+              </Typography>
+              <Button onClick={() => switchMode("signin")} fullWidth>
+                Back to Sign In
+              </Button>
             </CardContent>
           </Card>
         </Container>
@@ -186,15 +112,12 @@ export default function AuthPage() {
     );
   }
 
-  // Main auth form
+  const isSignUp = mode === "signup";
+  const isForgot = mode === "forgot";
+
   return (
     <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        py: 4,
-      }}
+      sx={{ minHeight: "100vh", display: "flex", alignItems: "center", py: 4 }}
     >
       <Container maxWidth="sm">
         <Card sx={{ borderRadius: 4 }} elevation={5}>
@@ -202,53 +125,46 @@ export default function AuthPage() {
             {/* Header */}
             <Box sx={{ textAlign: "center", mb: 4 }}>
               <LocalLibrary
-                sx={{
-                  fontSize: 48,
-                  color: "primary.main",
-                  mb: 2,
-                }}
+                sx={{ fontSize: 48, color: "primary.main", mb: 2 }}
               />
               <Typography variant="h4" component="h1" gutterBottom>
-                BookTracker
+                {isForgot ? "Reset Password" : "BookTracker"}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Track your reading journey with ease
+                {isForgot
+                  ? "Enter your email address and we'll send you a link to reset your password."
+                  : "Track your reading journey with ease"}
               </Typography>
             </Box>
 
-            {/* Tabs */}
-            <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
-              <Tabs
-                value={tabValue}
-                onChange={handleTabChange}
-                variant="fullWidth"
-              >
-                <Tab label="Sign In" />
-                <Tab label="Sign Up" />
-              </Tabs>
-            </Box>
-
-            {/* Alerts */}
-            {error && (
-              <Alert severity="error" sx={{ mb: 3 }}>
-                {error}
-              </Alert>
+            {/* Tabs - only show for main auth modes */}
+            {!isForgot && (
+              <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
+                <Tabs
+                  value={isSignUp ? 1 : 0}
+                  onChange={(_, newValue) =>
+                    switchMode(newValue === 1 ? "signup" : "signin")
+                  }
+                  variant="fullWidth"
+                >
+                  <Tab label="Sign In" />
+                  <Tab label="Sign Up" />
+                </Tabs>
+              </Box>
             )}
 
-            {signupMsg && (
-              <Alert severity="success" sx={{ mb: 3 }}>
-                {signupMsg}
+            {/* Message Alert */}
+            {message && (
+              <Alert severity={message.type} sx={{ mb: 3 }}>
+                {message.text}
               </Alert>
             )}
-
-            {/* Form */}
-            <Box component="form" onSubmit={handleSubmit}>
+            <Box component="form" action={handleSubmit} noValidate>
               <TextField
                 fullWidth
                 label="Email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
                 required
                 autoComplete="username"
                 sx={{ mb: 3 }}
@@ -263,38 +179,38 @@ export default function AuthPage() {
                 }}
               />
 
-              <TextField
-                fullWidth
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete={
-                  tabValue === 1 ? "new-password" : "current-password"
-                }
-                sx={{ mb: 3 }}
-                helperText={tabValue === 1 ? "Minimum 6 characters" : ""}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Lock />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => setShowPassword(!showPassword)}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
+              {/* password input not needed when password forgotten */}
+              {!isForgot && (
+                <TextField
+                  fullWidth
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  required
+                  autoComplete={isSignUp ? "new-password" : "current-password"}
+                  sx={{ mb: 3 }}
+                  helperText={isSignUp ? "Minimum 6 characters" : ""}
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Lock />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              )}
 
               <Button
                 type="submit"
@@ -302,25 +218,30 @@ export default function AuthPage() {
                 variant="contained"
                 sx={{ mb: 2, py: 1.5 }}
               >
-                {tabValue === 1 ? "Create Account" : "Sign In"}
+                {isForgot
+                  ? "Send Reset Email"
+                  : isSignUp
+                  ? "Create Account"
+                  : "Sign In"}
               </Button>
 
-              {/* Forgot password link on sign in tab */}
-              {tabValue === 0 && (
+              {/* Footer actions */}
+              {isForgot ? (
+                <Button fullWidth onClick={() => switchMode("signin")}>
+                  Back to Sign In
+                </Button>
+              ) : mode === "signin" ? (
                 <Box sx={{ textAlign: "center" }}>
                   <Link
                     component="button"
                     type="button"
-                    onClick={() => setForgotPassword(true)}
+                    onClick={() => switchMode("forgot")}
                     sx={{ cursor: "pointer" }}
                   >
                     Forgot password?
                   </Link>
                 </Box>
-              )}
-
-              {/* Sign up terms on sign up tab */}
-              {tabValue === 1 && (
+              ) : (
                 <Typography variant="body2" sx={{ textAlign: "center" }}>
                   By signing up, you agree to our Terms of Service and Privacy
                   Policy
