@@ -162,9 +162,8 @@ function BookForm() {
               trackProgress={trackProgress}
               setTrackProgress={setTrackProgress}
               pageError={pageError}
-              toggleSwitch={true}
+              status={status}
               onStatusChange={setStatus}
-              autoUpdateStatus={true}
             />
 
             <RatingSection

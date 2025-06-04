@@ -203,9 +203,7 @@ const SingleBook: React.FC = () => {
           setTotal={(value: number) => {
             dispatch({ type: "set_total", newValue: value });
           }}
-          editMode={editMode}
           pageError={pageError}
-          toggleSwitch={editMode}
           trackProgress={formState.trackProgress}
           setTrackProgress={(value: boolean) => {
             dispatch({ type: "set_track_progress", newValue: value });
