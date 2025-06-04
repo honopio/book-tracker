@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { Link } from "react-router-dom";
 import { DarkMode, LightMode, Person } from "@mui/icons-material";
-import { useTheme } from "../../context/themeContext.tsx";
+import { useTheme } from "../../context/ThemeContext.tsx";
 
 interface HeaderProps {
   onDrawerOpen: () => void;

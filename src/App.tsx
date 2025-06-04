@@ -12,7 +12,7 @@ import AuthPage from "./components/pages/AuthPage";
 import { useAuth } from "./auth/AuthContext.tsx";
 import HeroSection from "./components/ui/HeroSection.tsx";
 import React from "react";
-import { useTheme } from "./context/themeContext.tsx";
+import { useTheme } from "./context/ThemeContext.tsx";
 
 function HomeRedirect() {
   const user = useAuth();
