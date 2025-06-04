@@ -13,7 +13,7 @@ import BookCarousel from "../ui/BookCarousel";
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Add from "@mui/icons-material/Add";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useBooks } from "../../hooks/useBooks";
 import { LoggedOffAlert } from "../ui/LoggedOffAlert";
 import { useTheme } from "@mui/material/styles";

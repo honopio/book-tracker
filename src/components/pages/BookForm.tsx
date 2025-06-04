@@ -15,7 +15,7 @@ import { RatingSection } from "../ui/RatingSection";
 import { Comment } from "../ui/Comment";
 import { ProgressSection } from "../ui/ProgressSection";
 import { StatusSection } from "../ui/StatusSection";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { LoggedOffAlert } from "../ui/LoggedOffAlert";
 
 function BookForm() {

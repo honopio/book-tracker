@@ -14,7 +14,7 @@ import { Person, Book, Add, Logout, SpaceDashboard } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { supabase } from "../../client";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 interface SidebarProps {
   open: boolean;
