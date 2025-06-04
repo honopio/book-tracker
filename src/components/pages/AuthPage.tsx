@@ -48,21 +48,19 @@ export default function AuthPage() {
     });
   }, [navigate]);
 
-  const clearMessage = () => setMessage(null);
-
   const updateFormData = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    clearMessage();
+    setMessage(null);
   };
 
   const switchMode = (newMode: AuthMode) => {
     setMode(newMode);
-    clearMessage();
+    setMessage(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    clearMessage();
+    setMessage(null);
 
     try {
       if (mode === "forgot") {
@@ -83,7 +81,6 @@ export default function AuthPage() {
           },
         });
         if (error) throw error;
-
         setMessage({
           type: "success",
           text: "Check your email to confirm your registration and complete setup.",
