@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -23,6 +23,32 @@ import { ProgressSection } from "../ui/ProgressSection";
 import { StatusSection } from "../ui/StatusSection";
 import { LoggedOffAlert } from "../ui/LoggedOffAlert";
 
+function reducer(state: any, action: any) {
+  switch (action.type) {
+    case "set_status": {
+      return { ...state, status: action.newValue };
+    }
+    case "set_rating": {
+      return { ...state, rating: action.newValue };
+    }
+    case "set_current": {
+      return { ...state, current: action.newValue };
+    }
+    case "set_total": {
+      return { ...state, total: action.newValue };
+    }
+    case "set_comment": {
+      return { ...state, comment: action.newValue };
+    }
+    case "set_edit_mode": {
+      return { ...state, editMode: action.newValue };
+    }
+    case "set_track_progress": {
+      return { ...state, trackProgress: action.newValue };
+    }
+  }
+}
+
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -36,6 +62,16 @@ const SingleBook: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [trackProgress, setTrackProgress] = useState(true);
+
+  // use a reducer instead
+  const [state, dispatch] = useReducer(reducer, {
+    status: "",
+    rating: null,
+    current: undefined,
+    total: undefined,
+    comment: "",
+    trackProgress: true,
+  });
 
   // Fetch book details from db
   const fetchBook = async () => {
