@@ -6,6 +6,7 @@ import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { Link } from "react-router-dom";
 import { DarkMode, LightMode, Person } from "@mui/icons-material";
 import { useTheme } from "../../context/ThemeContext.tsx";
+import { Button } from "@mui/material";
 
 interface HeaderProps {
   onDrawerOpen: () => void;
@@ -28,45 +29,30 @@ function Header({ onDrawerOpen }: HeaderProps) {
         }}
       >
         <Toolbar>
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <IconButton
-              size="large"
-              edge="start"
-              sx={{
-                mr: 2,
-                display: "flex",
-                alignItems: "center",
-                color: "text.main",
-                "&:hover": {
-                  backgroundColor: "background.default",
-                },
-              }}
-            >
-              <LocalLibraryIcon />
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ ml: 1.5, flexGrow: 1 }}
-                color="text.main"
-              >
-                BookTracker
-              </Typography>
-            </IconButton>
-          </Link>
+          <Button
+            startIcon={<LocalLibraryIcon />}
+            color="inherit"
+            component={Link}
+            to="/"
+            sx={{ textTransform: "none" }}
+          >
+            <Typography sx={{ flexGrow: 1 }} color="text.main" fontSize={20}>
+              BookTracker
+            </Typography>
+          </Button>
 
           <div style={{ flexGrow: 1 }} />
-          {/* Optionally, add a floating button to toggle theme */}
           <IconButton
             onClick={toggleTheme}
             aria-label="Toggle dark mode"
-            sx={{ color: "text.main", mr: 3 }}
+            sx={{ color: "inherit", mr: 3 }}
           >
             {mode === "light" ? <LightMode /> : <DarkMode />}
           </IconButton>
           <IconButton
             onClick={onDrawerOpen}
             sx={{
-              color: "text.main",
+              color: "inherit",
             }}
           >
             <Person />
