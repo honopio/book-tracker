@@ -208,6 +208,7 @@ const SingleBook: React.FC = () => {
           setTrackProgress={(value: boolean) => {
             dispatch({ type: "set_track_progress", newValue: value });
           }}
+          readOnly={!editMode}
           status={formState.status}
           onStatusChange={(newStatus: string) => {
             dispatch({ type: "set_status", newValue: newStatus });
