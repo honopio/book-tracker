@@ -8,6 +8,7 @@ const Footer: React.FC = () => (
   <AppBar
     position="static"
     component="footer"
+    color="transparent"
     sx={{
       boxShadow: "none",
       borderTop: "1px solid",

@@ -13,7 +13,7 @@ export const Comment: React.FC<CommentProps> = ({
   editMode = true,
 }) => {
   return (
-    <Paper elevation={1} sx={{ p: 2, my: 3 }}>
+    <Paper variant="outlined" sx={{ p: 2, my: 3 }}>
       <Typography variant="h4" mb={3}>
         My thoughts
       </Typography>

@@ -19,7 +19,7 @@ export const RatingSection: React.FC<RatingSectionProps> = ({
   readOnly = false,
 }) => {
   return (
-    <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
+    <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
       {onTrackRatingChange ? (
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <Switch

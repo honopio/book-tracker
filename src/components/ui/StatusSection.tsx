@@ -58,13 +58,7 @@ export const StatusSection: React.FC<StatusSectionProps> = ({
 
   // Edit mode - show selectable chips
   return (
-    <Paper
-      elevation={1}
-      sx={{
-        p: 2,
-        mb: 2,
-      }}
-    >
+    <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
       <Typography variant="h6" component="legend" sx={{ mb: 2 }}>
         Book Status
       </Typography>

@@ -180,7 +180,6 @@ const BookCard = (props: BookCardProps) => {
           height: viewMode === "grid" ? "100%" : undefined,
           mb: viewMode === "list" ? 2 : 0,
           cursor: "pointer",
-          transition: "all 0.2s",
           "&:hover": {
             transform: "translateY(-2px)",
             boxShadow: 3,
