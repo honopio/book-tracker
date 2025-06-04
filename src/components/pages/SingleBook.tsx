@@ -23,48 +23,32 @@ import { ProgressSection } from "../ui/ProgressSection";
 import { StatusSection } from "../ui/StatusSection";
 import { LoggedOffAlert } from "../ui/LoggedOffAlert";
 
-function reducer(state: any, action: any) {
+const formReducer = (state: any, action: any) => {
   switch (action.type) {
-    case "set_status": {
+    case "set_status":
       return { ...state, status: action.newValue };
-    }
-    case "set_rating": {
+    case "set_rating":
       return { ...state, rating: action.newValue };
-    }
-    case "set_current": {
+    case "set_current":
       return { ...state, current: action.newValue };
-    }
-    case "set_total": {
+    case "set_total":
       return { ...state, total: action.newValue };
-    }
-    case "set_comment": {
+    case "set_comment":
       return { ...state, comment: action.newValue };
-    }
-    case "set_edit_mode": {
-      return { ...state, editMode: action.newValue };
-    }
-    case "set_track_progress": {
+    case "set_track_progress":
       return { ...state, trackProgress: action.newValue };
-    }
+    case "set_all":
+      return action.newValues;
+    default:
+      return state;
   }
-}
+};
 
 const SingleBook: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
-  const [status, setStatus] = useState<string>("");
-  const [rating, setRating] = useState<number | null>(null);
-  const [current, setCurrent] = useState<number | undefined>(undefined);
-  const [total, setTotal] = useState<number | undefined>(undefined);
-  const [comment, setComment] = useState<string>("");
-  const [editMode, setEditMode] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [deleteDialog, setDeleteDialog] = useState(false);
-  const [trackProgress, setTrackProgress] = useState(true);
-
-  // use a reducer instead
-  const [state, dispatch] = useReducer(reducer, {
+  const [formState, dispatch] = useReducer(formReducer, {
     status: "",
     rating: null,
     current: undefined,
@@ -72,6 +56,9 @@ const SingleBook: React.FC = () => {
     comment: "",
     trackProgress: true,
   });
+  const [editMode, setEditMode] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [deleteDialog, setDeleteDialog] = useState(false);
 
   // Fetch book details from db
   const fetchBook = async () => {
@@ -91,16 +78,17 @@ const SingleBook: React.FC = () => {
       currentPage: data.current_page,
       pageCount: data.page_count,
     });
-    // setCurrent(data.current_page);
-    // setTotal(data.page_count);
-    // setRating(data.rating);
-    // setComment(data.comment || "");
-    // setStatus(data.status);
-    dispatch({ type: "set_status", newValue: data.status });
-    dispatch({ type: "set_rating", newValue: data.rating });
-    dispatch({ type: "set_current", newValue: data.current_page });
-    dispatch({ type: "set_total", newValue: data.page_count });
-    dispatch({ type: "set_comment", newValue: data.comment || "" });
+    dispatch({
+      type: "set_all",
+      newValues: {
+        status: data.status,
+        rating: data.rating,
+        current: data.current_page,
+        total: data.page_count,
+        comment: data.comment || "",
+        trackProgress: true,
+      },
+    });
   };
 
   // Initial fetch
@@ -110,25 +98,28 @@ const SingleBook: React.FC = () => {
 
   // Validate current and total pages
   const pageError =
-    state.current !== undefined &&
-    state.total !== undefined &&
-    state.current > state.total;
+    formState.current !== undefined &&
+    formState.total !== undefined &&
+    formState.current > formState.total;
 
   // Update book entry
   async function handleSave() {
     if (!book || pageError) return;
+
     const { error } = await supabase
       .from("book_user")
       .update({
         current_page:
-          state.trackProgress && state.current !== undefined
-            ? state.current
+          formState.trackProgress && formState.current !== undefined
+            ? formState.current
             : null,
         page_count:
-          state.trackProgress && state.total !== undefined ? state.total : null,
-        rating: state.rating,
-        comment: state.comment,
-        status: state.status,
+          formState.trackProgress && formState.total !== undefined
+            ? formState.total
+            : null,
+        rating: formState.rating,
+        comment: formState.comment,
+        status: formState.status,
       })
       .eq("id", book.id);
 
