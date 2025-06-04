@@ -181,12 +181,12 @@ const SingleBook: React.FC = () => {
 
         {/* Status Section */}
         <StatusSection
-          status={state.status}
+          status={formState.status}
           onStatusChange={(newStatus: string) => {
             dispatch({ type: "set_status", newValue: newStatus });
           }}
-          current={state.current}
-          total={state.total}
+          current={formState.current}
+          total={formState.total}
           setCurrent={(value: number) => {
             dispatch({ type: "set_current", newValue: value });
           }}
@@ -195,16 +195,23 @@ const SingleBook: React.FC = () => {
         />
 
         <ProgressSection
-          current={current}
-          setCurrent={setCurrent}
-          total={total}
-          setTotal={setTotal}
+          current={formState.current}
+          setCurrent={(value: number) => {
+            dispatch({ type: "set_current", newValue: value });}}
+          total={formState.total}
+          setTotal={(value: number) => {
+            dispatch({ type: "set_total", newValue: value });
+          }}
           editMode={editMode}
           pageError={pageError}
           toggleSwitch={editMode}
-          trackProgress={trackProgress}
-          setTrackProgress={setTrackProgress}
-          onStatusChange={setStatus}
+          trackProgress={formState.trackProgress}
+          setTrackProgress={(value: boolean) => {
+            dispatch({ type: "set_track_progress", newValue: value });}}
+          status={formState.status}
+          onStatusChange={(newStatus: string) => {
+            dispatch({ type: "set_status", newValue: newStatus });
+          }
         />
 
         <RatingSection
