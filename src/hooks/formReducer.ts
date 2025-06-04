@@ -12,6 +12,8 @@ export const formReducer = (state: any, action: any) => {
       return { ...state, comment: action.newValue };
     case "set_track_progress":
       return { ...state, trackProgress: action.newValue };
+    case "set_track_rating":
+      return { ...state, trackRating: action.newValue };
     case "set_all":
       return action.newValues;
     default:
@@ -26,4 +28,5 @@ export const initialFormState = {
     total: undefined,
     comment: "",
     trackProgress: false,
+    trackRating: false,
 };
