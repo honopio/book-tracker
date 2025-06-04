@@ -54,7 +54,7 @@ const SingleBook: React.FC = () => {
     current: undefined,
     total: undefined,
     comment: "",
-    trackProgress: true,
+    trackProgress: false,
   });
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +86,7 @@ const SingleBook: React.FC = () => {
         current: data.current_page,
         total: data.page_count,
         comment: data.comment || "",
-        trackProgress: true,
+        trackProgress: data.current_page !== null || data.page_count !== null,
       },
     });
   };
