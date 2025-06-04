@@ -52,7 +52,7 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
 
   return (
     <Paper
-      elevation={1}
+      variant="outlined"
       sx={{ p: 2, my: 3, transition: "opacity 0.2s ease-in-out" }}
     >
       <Box display="flex" alignItems="center" mb={2} gap={2}>
