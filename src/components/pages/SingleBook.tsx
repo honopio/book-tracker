@@ -197,7 +197,8 @@ const SingleBook: React.FC = () => {
         <ProgressSection
           current={formState.current}
           setCurrent={(value: number) => {
-            dispatch({ type: "set_current", newValue: value });}}
+            dispatch({ type: "set_current", newValue: value });
+          }}
           total={formState.total}
           setTotal={(value: number) => {
             dispatch({ type: "set_total", newValue: value });
@@ -207,25 +208,30 @@ const SingleBook: React.FC = () => {
           toggleSwitch={editMode}
           trackProgress={formState.trackProgress}
           setTrackProgress={(value: boolean) => {
-            dispatch({ type: "set_track_progress", newValue: value });}}
+            dispatch({ type: "set_track_progress", newValue: value });
+          }}
           status={formState.status}
           onStatusChange={(newStatus: string) => {
             dispatch({ type: "set_status", newValue: newStatus });
-          }
+          }}
         />
 
         <RatingSection
-          rating={rating}
-          onRatingChange={setRating}
-          disabled={status === "want-to-read"}
+          rating={formState.rating}
+          onRatingChange={(value: number | null) => {
+            dispatch({ type: "set_rating", newValue: value });
+          }}
+          disabled={formState.status === "want-to-read"}
           readOnly={!editMode}
           showToggle={false}
         />
 
         {/* Comment */}
         <Comment
-          comment={comment}
-          setComment={setComment}
+          comment={formState.comment}
+          setComment={(value: string) => {
+            dispatch({ type: "set_comment", newValue: value });
+          }}
           editMode={editMode}
         />
 
