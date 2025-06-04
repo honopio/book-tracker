@@ -31,7 +31,7 @@ function Sidebar({ open, onClose }: SidebarProps) {
     { text: "Add a book", icon: <Add />, to: "/add-book" },
   ];
   if (user) {
-    menuItems.push({ text: "Log out", icon: <Logout />, to: "/login" });
+    menuItems.push({ text: "Log out", icon: <Logout />, to: "/" });
   } else {
     menuItems.push({ text: "Log in", icon: <Person />, to: "/login" });
   }
@@ -41,7 +41,7 @@ function Sidebar({ open, onClose }: SidebarProps) {
     if (error) {
       console.error("Error signing out:", error);
     } else {
-      navigate("/login");
+      navigate("/");
     }
   }
 
