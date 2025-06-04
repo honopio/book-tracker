@@ -32,9 +32,9 @@ function BookForm() {
   // const [currentPage, setCurrentPage] = useState<number | undefined>(undefined);
   // const [pageCount, setPageCount] = useState<number | undefined>(undefined);
   const pageError =
-    currentPage !== undefined &&
-    pageCount !== undefined &&
-    currentPage > pageCount;
+    formState.currentPage !== undefined &&
+    formState.pageCount !== undefined &&
+    formState.currentPage > formState.pageCount;
 
   async function createBook(title: string, author: string) {
     // Check if the book exists in the books table
@@ -85,11 +85,13 @@ function BookForm() {
         {
           book_id: bookId,
           user_id: user.id,
-          status: status,
-          rating: rating,
-          ...(trackProgress && currentPage && { current_page: currentPage }),
-          ...(trackProgress && pageCount && { page_count: pageCount }),
-          comment: comment || null,
+          status: formState.status,
+          rating: formState.trackRating ? formState.rating : null,
+          ...(formState.trackProgress &&
+            formState.currentPage && { current_page: formState.currentPage }),
+          ...(formState.trackProgress &&
+            formState.pageCount && { page_count: formState.pageCount }),
+          comment: formState.comment || null,
         },
       ])
       .then(({ error }) => {
