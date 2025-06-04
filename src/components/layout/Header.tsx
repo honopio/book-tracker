@@ -19,6 +19,7 @@ function Header({ onDrawerOpen }: HeaderProps) {
       <AppBar
         position="static"
         component="header"
+        color="transparent"
         sx={{
           boxShadow: "none",
           borderBottom: "1px solid",
@@ -37,7 +38,7 @@ function Header({ onDrawerOpen }: HeaderProps) {
                 alignItems: "center",
                 color: "text.main",
                 "&:hover": {
-                  backgroundColor: "transparent",
+                  backgroundColor: "background.default",
                 },
               }}
             >
